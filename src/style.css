@@ -1,0 +1,175 @@
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+:root {
+  --color-text: #385170;
+  --color-background: #ececec;
+  --color-link: #385170;
+  --list-grid-size: 1;
+  --color-separator: #dbdbdb;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-text: #ececec;
+    --color-background: #000;
+    --color-link: #dde6ed;
+    --color-separator: #2f3336;
+  }
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
+    Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  color: var(--color-text);
+  background-color: var(--color-background);
+  font-size: 80%;
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  color: var(--color-link);
+}
+
+.loader {
+  align-items: center;
+  display: grid;
+  height: 100vh;
+  justify-content: center;
+  width: 100vw;
+}
+
+.thumbnail {
+  aspect-ratio: var(--ar-width) / var(--ar-height);
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.thumbnail--video::-webkit-media-controls-volume-slider {
+  display: none;
+}
+
+.thumbnail--video::-webkit-media-controls-mute-button {
+  display: none;
+}
+
+.thumbnail--video::-webkit-media-controls-volume-slider-container {
+  display: none;
+}
+
+.main {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 5000px;
+}
+
+.subreddit {
+  font-weight: bold;
+}
+
+.select {
+  width: 100%;
+  height: 2.5rem;
+  background-color: transparent;
+  color: var(--color-text);
+  border: 0;
+}
+
+.select:focus {
+  outline: 0;
+}
+
+.refresh {
+  aspect-ratio: 1/1;
+  height: 2.5rem;
+  padding: 0;
+  margin: 0;
+}
+
+.filters {
+  background-color: var(--color-background);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.main {
+  padding-bottom: 2.5rem;
+}
+
+.fieldset {
+  align-items: center;
+  border: 0;
+  display: flex;
+  gap: 0.5rem;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0.5rem;
+}
+
+.load-more {
+  display: block;
+  height: 2.5rem;
+  width: 100%;
+  margin-top: 2rem;
+}
+
+.load-more.is-loading {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.post {
+  padding-block-end: 1rem;
+  border-bottom: 1px solid var(--color-separator);
+}
+
+.post__info {
+  padding-inline: 0.5rem;
+}
+
+.post__title {
+  margin-block: 0.25rem;
+  font-size: 1rem;
+}
+
+.post__link {
+  text-decoration: none;
+}
+
+.post__subreddit {
+  font-weight: bold;
+}
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(var(--list-grid-size), 1fr);
+  gap: 1rem;
+}
+
+@media (min-width: 50em) {
+  :root {
+    --list-grid-size: 2;
+  }
+}
+
+@media (min-width: 75em) {
+  :root {
+    --list-grid-size: 3;
+  }
+}
+
+@media (min-width: 100em) {
+  :root {
+    --list-grid-size: 5;
+  }
+}
+
+.toaster {
+  padding: 1rem;
+  text-align: center;
+}
