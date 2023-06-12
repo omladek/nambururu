@@ -13,6 +13,7 @@ const getPostHTML = (postData: Thread, postIndex: number): string => {
     thumbnail_width,
     title,
     created_utc,
+    selftext,
     selftext_html,
     is_video,
     media,
@@ -25,7 +26,7 @@ const getPostHTML = (postData: Thread, postIndex: number): string => {
   } = postData.data
 
   const hasThumbnail = !(
-    thumbnail &&
+    thumbnail !== null &&
     ['nsfw', 'spoiler', 'default', 'self', 'image'].includes(thumbnail)
   )
 
@@ -39,10 +40,13 @@ const getPostHTML = (postData: Thread, postIndex: number): string => {
     ? preview.images[0].source.width
     : thumbnail_width
 
+  const enableHTML = true
+  const description = enableHTML ? deescapeHtml(selftext_html || '') : selftext
+
   return `
         <article class="post">
             ${
-              hasThumbnail && thumbnail && !is_video && !is_gallery
+              hasThumbnail && !is_video && !is_gallery
                 ? getThumbnailHTML({
                     thumbnail: url.startsWith('https://i.redd.it/')
                       ? url
@@ -68,10 +72,8 @@ const getPostHTML = (postData: Thread, postIndex: number): string => {
           <div class="post__info">
             <h2 class="post__title"><a class="post__link" href="https://www.reddit.com${permalink}" target="_blank">${title}</a></h2>
             ${
-              selftext_html
-                ? `<div class="post__description">${deescapeHtml(
-                    selftext_html,
-                  )}</div>`
+              description
+                ? `<div class="post__description">${description}</div>`
                 : ''
             }
             <small class="post__subreddit">${subreddit}</small>,

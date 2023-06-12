@@ -92,9 +92,10 @@ a {
 
 .filters {
   background-color: var(--color-background);
-  position: sticky;
-  top: 0;
+  position: fixed;
+  bottom: 0;
   z-index: 1;
+  width: 100%;
 }
 
 .main {
@@ -139,6 +140,12 @@ a {
 
 .post__link {
   text-decoration: none;
+  display: block;
+  word-break: break-all;
+}
+
+.post__description {
+  word-break: break-all;
 }
 
 .post__subreddit {
