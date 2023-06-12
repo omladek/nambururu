@@ -135,14 +135,17 @@ export interface ChildData {
   is_gallery?: boolean
 }
 
+export interface RedditHostedImage {
+  u: string
+  x: number
+  y: number
+}
+
 export type RedditMediaMetadata = Record<
   string,
   {
-    s: {
-      u: string
-      x: number
-      y: number
-    }
+    p: RedditHostedImage[]
+    s: RedditHostedImage
   }
 >
 
