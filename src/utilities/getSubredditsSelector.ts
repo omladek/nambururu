@@ -1,16 +1,27 @@
 import subreddits from '../constants/subreddits'
 import { DEFAULT_LIMIT } from '../app'
 
+const mergeAndUnique = (arr: string[]): string[] => {
+  const mergedOrdered = [...arr].sort((a, b) => a.localeCompare(b, 'en-US'))
+
+  return [...new Set(mergedOrdered.map((subreddit) => subreddit.toLowerCase()))]
+}
+
 /**
  * @returns {String}
  */
-const getSubredditsSelector = () => `
+const getSubredditsSelector = (allSubreddits: string[]): string => {
+  const list = mergeAndUnique([...allSubreddits, ...subreddits])
+
+  return `
   <form id="filters-form" method="GET" action="">
     <fieldset class="fieldset">
       <label for="subreddit">subreddit:</label>
       <select id="subreddit" name="subreddit" class="select">
-      <option value="${subreddits.join('+')}" selected>------mix------</option>
-        ${subreddits
+      <option value="${subreddits.join(
+        '+',
+      )}" selected>------my mix------</option>
+        ${list
           .map(
             (subreddit) => `<option value="${subreddit}">${subreddit}</option>`,
           )
@@ -32,5 +43,6 @@ const getSubredditsSelector = () => `
     </fieldset>
   </form>
   `
+}
 
 export default getSubredditsSelector

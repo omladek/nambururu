@@ -1,9 +1,10 @@
+import getListOfSubreddits from './utilities/getListOfSubreddits'
 import getSubredditsSelector from './utilities/getSubredditsSelector'
 import setupFilter from './utilities/setupFilter'
 
 export const DEFAULT_LIMIT = 10
 
-const buildApp = () => {
+const buildApp = async () => {
   const filters = document.getElementById('filters') as HTMLDivElement
   const list = document.getElementById('list') as HTMLDivElement
   const loader = document.getElementById('loader') as HTMLDivElement
@@ -30,7 +31,9 @@ const buildApp = () => {
     throw new Error('Missing toaster element!')
   }
 
-  filters.innerHTML = getSubredditsSelector()
+  const allSubreddits = await getListOfSubreddits()
+
+  filters.innerHTML = getSubredditsSelector(allSubreddits)
 
   setupFilter({ loadMoreBtn, filters, list, loader, toaster })
 }
