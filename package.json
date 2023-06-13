@@ -16,7 +16,7 @@
     "lint": "concurrently \"yarn lint:js\" \"yarn lint:styles\"",
     "lint:fix": "yarn lint:js --fix",
     "lint:js": "eslint --ext=js,ts src",
-    "lint:styles": "stylelint \"src/**/*.{css}\"",
+    "lint:styles": "stylelint \"src/**/*.css\"",
     "prepare": "husky install"
   },
   "lint-staged": {
@@ -24,7 +24,7 @@
       "yarn format",
       "yarn lint:js"
     ],
-    "*.{css}": [
+    "*.css": [
       "yarn format",
       "yarn lint:styles"
     ]
