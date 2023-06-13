@@ -1,9 +1,6 @@
 import syncMediaPlayback from './syncMediaPlayback'
 
-/**
- * @returns void
- */
-const setupVideoPlayer = () => {
+const setupVideoPlayer = (): void => {
   const players = [
     ...document.querySelectorAll('.js-player:not(.js-player-initialized)'),
   ]

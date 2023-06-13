@@ -35,7 +35,7 @@ export interface ChildData {
   gilded: number
   clicked: boolean
   title: string
-  link_flair_richtext: any[]
+  link_flair_richtext: unknown[]
   subreddit_name_prefixed: string
   hidden: boolean
   pwls: number
@@ -54,7 +54,7 @@ export interface ChildData {
   thumbnail_width: number | null
   author_flair_template_id: null | string
   is_original_content: boolean
-  user_reports: any[]
+  user_reports: unknown[]
   secure_media: Media | null
   is_reddit_media_domain: boolean
   is_meta: boolean
@@ -68,8 +68,8 @@ export interface ChildData {
   thumbnail: string
   edited: boolean
   author_flair_css_class: null | string
-  steward_reports: any[]
-  author_flair_richtext: any[]
+  steward_reports: unknown[]
+  author_flair_richtext: unknown[]
   gildings: Gildings
   content_categories: null
   is_self: boolean
@@ -92,8 +92,8 @@ export interface ChildData {
   is_crosspostable: boolean
   pinned: boolean
   over_18: boolean
-  all_awardings: any[]
-  awarders: any[]
+  all_awardings: unknown[]
+  awarders: unknown[]
   media_only: boolean
   link_flair_template_id?: string
   can_gild: boolean
@@ -117,7 +117,7 @@ export interface ChildData {
   send_replies: boolean
   whitelist_status: string
   contest_mode: boolean
-  mod_reports: any[]
+  mod_reports: unknown[]
   author_patreon_flair: boolean
   author_flair_text_color: null | string
   permalink: string
@@ -149,7 +149,7 @@ export type RedditMediaMetadata = Record<
   }
 >
 
-export interface Gildings {}
+export type Gildings = unknown
 
 export interface RedditVideo {
   fallback_url: string

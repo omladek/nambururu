@@ -1,7 +1,10 @@
 *,
 *:before,
 *:after {
+  border: 0;
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 :root {
@@ -22,17 +25,27 @@
 }
 
 body {
+  background-color: var(--color-background);
+  color: var(--color-text);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
     Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
-  color: var(--color-text);
-  background-color: var(--color-background);
   font-size: 80%;
-  padding: 0;
   margin: 0;
+  padding: 0;
 }
 
 a {
   color: var(--color-link);
+}
+
+.sr-only {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
 }
 
 .loader {
@@ -45,9 +58,9 @@ a {
 
 .thumbnail {
   aspect-ratio: var(--ar-width) / var(--ar-height);
-  width: 100%;
   height: auto;
   object-fit: contain;
+  width: 100%;
 }
 
 .thumbnail--video::-webkit-media-controls-volume-slider {
@@ -63,8 +76,9 @@ a {
 }
 
 .main {
-  content-visibility: auto;
   contain-intrinsic-size: 1px 5000px;
+  content-visibility: auto;
+  padding-bottom: 2.5rem;
 }
 
 .subreddit {
@@ -72,11 +86,10 @@ a {
 }
 
 .select {
-  width: 100%;
-  height: 2.5rem;
   background-color: transparent;
-  color: var(--color-text);
   border: 0;
+  color: var(--color-text);
+  width: 100%;
 }
 
 .select:focus {
@@ -86,20 +99,28 @@ a {
 .refresh {
   aspect-ratio: 1/1;
   height: 2.5rem;
-  padding: 0;
   margin: 0;
+  padding: 0;
 }
 
 .filters {
   background-color: var(--color-background);
-  position: fixed;
   bottom: 0;
-  z-index: 1;
+  position: fixed;
   width: 100%;
+  z-index: 1;
 }
 
-.main {
-  padding-bottom: 2.5rem;
+@media (max-width: 25em) {
+  .label {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
 }
 
 .fieldset {
@@ -115,8 +136,8 @@ a {
 .load-more {
   display: block;
   height: 2.5rem;
-  width: 100%;
   margin-top: 2rem;
+  width: 100%;
 }
 
 .load-more.is-loading {
@@ -124,9 +145,9 @@ a {
   pointer-events: none;
 }
 
-.post {
-  padding-block-end: 1rem;
+.post:not(:only-child) {
   border-bottom: 1px solid var(--color-separator);
+  padding-block-end: 1rem;
 }
 
 .post__info {
@@ -134,13 +155,13 @@ a {
 }
 
 .post__title {
-  margin-block: 0.25rem;
   font-size: 1rem;
+  margin-block: 0.25rem;
 }
 
 .post__link {
-  text-decoration: none;
   display: block;
+  text-decoration: none;
   word-break: break-all;
 }
 
@@ -154,8 +175,8 @@ a {
 
 .list {
   display: grid;
-  grid-template-columns: repeat(var(--list-grid-size), 1fr);
   gap: 1rem;
+  grid-template-columns: repeat(var(--list-grid-size), 1fr);
 }
 
 @media (min-width: 50em) {

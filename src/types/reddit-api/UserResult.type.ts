@@ -42,7 +42,7 @@ export interface Subreddit {
   display_name: string
   header_img: null
   title: string
-  previous_names: any[]
+  previous_names: unknown[]
   over_18: boolean
   icon_size: number[]
   primary_color: string

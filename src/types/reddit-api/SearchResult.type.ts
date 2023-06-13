@@ -17,7 +17,7 @@ export interface Child {
 }
 
 export interface ChildData {
-  awarders: any[]
+  awarders: unknown[]
   total_awards_received: number
   approved_at_utc: null
   link_title?: string
@@ -29,7 +29,7 @@ export interface ChildData {
   author_flair_template_id: null
   likes: boolean
   replies?: string
-  user_reports: any[]
+  user_reports: unknown[]
   saved: boolean
   id: string
   banned_at_utc: null
@@ -48,16 +48,16 @@ export interface ChildData {
   over_18: boolean
   approved_by: null
   mod_note: null
-  all_awardings: any[]
+  all_awardings: unknown[]
   subreddit_id: string
   body?: string
   edited: boolean
   author_flair_css_class: null
   name: string
-  steward_reports: any[]
+  steward_reports: unknown[]
   author_patreon_flair: boolean
   downs: number
-  author_flair_richtext: any[]
+  author_flair_richtext: unknown[]
   is_submitter?: boolean
   body_html?: string
   gildings: Gildings
@@ -85,14 +85,14 @@ export interface ChildData {
   author_flair_background_color: null
   collapsed_because_crowd_control?: null
   rte_mode: string
-  mod_reports: any[]
+  mod_reports: unknown[]
   quarantine: boolean
   subreddit_type: string
   ups: number
   selftext?: string
   clicked?: boolean
   title?: string
-  link_flair_richtext?: any[]
+  link_flair_richtext?: unknown[]
   hidden?: boolean
   pwls?: null
   link_flair_css_class?: null
@@ -138,4 +138,4 @@ export interface ChildData {
   is_video?: boolean
 }
 
-export interface Gildings {}
+export type Gildings = unknown

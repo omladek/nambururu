@@ -1,6 +1,6 @@
 const getSubredditJSONUrl = (
   subredditUrl: string,
-  after: string = '',
+  after = '',
   limit: number,
 ): URL => {
   const url = new URL(`https://www.reddit.com/r/${subredditUrl}/.json`)

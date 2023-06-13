@@ -16,5 +16,5 @@ export interface GenericResponse {
 }
 
 export type JQueryResponse = {
-  jquery: Array<any[]>
+  jquery: Array<unknown[]>
 } & GenericResponse

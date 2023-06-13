@@ -5,7 +5,7 @@ const getImageByContainerWidth = (
   dpr: number,
 ): RedditHostedImage => {
   const containerWidth =
-    document.querySelector<HTMLDivElement>('.js-post-sizer')!.offsetWidth
+    document.querySelector<HTMLDivElement>('.js-post-sizer')?.offsetWidth ?? 0
   const size = Math.round(containerWidth * dpr)
   let closestX = Number.MAX_SAFE_INTEGER
   let bestMatch = arr[0]

@@ -7,7 +7,7 @@ let filtersAbortController: AbortController
 
 const getSubreddit = async (
   subreddit: string,
-  afterParameter: string = '',
+  afterParameter = '',
   limit: number = DEFAULT_LIMIT,
 ): Promise<{
   posts: Thread[]
