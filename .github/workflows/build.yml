@@ -21,6 +21,8 @@ jobs:
         run: yarn lint:styles
       - name: Prettier
         run: yarn prettier -c .
+      - name: Validate typescript
+        run: yarn tsc -noEmit
 
   quality_gate:
     name: Quality
