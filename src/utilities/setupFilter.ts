@@ -1,5 +1,6 @@
 import updateList from './updateList'
 import endlessScroll from './endlessScroll'
+import subredditSearch from './subredditSearch'
 
 interface Props {
   loadMoreBtn: HTMLButtonElement
@@ -75,6 +76,8 @@ const setupFilter = ({
   submitForm()
 
   endlessScroll({ loadMoreBtn })
+
+  subredditSearch()
 }
 
 export default setupFilter

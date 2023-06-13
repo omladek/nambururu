@@ -14,7 +14,7 @@ const getSubredditsSelector = (allSubreddits: string[]): string => {
   <form id="filters-form" method="GET" action="">
     <fieldset class="fieldset">
       <label class="label" for="subreddit">subreddit:</label>
-      <input list="subreddit-list" id="subreddit" name="subreddit" value="my-mix" placeholder="search subreddit" />
+      <input list="subreddit-list" maxlength="38" id="subreddit" name="subreddit" value="my-mix" placeholder="search subreddit" />
       <datalist id="subreddit-list">
         <option value="my-mix" selected>my-mix</option>
         ${list

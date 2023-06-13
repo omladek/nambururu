@@ -136,6 +136,7 @@ export interface ChildData {
   num_crossposts?: number
   media?: null
   is_video?: boolean
+  display_name: string
 }
 
 export type Gildings = unknown
