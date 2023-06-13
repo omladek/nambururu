@@ -8,9 +8,15 @@ interface Props {
   filters: HTMLDivElement
   loader: HTMLDivElement
   toaster: HTMLDivElement
+  postSizer: HTMLDivElement
 }
 
-const setupFilter = ({ loadMoreBtn, toaster, list }: Props): void => {
+const setupFilter = ({
+  loadMoreBtn,
+  toaster,
+  list,
+  postSizer,
+}: Props): void => {
   const selector = document.getElementById('subreddit') as HTMLSelectElement
   const form = document.getElementById('filters-form') as HTMLFormElement
   const limit = document.getElementById('limit') as HTMLSelectElement
@@ -38,6 +44,7 @@ const setupFilter = ({ loadMoreBtn, toaster, list }: Props): void => {
       loadMoreBtn,
       list,
       toaster,
+      postSizer,
     })
   }
 

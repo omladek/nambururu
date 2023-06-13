@@ -10,6 +10,7 @@ const buildApp = async () => {
   const loader = document.getElementById('loader') as HTMLDivElement
   const loadMoreBtn = document.getElementById('load-more') as HTMLButtonElement
   const toaster = document.getElementById('toaster') as HTMLDivElement
+  const postSizer = document.getElementById('post-sizer') as HTMLDivElement
 
   if (!filters) {
     throw new Error('Missing filters element!')
@@ -31,11 +32,15 @@ const buildApp = async () => {
     throw new Error('Missing toaster element!')
   }
 
+  if (!postSizer) {
+    throw new Error('Missing postSizer element!')
+  }
+
   const allSubreddits = await getListOfSubreddits()
 
   filters.innerHTML = getSubredditsSelector(allSubreddits)
 
-  setupFilter({ loadMoreBtn, filters, list, loader, toaster })
+  setupFilter({ loadMoreBtn, filters, list, loader, toaster, postSizer })
 }
 
 buildApp()

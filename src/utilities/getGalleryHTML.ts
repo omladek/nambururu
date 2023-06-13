@@ -2,7 +2,10 @@ import { RedditMediaMetadata } from '../types/reddit-api/ThreadsResult.type'
 import getImageByContainerWidth from './getImageByContainerWidth'
 import getThumbnailHTML from './getThumbnailHTML'
 
-const getGalleryHTML = (galleryItems: RedditMediaMetadata | null): string => {
+const getGalleryHTML = (
+  galleryItems: RedditMediaMetadata | null,
+  postSizer: HTMLDivElement,
+): string => {
   if (!galleryItems) {
     return ''
   }
@@ -10,8 +13,16 @@ const getGalleryHTML = (galleryItems: RedditMediaMetadata | null): string => {
   const html = Object.keys(galleryItems).reduce((acc, curr) => {
     const image = galleryItems[curr]
     const fullSizeImage = image.s
-    const responsizeImageStandard = getImageByContainerWidth(image.p, 1)
-    const responsizeImageRetina = getImageByContainerWidth(image.p, 2)
+    const responsizeImageStandard = getImageByContainerWidth(
+      image.p,
+      1,
+      postSizer,
+    )
+    const responsizeImageRetina = getImageByContainerWidth(
+      image.p,
+      2,
+      postSizer,
+    )
 
     return (
       acc +

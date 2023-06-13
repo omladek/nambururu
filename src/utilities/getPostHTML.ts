@@ -5,7 +5,11 @@ import deescapeHtml from './deescapeHtml'
 import getGalleryHTML from './getGalleryHTML'
 import { Thread } from '../types/reddit-api/ThreadsResult.type'
 
-const getPostHTML = (postData: Thread, postIndex: number): string => {
+const getPostHTML = (
+  postData: Thread,
+  postIndex: number,
+  postSizer: HTMLDivElement,
+): string => {
   const {
     thumbnail,
     subreddit,
@@ -68,7 +72,7 @@ const getPostHTML = (postData: Thread, postIndex: number): string => {
                   })
                 : ''
             }
-            ${is_gallery ? getGalleryHTML(media_metadata) : ''}
+            ${is_gallery ? getGalleryHTML(media_metadata, postSizer) : ''}
           <div class="post__info">
             <h2 class="post__title"><a class="post__link" href="https://www.reddit.com${permalink}" target="_blank">${title}</a></h2>
             ${

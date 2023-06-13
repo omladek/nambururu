@@ -3,9 +3,9 @@ import { RedditHostedImage } from '../types/reddit-api/ThreadsResult.type'
 const getImageByContainerWidth = (
   arr: RedditHostedImage[],
   dpr: number,
+  postSizer: HTMLDivElement,
 ): RedditHostedImage => {
-  const containerWidth =
-    document.querySelector<HTMLDivElement>('.js-post-sizer')?.offsetWidth ?? 0
+  const containerWidth = postSizer.offsetWidth
   const size = Math.round(containerWidth * dpr)
   let closestX = Number.MAX_SAFE_INTEGER
   let bestMatch = arr[0]

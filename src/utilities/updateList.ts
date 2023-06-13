@@ -9,6 +9,7 @@ interface Props {
   loadMoreBtn: HTMLButtonElement
   list: HTMLDivElement
   toaster: HTMLDivElement
+  postSizer: HTMLDivElement
 }
 
 const updateList = async ({
@@ -18,6 +19,7 @@ const updateList = async ({
   loadMoreBtn,
   list,
   toaster,
+  postSizer,
 }: Props): Promise<void> => {
   if (afterParameter) {
     loadMoreBtn.classList.add('is-loading')
@@ -35,7 +37,7 @@ const updateList = async ({
   const filteredPosts = posts.filter((post) => !post.data.stickied)
 
   const postsHTML = filteredPosts
-    .map((post, postIndex) => getPostHTML(post, postIndex))
+    .map((post, postIndex) => getPostHTML(post, postIndex, postSizer))
     .join('')
 
   if (afterParameter) {
