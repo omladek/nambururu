@@ -11,7 +11,7 @@ const getYoutubeIframe = (media: Media): string => {
   return deescapeHtml(
     html.replace(
       'iframe ',
-      `iframe loading="lazy" class="thumbnail" style="--ar-width: ${width};--ar-height: ${height};"`,
+      `iframe loading="lazy" class="thumbnail" style="--ar-width: ${width};--ar-height: ${height};" `,
     ),
   )
 }
