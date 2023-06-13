@@ -3,7 +3,9 @@ const getSubredditJSONUrl = (
   after = '',
   limit: number,
 ): URL => {
-  const url = new URL(`https://www.reddit.com/r/${subredditUrl}/.json`)
+  const subredditBase =
+    subredditUrl === 'best' ? subredditUrl : `r/${subredditUrl}`
+  const url = new URL(`https://www.reddit.com/${subredditBase}/.json`)
 
   url.searchParams.append('json_raw', '1')
 

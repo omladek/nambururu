@@ -1,4 +1,3 @@
-import subreddits from '../constants/subreddits'
 import { DEFAULT_LIMIT } from '../app'
 
 const mergeAndUnique = (arr: string[]): string[] => {
@@ -8,6 +7,7 @@ const mergeAndUnique = (arr: string[]): string[] => {
 }
 
 const getSubredditsSelector = (allSubreddits: string[]): string => {
+  const subreddits = (import.meta.env.VITE_SUBREDDITS || 'best').split(',')
   const list = mergeAndUnique([...allSubreddits, ...subreddits])
 
   return `

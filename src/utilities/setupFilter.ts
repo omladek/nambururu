@@ -1,6 +1,5 @@
 import updateList from './updateList'
 import endlessScroll from './endlessScroll'
-import subreddits from '../constants/subreddits'
 
 interface Props {
   loadMoreBtn: HTMLButtonElement
@@ -38,7 +37,9 @@ const setupFilter = ({
 
     await updateList({
       subreddit:
-        subreddit.value === 'my-mix' ? subreddits.join('+') : subreddit.value,
+        subreddit.value === 'my-mix'
+          ? (import.meta.env.VITE_SUBREDDITS || 'best').split(',').join('+')
+          : subreddit.value,
       afterParameter: after,
       limit: parseInt(limit.value, 10),
       loadMoreBtn,
