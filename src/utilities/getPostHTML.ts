@@ -4,6 +4,7 @@ import getVideoPlayerHTML from './getVideoPlayerHTML'
 import deescapeHtml from './deescapeHtml'
 import getGalleryHTML from './getGalleryHTML'
 import { Thread } from '../types/reddit-api/ThreadsResult.type'
+import getYoutubeIframe from './getYoutubeIframe'
 
 const getPostHTML = (
   postData: Thread,
@@ -47,10 +48,12 @@ const getPostHTML = (
   const enableHTML = true
   const description = enableHTML ? deescapeHtml(selftext_html || '') : selftext
 
+  const youtubeIframe = media ? getYoutubeIframe(media) : ''
+
   return `
         <article class="post">
             ${
-              hasThumbnail && !is_video && !is_gallery
+              hasThumbnail && !is_video && !is_gallery && !youtubeIframe
                 ? getThumbnailHTML({
                     thumbnail: url.startsWith('https://i.redd.it/')
                       ? url
@@ -62,7 +65,7 @@ const getPostHTML = (
                 : ''
             }
             ${
-              is_video && media && media.reddit_video
+              is_video && media && media.reddit_video && !youtubeIframe
                 ? getVideoPlayerHTML({
                     hasAudio: media.reddit_video.has_audio,
                     height: media.reddit_video.height,
@@ -72,6 +75,7 @@ const getPostHTML = (
                   })
                 : ''
             }
+            ${youtubeIframe}
             ${is_gallery ? getGalleryHTML(media_metadata, postSizer) : ''}
           <div class="post__info">
             <h2 class="post__title"><a class="post__link" href="https://www.reddit.com${permalink}" target="_blank">${title}</a></h2>

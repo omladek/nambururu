@@ -159,7 +159,7 @@ export interface RedditVideo {
 }
 
 export interface Media {
-  type: string
+  type: 'reddit.com' | 'youtube.com'
   reddit_video: RedditVideo
   oembed: Oembed
 }
