@@ -28,7 +28,7 @@ const getVideoPlayerHTML = ({
         muted
         style="--ar-width: ${width};--ar-height: ${height};"
       >
-        <source src="${url}">
+        <source class="js-source" data-src="${url}" type="video/mp4">
       </video>
       ${
         hasAudio
@@ -37,6 +37,7 @@ const getVideoPlayerHTML = ({
               src="${audioUrl}"
               class="js-audio"
               hidden
+              preload="none"
               ></audio>`
           : ''
       }
