@@ -2,24 +2,19 @@ import updateList from './updateList'
 import endlessScroll from './endlessScroll'
 import subredditSearch from './subredditSearch'
 
-interface Props {
-  loadMoreBtn: HTMLButtonElement
-  list: HTMLDivElement
-  filters: HTMLDivElement
-  loader: HTMLDivElement
-  toaster: HTMLDivElement
-  postSizer: HTMLDivElement
-}
+const setupFilter = (): void => {
+  const selector = document.querySelector<HTMLSelectElement>('#subreddit')
+  const form = document.querySelector<HTMLFormElement>('#filters-form')
+  const loader = document.querySelector<HTMLDivElement>('#loader')
+  const loadMoreBtn = document.querySelector<HTMLButtonElement>('#load-more')
 
-const setupFilter = ({
-  loadMoreBtn,
-  toaster,
-  list,
-  postSizer,
-}: Props): void => {
-  const selector = document.getElementById('subreddit') as HTMLSelectElement
-  const form = document.getElementById('filters-form') as HTMLFormElement
-  const limit = document.getElementById('limit') as HTMLSelectElement
+  if (!loader) {
+    throw new Error('Missing loader element!')
+  }
+
+  if (!loadMoreBtn) {
+    throw new Error('Missing loadMore element!')
+  }
 
   if (!selector) {
     throw new Error('Subreddit selector is missing!')
@@ -29,12 +24,8 @@ const setupFilter = ({
     throw new Error('Subreddit form is missing!')
   }
 
-  if (!limit) {
-    throw new Error('Subreddit limit is missing!')
-  }
-
   const submitForm = async (after = '') => {
-    const { limit, subreddit } = form
+    const { subreddit } = form
 
     await updateList({
       subreddit:
@@ -42,11 +33,6 @@ const setupFilter = ({
           ? (import.meta.env.VITE_SUBREDDITS || 'best').split(',').join('+')
           : subreddit.value,
       afterParameter: after,
-      limit: parseInt(limit.value, 10),
-      loadMoreBtn,
-      list,
-      toaster,
-      postSizer,
     })
   }
 
@@ -56,10 +42,6 @@ const setupFilter = ({
   })
 
   selector.addEventListener('change', () => {
-    submitForm()
-  })
-
-  limit.addEventListener('change', () => {
     submitForm()
   })
 

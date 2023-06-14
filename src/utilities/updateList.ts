@@ -5,22 +5,28 @@ import setupVideoPlayer from './setupVideoPlayer'
 interface Props {
   subreddit: string
   afterParameter: string
-  limit: number
-  loadMoreBtn: HTMLButtonElement
-  list: HTMLDivElement
-  toaster: HTMLDivElement
-  postSizer: HTMLDivElement
 }
 
 const updateList = async ({
   subreddit,
   afterParameter = '',
-  limit,
-  loadMoreBtn,
-  list,
-  toaster,
-  postSizer,
 }: Props): Promise<void> => {
+  const list = document.querySelector<HTMLDivElement>('#list')
+  const loadMoreBtn = document.querySelector<HTMLButtonElement>('#load-more')
+  const toaster = document.querySelector<HTMLDivElement>('#toaster')
+
+  if (!list) {
+    throw new Error('Missing list element!')
+  }
+
+  if (!loadMoreBtn) {
+    throw new Error('Missing loadMore element!')
+  }
+
+  if (!toaster) {
+    throw new Error('Missing toaster element!')
+  }
+
   if (afterParameter) {
     loadMoreBtn.classList.add('is-loading')
   } else {
@@ -32,12 +38,11 @@ const updateList = async ({
   const { posts, after, message } = await getSubreddit(
     subreddit,
     afterParameter,
-    limit,
   )
   const filteredPosts = posts.filter((post) => !post.data.stickied)
 
   const postsHTML = filteredPosts
-    .map((post, postIndex) => getPostHTML(post, postIndex, postSizer))
+    .map((post, postIndex) => getPostHTML(post, postIndex))
     .join('')
 
   if (afterParameter) {

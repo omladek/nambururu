@@ -1,20 +1,13 @@
-const getSubredditJSONUrl = (
-  subredditUrl: string,
-  after = '',
-  limit: number,
-): URL => {
+const getSubredditJSONUrl = (subredditUrl: string, after = ''): URL => {
   const subredditBase =
     subredditUrl === 'best' ? subredditUrl : `r/${subredditUrl}`
   const url = new URL(`https://www.reddit.com/${subredditBase}/.json`)
 
   url.searchParams.append('json_raw', '1')
+  url.searchParams.append('limit', '10')
 
   if (after) {
     url.searchParams.append('after', after)
-  }
-
-  if (limit) {
-    url.searchParams.append('limit', limit.toString())
   }
 
   return url

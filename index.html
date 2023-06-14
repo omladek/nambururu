@@ -10,23 +10,11 @@
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
     <link rel="mask-icon" href="/mask-icon.svg" color="#FFFFFF" />
     <meta name="theme-color" content="#ffffff" />
-    <link rel="stylesheet" href="src/style.css" />
   </head>
   <body>
-    <header class="sr-only">
-      <h1>Redditlite</h1>
-    </header>
-    <main class="main">
-      <div class="list">
-        <div class="post" id="post-sizer"></div>
-      </div>
-      <div id="list" class="list">
-        <div class="loader" id="loader">loading&hellip;</div>
-      </div>
-      <button class="load-more" id="load-more" type="button">load more</button>
-    </main>
-    <div id="toaster" class="toaster"></div>
-    <footer id="filters" class="filters"></footer>
+    <div id="root">
+      <div class="loader" id="loader">loading&hellip;</div>
+    </div>
     <script type="module" src="/src/app.ts"></script>
   </body>
 </html>

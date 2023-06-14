@@ -1,5 +1,4 @@
 import getSubredditJSONUrl from './getSubredditJSONUrl'
-import { DEFAULT_LIMIT } from '../app'
 
 import { ThreadResult, Thread } from '../types/reddit-api/ThreadsResult.type'
 
@@ -8,7 +7,6 @@ let filtersAbortController: AbortController
 const getSubreddit = async (
   subreddit: string,
   afterParameter = '',
-  limit: number = DEFAULT_LIMIT,
 ): Promise<{
   posts: Thread[]
   after: string | null
@@ -22,7 +20,7 @@ const getSubreddit = async (
   const { signal } = filtersAbortController
 
   const { posts, after, message } = await fetch(
-    getSubredditJSONUrl(subreddit, afterParameter, limit),
+    getSubredditJSONUrl(subreddit, afterParameter),
     {
       signal,
     },

@@ -1,46 +1,34 @@
-import getListOfSubreddits from './utilities/getListOfSubreddits'
-import getSubredditsSelector from './utilities/getSubredditsSelector'
+import getFiltersHTML from './utilities/getFiltersHTML'
 import setupFilter from './utilities/setupFilter'
+import './style.css'
 
-export const DEFAULT_LIMIT = 10
+const root = document.querySelector<HTMLDivElement>('#root')
+
+if (!root) {
+  throw new Error('Root element is missing!')
+}
 
 const buildApp = async () => {
-  const filters = document.getElementById('filters') as HTMLDivElement
-  const list = document.getElementById('list') as HTMLDivElement
-  const loader = document.getElementById('loader') as HTMLDivElement
-  const loadMoreBtn = document.getElementById('load-more') as HTMLButtonElement
-  const toaster = document.getElementById('toaster') as HTMLDivElement
-  const postSizer = document.getElementById('post-sizer') as HTMLDivElement
+  const filtersHTML = await getFiltersHTML()
 
-  if (!filters) {
-    throw new Error('Missing filters element!')
-  }
+  root.innerHTML = `
+    <header class="header">
+      <h1 class="header__title"">Redditlite</h1>
+    </header>
+    <main class="main">
+      <div class="list">
+        <div class="post" id="post-sizer"></div>
+      </div>
+      <div id="list" class="list">
+        <div class="loader" id="loader">loading&hellip;</div>
+      </div>
+      <button class="load-more" id="load-more" type="button">load more</button>
+    </main>
+    <div id="toaster" class="toaster"></div>
+    <footer id="filters" class="filters">${filtersHTML}</footer>
+  `
 
-  if (!list) {
-    throw new Error('Missing list element!')
-  }
-
-  if (!loader) {
-    throw new Error('Missing loader element!')
-  }
-
-  if (!loadMoreBtn) {
-    throw new Error('Missing loadMore element!')
-  }
-
-  if (!toaster) {
-    throw new Error('Missing toaster element!')
-  }
-
-  if (!postSizer) {
-    throw new Error('Missing postSizer element!')
-  }
-
-  const allSubreddits = await getListOfSubreddits()
-
-  filters.innerHTML = getSubredditsSelector(allSubreddits)
-
-  setupFilter({ loadMoreBtn, filters, list, loader, toaster, postSizer })
+  setupFilter()
 }
 
 buildApp()

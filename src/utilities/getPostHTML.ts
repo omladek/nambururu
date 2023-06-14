@@ -6,11 +6,7 @@ import getGalleryHTML from './getGalleryHTML'
 import { Thread } from '../types/reddit-api/ThreadsResult.type'
 import getYoutubeIframe from './getYoutubeIframe'
 
-const getPostHTML = (
-  postData: Thread,
-  postIndex: number,
-  postSizer: HTMLDivElement,
-): string => {
+const getPostHTML = (postData: Thread, postIndex: number): string => {
   const {
     thumbnail,
     subreddit,
@@ -76,7 +72,7 @@ const getPostHTML = (
                 : ''
             }
             ${youtubeIframe}
-            ${is_gallery ? getGalleryHTML(media_metadata, postSizer) : ''}
+            ${is_gallery ? getGalleryHTML(media_metadata) : ''}
           <div class="post__info">
             <h2 class="post__title"><a class="post__link" href="https://www.reddit.com${permalink}" target="_blank">${title}</a></h2>
             ${

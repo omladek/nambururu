@@ -1,10 +1,7 @@
 *,
 *:before,
 *:after {
-  border: 0;
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
 :root {
@@ -13,6 +10,7 @@
   --color-link: #385170;
   --list-grid-size: 1;
   --color-separator: #dbdbdb;
+  --gutter: 0.5rem;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -36,6 +34,16 @@ body {
 
 a {
   color: var(--color-link);
+}
+
+.header {
+  padding: var(--gutter);
+}
+
+.header__title {
+  font-size: 1rem;
+  margin: 0;
+  padding: 0;
 }
 
 .sr-only {
@@ -78,7 +86,6 @@ a {
 .main {
   contain-intrinsic-size: 1px 5000px;
   content-visibility: auto;
-  padding-bottom: 2.5rem;
 }
 
 .subreddit {
@@ -106,7 +113,7 @@ a {
 .filters {
   background-color: var(--color-background);
   bottom: 0;
-  position: fixed;
+  position: sticky;
   width: 100%;
   z-index: 1;
 }
@@ -127,16 +134,16 @@ a {
   align-items: center;
   border: 0;
   display: flex;
-  gap: 0.5rem;
+  gap: var(--gutter);
   justify-content: space-between;
   margin: 0;
-  padding: 0.5rem;
+  padding: var(--gutter);
 }
 
 .load-more {
   display: block;
   height: 2.5rem;
-  margin-top: 2rem;
+  margin-top: var(--gutter);
   width: 100%;
 }
 
@@ -147,16 +154,16 @@ a {
 
 .post:not(:only-child) {
   border-bottom: 1px solid var(--color-separator);
-  padding-block-end: 1rem;
+  padding-block-end: var(--gutter);
 }
 
 .post__info {
-  padding-inline: 0.5rem;
+  padding-inline: var(--gutter);
 }
 
 .post__title {
   font-size: 1rem;
-  margin-block: 0.25rem;
+  margin-block: var(--gutter);
 }
 
 .post__link {
@@ -175,7 +182,7 @@ a {
 
 .list {
   display: grid;
-  gap: 1rem;
+  gap: var(--gutter);
   grid-template-columns: repeat(var(--list-grid-size), 1fr);
 }
 
@@ -198,6 +205,6 @@ a {
 }
 
 .toaster {
-  padding: 1rem;
+  padding: var(--gutter);
   text-align: center;
 }

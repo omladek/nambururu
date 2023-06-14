@@ -1,5 +1,6 @@
 import debounce from 'lodash.debounce'
 import { SearchResult } from '../types/reddit-api/SearchResult.type'
+import getUniqueStrings from './getUniqueStrings'
 
 let searcbAbortController: AbortController
 
@@ -28,25 +29,31 @@ const subredditSearch = async () => {
       )
       const { data }: SearchResult = await response.json()
 
-      const subreddits: string[] = data.children
-        .map((result) => result.data.display_name)
-        .filter(
-          (suggestedSubreddit) =>
-            !value.includes(suggestedSubreddit.toLowerCase()),
-        )
-        .sort((a, b) => a.localeCompare(b, 'en-US'))
+      const current: string[] = [...list.querySelectorAll('option')].map(
+        (option) => option.value,
+      )
 
-      if (!subreddits.length) {
+      const suggestedSubreddits: string[] = data.children.map(
+        (result) => result.data.display_name,
+      )
+
+      const nextSubreddits = getUniqueStrings(
+        [...new Set([...current, ...suggestedSubreddits])].sort((a, b) =>
+          a.localeCompare(b, 'en-US'),
+        ),
+      )
+
+      if (!nextSubreddits.length) {
         return
       }
 
-      const foundSubredditsHTML = subreddits
+      const suggestedSubredditsHTML = nextSubreddits
         .map((title) => {
           return `<option value="${title}"></option>`
         })
         .join('')
 
-      list.innerHTML += foundSubredditsHTML
+      list.innerHTML = suggestedSubredditsHTML
     } catch (error) {
       console.error(error)
     }

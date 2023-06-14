@@ -1,12 +1,13 @@
-import { DEFAULT_LIMIT } from '../app'
+import getListOfSubreddits from './getListOfSubreddits'
 
 const mergeAndUnique = (arr: string[]): string[] => {
   const mergedOrdered = [...arr].sort((a, b) => a.localeCompare(b, 'en-US'))
 
-  return [...new Set(mergedOrdered.map((subreddit) => subreddit.toLowerCase()))]
+  return [...new Set(mergedOrdered)]
 }
 
-const getSubredditsSelector = (allSubreddits: string[]): string => {
+const getFiltersHTML = async (): Promise<string> => {
+  const allSubreddits = await getListOfSubreddits()
   const subreddits = (import.meta.env.VITE_SUBREDDITS || 'best').split(',')
   const list = mergeAndUnique([...allSubreddits, ...subreddits])
 
@@ -21,23 +22,10 @@ const getSubredditsSelector = (allSubreddits: string[]): string => {
           .map((subreddit) => `<option value="${subreddit}"></option>`)
           .join('')}
       </datalist>
-
-      <label class="label" for="limit">limit:</label>
-      <select id="limit" name="limit" class="select">
-        ${[...Array(10).keys()]
-          .map((_, index) => {
-            const limit = (index + 1) * 10
-
-            return `<option value="${limit}" ${
-              limit === DEFAULT_LIMIT ? 'selected' : ''
-            }>${limit}</option>`
-          })
-          .join('')}
-      </select>
       <button type="submit" class="refresh" title="refresh" aria-label="Refresh">&#8635;</button>
     </fieldset>
   </form>
   `
 }
 
-export default getSubredditsSelector
+export default getFiltersHTML
