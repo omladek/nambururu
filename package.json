@@ -32,6 +32,7 @@
     ]
   },
   "devDependencies": {
+    "@types/lodash.debounce": "4.0.7",
     "@typescript-eslint/eslint-plugin": "5.59.11",
     "@typescript-eslint/parser": "5.59.11",
     "@vitest/coverage-v8": "0.32.0",
@@ -39,6 +40,7 @@
     "eslint": "8.42.0",
     "husky": "8.0.3",
     "lint-staged": "13.2.2",
+    "lodash.debounce": "4.0.8",
     "prettier": "2.8.8",
     "stylelint": "15.7.0",
     "stylelint-config-prettier": "9.0.5",

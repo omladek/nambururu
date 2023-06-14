@@ -1,3 +1,4 @@
+import debounce from 'lodash.debounce'
 import { SearchResult } from '../types/reddit-api/SearchResult.type'
 
 let searcbAbortController: AbortController
@@ -16,14 +17,6 @@ const subredditSearch = async () => {
     }
 
     try {
-      const current: string[] = [...list.querySelectorAll('option')].map(
-        (option) => option.value.toLowerCase(),
-      )
-
-      if (current.includes(value.toLowerCase())) {
-        return
-      }
-
       searcbAbortController = new AbortController()
       const { signal } = searcbAbortController
 
@@ -39,7 +32,7 @@ const subredditSearch = async () => {
         .map((result) => result.data.display_name)
         .filter(
           (suggestedSubreddit) =>
-            !current.includes(suggestedSubreddit.toLowerCase()),
+            !value.includes(suggestedSubreddit.toLowerCase()),
         )
         .sort((a, b) => a.localeCompare(b, 'en-US'))
 
@@ -59,13 +52,26 @@ const subredditSearch = async () => {
     }
   }
 
-  subreddit.addEventListener('input', (event) => {
-    const value = (event.target as HTMLInputElement).value
+  subreddit.addEventListener(
+    'input',
+    debounce((event) => {
+      const value = (event.target as HTMLInputElement).value.trim()
 
-    if (value.length > 3) {
+      if (value.length < 3) {
+        return
+      }
+
+      const current: string[] = [...list.querySelectorAll('option')].map(
+        (option) => option.value.toLowerCase(),
+      )
+
+      if (current.includes(value.toLowerCase())) {
+        return
+      }
+
       handleSearch(value)
-    }
-  })
+    }, 300),
+  )
 }
 
 export default subredditSearch
