@@ -49,7 +49,7 @@ const subredditSearch = async () => {
 
       const foundSubredditsHTML = subreddits
         .map((title) => {
-          return `<option value="${title}">${title}</option>`
+          return `<option value="${title}"></option>`
         })
         .join('')
 

@@ -18,9 +18,7 @@ const getSubredditsSelector = (allSubreddits: string[]): string => {
       <datalist id="subreddit-list">
         <option value="my-mix" selected>my-mix</option>
         ${list
-          .map(
-            (subreddit) => `<option value="${subreddit}">${subreddit}</option>`,
-          )
+          .map((subreddit) => `<option value="${subreddit}"></option>`)
           .join('')}
       </datalist>
 
