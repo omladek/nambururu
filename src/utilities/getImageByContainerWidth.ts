@@ -9,7 +9,7 @@ const getImageByContainerWidth = (
   let closestX = Number.MAX_SAFE_INTEGER
   let bestMatch = arr[0]
 
-  for (let i = 0; i < arr.length; i++) {
+  for (let i = 0; i < arr.length; i += 1) {
     const item = arr[i]
     const diff = Math.abs(item.x - size)
 

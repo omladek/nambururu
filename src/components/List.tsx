@@ -1,10 +1,10 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
+import { useInView } from 'react-intersection-observer'
+import { Fragment, useEffect, lazy, Suspense } from 'react'
 import getSubredditJSONUrl from '../utilities/getSubredditJSONUrl'
 import { ThreadResult } from '../types/reddit-api/ThreadsResult.type'
-import { useInView } from 'react-intersection-observer'
 
 import Loader from './Loader'
-import { Fragment, useEffect, lazy, Suspense } from 'react'
 
 const Post = lazy(() => import('./Post'))
 
@@ -12,15 +12,15 @@ interface Props {
   subreddit: string
 }
 
-const List = ({ subreddit }: Props): JSX.Element => {
-  const { ref, inView } = useInView()
+function List({ subreddit }: Props): JSX.Element {
+  const { inView, ref } = useInView()
   const {
-    isLoading,
-    error,
     data,
+    error,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
+    isLoading,
   } = useInfiniteQuery({
     queryKey: ['subreddit', subreddit],
     queryFn: ({ pageParam = '', signal }) =>
@@ -45,8 +45,8 @@ const List = ({ subreddit }: Props): JSX.Element => {
             message: null,
           }
         })
-        .catch((error) => {
-          if (error.name === 'AbortError') {
+        .catch((err) => {
+          if (err.name === 'AbortError') {
             return {
               posts: [],
               after: null,
@@ -54,12 +54,10 @@ const List = ({ subreddit }: Props): JSX.Element => {
             }
           }
 
-          console.error(error)
-
           return {
             posts: [],
             after: null,
-            message: error.reason || error.message,
+            message: err.reason || err.message,
           }
         }),
     getNextPageParam: (lastPage) => lastPage.after,
@@ -87,8 +85,8 @@ const List = ({ subreddit }: Props): JSX.Element => {
             <Fragment key={page.after || 'page-last'}>
               {page.posts.map((post) => {
                 return (
-                  <Suspense key={post.data.id} fallback={null}>
-                    <Post {...post} key={post.data.id} />
+                  <Suspense fallback={null} key={post.data.id}>
+                    <Post key={post.data.id} post={post} />
                   </Suspense>
                 )
               })}
@@ -97,17 +95,17 @@ const List = ({ subreddit }: Props): JSX.Element => {
         })}
       </div>
 
-      {hasNextPage && (
+      {hasNextPage ? (
         <button
-          ref={ref}
-          type="button"
           className="load-more"
           disabled={!isFetchingNextPage}
           onClick={() => fetchNextPage()}
+          ref={ref}
+          type="button"
         >
           {isFetchingNextPage ? 'is loading' : 'load more'}
         </button>
-      )}
+      ) : null}
     </>
   )
 }

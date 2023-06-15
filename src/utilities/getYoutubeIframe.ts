@@ -6,7 +6,7 @@ const getYoutubeIframe = (media: Media): string => {
     return ''
   }
 
-  const { html, width, height } = media.oembed
+  const { height, html, width } = media.oembed
 
   return deescapeHtml(
     html.replace(

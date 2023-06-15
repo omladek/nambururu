@@ -1,6 +1,6 @@
-const Toaster = (): JSX.Element => {
+function Toaster(): JSX.Element {
   return (
-    <div id="toaster" className="toaster">
+    <div className="toaster" id="toaster">
       Toaster TODO
     </div>
   )

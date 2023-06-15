@@ -9,37 +9,37 @@ interface Props {
   loading?: 'lazy' | 'eager'
 }
 
-const Thumbnail = ({
-  thumbnail,
-  thumbnailRetina,
-  fullSize,
+function Thumbnail({
+  fullSize = '',
   height,
-  width,
   loading = 'lazy',
-}: Props): JSX.Element => {
+  thumbnail,
+  thumbnailRetina = '',
+  width,
+}: Props): JSX.Element {
   return (
     <a
       href={deescapeHtml(fullSize || thumbnail)}
-      target="_blank"
       rel="noreferrer noopener"
+      target="_blank"
     >
       <img
+        alt=""
         className="thumbnail"
-        src={deescapeHtml(thumbnail)}
-        width={width}
+        decoding="async"
         height={height}
         loading={loading}
-        decoding="async"
-        alt=""
+        src={deescapeHtml(thumbnail)}
+        srcSet={`${deescapeHtml(thumbnail)}, ${deescapeHtml(
+          thumbnailRetina || fullSize || thumbnail,
+        )} 2x`}
         style={
           {
             '--ar-width': width,
             '--ar-height': height,
           } as React.CSSProperties
         }
-        srcSet={`${deescapeHtml(thumbnail)}, ${deescapeHtml(
-          thumbnailRetina || fullSize || thumbnail,
-        )} 2x`}
+        width={width}
       />
     </a>
   )

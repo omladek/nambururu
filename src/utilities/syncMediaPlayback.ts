@@ -11,6 +11,7 @@ const syncMediaPlayback = (
   }
 
   const syncTime = (): void => {
+    // eslint-disable-next-line no-param-reassign
     audioElement.currentTime = videoElement.currentTime
   }
 

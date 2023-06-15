@@ -9,13 +9,13 @@ interface Props {
   poster: string
 }
 
-const VideoPlayer = ({
-  url,
-  height,
-  width,
+function VideoPlayer({
   hasAudio,
+  height,
   poster,
-}: Props): JSX.Element => {
+  url,
+  width,
+}: Props): JSX.Element {
   const audioUrl = url.replace(/_\d+/, '_audio')
 
   useEffect(() => {
@@ -27,29 +27,31 @@ const VideoPlayer = ({
       <video
         className="thumbnail thumbnail--video js-video"
         controls
-        poster={poster}
-        width={width}
         height={height}
-        playsInline
         muted
+        playsInline
+        poster={poster}
         style={
           {
             '--ar-width': width,
             '--ar-height': height,
           } as React.CSSProperties
         }
+        width={width}
       >
         <source className="js-source" data-src={url} type="video/mp4" />
       </video>
-      {hasAudio && (
+
+      {hasAudio ? (
+        // eslint-disable-next-line jsx-a11y/media-has-caption
         <audio
-          controls
-          src={audioUrl}
           className="js-audio"
+          controls
           hidden
           preload="none"
+          src={audioUrl}
         />
-      )}
+      ) : null}
     </div>
   )
 }

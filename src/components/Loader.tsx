@@ -1,4 +1,4 @@
-const Loader = (): JSX.Element => {
+function Loader(): JSX.Element {
   return <div>Loading...</div>
 }
 

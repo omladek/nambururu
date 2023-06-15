@@ -15,7 +15,7 @@ interface Props {
   items: RedditMediaMetadata
 }
 
-const Gallery = ({ items, containerWidth }: Props): JSX.Element => {
+function Gallery({ containerWidth, items }: Props): JSX.Element {
   const thumbnails: ThumbnailImage[] = Object.keys(items).reduce(
     (acc: ThumbnailImage[], curr) => {
       const image = items[curr]
@@ -46,13 +46,20 @@ const Gallery = ({ items, containerWidth }: Props): JSX.Element => {
   )
 
   if (!thumbnails.length) {
-    return <></>
+    return <> </>
   }
 
   return (
     <>
       {thumbnails.map((thumbnail) => (
-        <Thumbnail {...thumbnail} key={thumbnail.thumbnail} />
+        <Thumbnail
+          fullSize={thumbnail.fullSize}
+          height={thumbnail.height}
+          key={thumbnail.thumbnail}
+          thumbnail={thumbnail.thumbnail}
+          thumbnailRetina={thumbnail.thumbnailRetina}
+          width={thumbnail.width}
+        />
       ))}
     </>
   )

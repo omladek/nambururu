@@ -23,21 +23,17 @@ const parseSubredditsList = (
   const { content_md } = response.data
 
   const subredditRegex = /\/r\/(\w+)/g
-  const subreddits = new Set<string>()
+  const subreddits = Array.from(
+    content_md.matchAll(subredditRegex),
+    (match) => match[1],
+  )
 
-  let match
-  while ((match = subredditRegex.exec(content_md)) !== null) {
-    subreddits.add(match[1])
-  }
-
-  const uniqueSubreddits = Array.from(subreddits)
-
-  return uniqueSubreddits
+  return Array.from(new Set(subreddits))
 }
 
-const App = (): JSX.Element => {
+function App(): JSX.Element {
   const [subreddit, setSubreddit] = useState<string>('best')
-  const { isLoading, error, data } = useQuery<
+  const { data, error, isLoading } = useQuery<
     RedditWikiPage,
     { message: string; reason?: string }
   >({
@@ -56,18 +52,28 @@ const App = (): JSX.Element => {
 
   if (isLoading) return <Loader />
 
-  if (error) return <p>An error has occurred: {error.message}</p>
+  if (error) {
+    return (
+      <p>
+        An error has occurred:
+        {error.message}
+      </p>
+    )
+  }
 
   return (
     <>
       <header className="header">
         <h1 className="header__title">Redditlite:</h1>
       </header>
+
       <main className="main">
         <List key={subreddit} subreddit={subreddit} />
       </main>
+
       <Toaster />
-      <Filters subreddits={subreddits} onSubmit={handleSubmit} />
+
+      <Filters onSubmit={handleSubmit} subreddits={subreddits} />
     </>
   )
 }

@@ -1,10 +1,15 @@
 import { FormEventHandler, useState, useEffect } from 'react'
 import debounce from 'lodash.debounce'
-import getUniqueStrings from '../utilities/getUniqueStrings'
 import { useQuery } from '@tanstack/react-query'
+import getUniqueStrings from '../utilities/getUniqueStrings'
 import { SearchResult } from '../types/reddit-api/SearchResult.type'
 
-const getOptions = (arr: string[]) =>
+interface Option {
+  value: string
+  lowerCase: string
+}
+
+const getOptions = (arr: string[]): Option[] =>
   getUniqueStrings(
     [...arr]
       .sort((a, b) => a.localeCompare(b, 'en-US'))
@@ -20,14 +25,9 @@ interface Props {
   onSubmit: (value: string) => void
 }
 
-const Filters = ({ subreddits, onSubmit }: Props): JSX.Element => {
+function Filters({ onSubmit, subreddits }: Props): JSX.Element {
   const [subreddit, setSubreddit] = useState('')
-  const [optionsCache, setOptionsCache] = useState<
-    Array<{
-      value: string
-      lowerCase: string
-    }>
-  >(() => {
+  const [optionsCache, setOptionsCache] = useState<Option[]>(() => {
     const userSubreddits: string[] = (
       import.meta.env.VITE_SUBREDDITS || 'best'
     ).split(',')
@@ -92,33 +92,39 @@ const Filters = ({ subreddits, onSubmit }: Props): JSX.Element => {
 
   return (
     <footer className="filters">
-      <form method="GET" action="" onSubmit={handleSubmit}>
+      <form action="" method="GET" onSubmit={handleSubmit}>
         <fieldset className="fieldset">
           <label className="label" htmlFor="subreddit">
             subreddit:
           </label>
+
           <input
+            autoComplete="off"
+            defaultValue="my-mix"
+            id="subreddit"
             list="subreddits"
             maxLength={38}
-            id="subreddit"
             name="subreddit"
-            defaultValue="my-mix"
-            placeholder="search subreddit"
             onInput={handleInput}
-            autoComplete="off"
+            placeholder="search subreddit"
             type="text"
           />
+
           <datalist id="subreddits">
             <option value="my-mix">my-mix</option>
-            {optionsCache.map((subreddit) => (
-              <option key={subreddit.lowerCase} value={subreddit.value} />
+
+            {optionsCache.map((option) => (
+              <option key={option.lowerCase} value={option.value}>
+                {option.value}
+              </option>
             ))}
           </datalist>
+
           <button
-            type="submit"
+            aria-label="Refresh"
             className="refresh"
             title="refresh"
-            aria-label="Refresh"
+            type="submit"
           >
             &#8635;
           </button>
