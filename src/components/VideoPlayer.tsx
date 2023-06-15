@@ -1,5 +1,6 @@
-import { useEffect } from 'react'
-import setupVideoPlayer from '../utilities/setupVideoPlayer'
+import { useEffect, useState, useRef } from 'react'
+import { useInView } from 'react-intersection-observer'
+import syncMediaPlayback from '../utilities/syncMediaPlayback'
 
 interface Props {
   url: string
@@ -16,14 +17,28 @@ function VideoPlayer({
   url,
   width,
 }: Props): JSX.Element {
+  const { inView, ref } = useInView({ triggerOnce: true })
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const audioRef = useRef<HTMLAudioElement>(null)
+  const [showSrc, setShowSrc] = useState(false)
   const audioUrl = url.replace(/_\d+/, '_audio')
 
   useEffect(() => {
-    setupVideoPlayer()
-  }, [])
+    if (inView && !showSrc) {
+      setShowSrc(true)
+
+      if (videoRef.current) {
+        videoRef.current.load()
+      }
+
+      if (videoRef.current && audioRef.current) {
+        syncMediaPlayback(videoRef.current, audioRef.current)
+      }
+    }
+  }, [inView, showSrc])
 
   return (
-    <div className="js-player">
+    <div ref={ref}>
       <video
         className="thumbnail thumbnail--video js-video"
         controls
@@ -31,6 +46,7 @@ function VideoPlayer({
         muted
         playsInline
         poster={poster}
+        ref={videoRef}
         style={
           {
             '--ar-width': width,
@@ -39,18 +55,12 @@ function VideoPlayer({
         }
         width={width}
       >
-        <source className="js-source" data-src={url} type="video/mp4" />
+        <source src={showSrc ? url : undefined} type="video/mp4" />
       </video>
 
       {hasAudio ? (
         // eslint-disable-next-line jsx-a11y/media-has-caption
-        <audio
-          className="js-audio"
-          controls
-          hidden
-          preload="none"
-          src={audioUrl}
-        />
+        <audio controls hidden preload="none" ref={audioRef} src={audioUrl} />
       ) : null}
     </div>
   )
