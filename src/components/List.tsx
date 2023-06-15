@@ -2,9 +2,11 @@ import { useInfiniteQuery } from '@tanstack/react-query'
 import getSubredditJSONUrl from '../utilities/getSubredditJSONUrl'
 import { ThreadResult } from '../types/reddit-api/ThreadsResult.type'
 import { useInView } from 'react-intersection-observer'
-import Post from './Post'
+
 import Loader from './Loader'
-import { Fragment, useEffect } from 'react'
+import { Fragment, useEffect, lazy, Suspense } from 'react'
+
+const Post = lazy(() => import('./Post'))
 
 interface Props {
   subreddit: string
@@ -21,8 +23,8 @@ const List = ({ subreddit }: Props): JSX.Element => {
     isFetchingNextPage,
   } = useInfiniteQuery({
     queryKey: ['subreddit', subreddit],
-    queryFn: ({ pageParam = '' }) =>
-      fetch(getSubredditJSONUrl(subreddit, pageParam))
+    queryFn: ({ pageParam = '', signal }) =>
+      fetch(getSubredditJSONUrl(subreddit, pageParam), { signal })
         .then((response) => response.json())
         .then((response: ThreadResult) => {
           if (
@@ -82,9 +84,13 @@ const List = ({ subreddit }: Props): JSX.Element => {
       <div className="list">
         {data?.pages.map((page) => {
           return (
-            <Fragment key={page.after || 'page'}>
+            <Fragment key={page.after || 'page-last'}>
               {page.posts.map((post) => {
-                return <Post {...post} key={post.data.name} />
+                return (
+                  <Suspense key={post.data.id} fallback={null}>
+                    <Post {...post} key={post.data.id} />
+                  </Suspense>
+                )
               })}
             </Fragment>
           )
@@ -96,6 +102,7 @@ const List = ({ subreddit }: Props): JSX.Element => {
           ref={ref}
           type="button"
           className="load-more"
+          disabled={!isFetchingNextPage}
           onClick={() => fetchNextPage()}
         >
           {isFetchingNextPage ? 'is loading' : 'load more'}

@@ -18,7 +18,11 @@ const Thumbnail = ({
   loading = 'lazy',
 }: Props): JSX.Element => {
   return (
-    <a href={deescapeHtml(fullSize || thumbnail)} target="_blank">
+    <a
+      href={deescapeHtml(fullSize || thumbnail)}
+      target="_blank"
+      rel="noreferrer noopener"
+    >
       <img
         className="thumbnail"
         src={deescapeHtml(thumbnail)}

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 
 import Filters from './components/Filters'
@@ -42,12 +42,13 @@ const App = (): JSX.Element => {
     { message: string; reason?: string }
   >({
     queryKey: ['listOfSubreddits'],
-    queryFn: () =>
+    queryFn: ({ signal }) =>
       fetch(
         'https://www.reddit.com/r/ListOfSubreddits/wiki/listofsubreddits.json?json_raw=1',
+        { signal },
       ).then((response) => response.json()),
   })
-  const subreddits = parseSubredditsList(data)
+  const subreddits = useMemo(() => parseSubredditsList(data), [data])
 
   const handleSubmit = (nextSubreddit: string): void => {
     setSubreddit(nextSubreddit)

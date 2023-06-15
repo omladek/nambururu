@@ -8,7 +8,6 @@
   --color-text: #385170;
   --color-background: #ececec;
   --color-link: #385170;
-  --list-grid-size: 1;
   --color-separator: #dbdbdb;
   --gutter: 0.5rem;
 }
@@ -113,7 +112,7 @@ a {
 .filters {
   background-color: var(--color-background);
   bottom: 0;
-  position: sticky;
+  position: fixed;
   width: 100%;
   z-index: 1;
 }
@@ -183,24 +182,11 @@ a {
 .list {
   display: grid;
   gap: var(--gutter);
-  grid-template-columns: repeat(var(--list-grid-size), 1fr);
 }
 
-@media (min-width: 50em) {
-  :root {
-    --list-grid-size: 2;
-  }
-}
-
-@media (min-width: 75em) {
-  :root {
-    --list-grid-size: 3;
-  }
-}
-
-@media (min-width: 100em) {
-  :root {
-    --list-grid-size: 5;
+@media (min-width: 40em) {
+  .list {
+    grid-template-columns: repeat(auto-fill, minmax(30em, 1fr));
   }
 }
 

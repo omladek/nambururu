@@ -1,12 +1,14 @@
 import { useElementSize } from 'usehooks-ts'
+import { lazy, Suspense } from 'react'
 
 import { Thread } from '../types/reddit-api/ThreadsResult.type'
 import getDateFromUnixTime from '../utilities/getDateFromUnixTime'
-import Gallery from './Gallery'
-import Thumbnail from './Thumbnail'
 import getYoutubeIframe from '../utilities/getYoutubeIframe'
 import deescapeHtml from '../utilities/deescapeHtml'
-import VideoPlayer from './VideoPlayer'
+
+const Gallery = lazy(() => import('./Gallery'))
+const Thumbnail = lazy(() => import('./Thumbnail'))
+const VideoPlayer = lazy(() => import('./VideoPlayer'))
 
 const Post = ({ data }: Thread): JSX.Element => {
   const [squareRef, { width }] = useElementSize()
@@ -61,33 +63,42 @@ const Post = ({ data }: Thread): JSX.Element => {
   return (
     <article className="post" ref={squareRef}>
       {hasSingleImage && (
-        <Thumbnail
-          height={thumbnailHeight || 0}
-          width={thumbnailWidth || 0}
-          thumbnail={url.startsWith('https://i.redd.it/') ? url : thumbnail}
-        />
+        <Suspense>
+          <Thumbnail
+            height={thumbnailHeight || 0}
+            width={thumbnailWidth || 0}
+            thumbnail={['i.redd.it'].includes(domain) ? url : thumbnail}
+          />
+        </Suspense>
       )}
       {hasEmbeddedVideo && (
-        <VideoPlayer
-          {...{
-            hasAudio: media.reddit_video.has_audio,
-            height: media.reddit_video.height,
-            poster: thumbnail,
-            url: media.reddit_video.fallback_url,
-            width: media.reddit_video.width,
-          }}
-        />
+        <Suspense>
+          <VideoPlayer
+            {...{
+              hasAudio: media.reddit_video.has_audio,
+              height: media.reddit_video.height,
+              poster: thumbnail,
+              url: media.reddit_video.fallback_url,
+              width: media.reddit_video.width,
+            }}
+          />
+        </Suspense>
       )}
       {youtubeIframe && (
         <div dangerouslySetInnerHTML={{ __html: youtubeIframe }} />
       )}
-      {hasGallery && <Gallery containerWidth={width} items={media_metadata} />}
+      {hasGallery && (
+        <Suspense>
+          <Gallery containerWidth={width} items={media_metadata} />
+        </Suspense>
+      )}
       <div className="post__info">
         <h2 className="post__title">
           <a
             className="post__link"
             href={`https://www.reddit.com${permalink}`}
             target="_blank"
+            rel="noreferrer noopener"
           >
             {title}
           </a>
@@ -98,8 +109,8 @@ const Post = ({ data }: Thread): JSX.Element => {
             dangerouslySetInnerHTML={{ __html: description }}
           />
         )}
-        <strong className="post__subreddit">{subreddit}</strong>,
-        <time className="post__time">{getDateFromUnixTime(created_utc)}</time>,
+        <strong className="post__subreddit">{subreddit}</strong>,{' '}
+        <time className="post__time">{getDateFromUnixTime(created_utc)}</time>,{' '}
         <span className="post__domain">{domain}</span>
       </div>
     </article>
