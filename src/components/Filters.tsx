@@ -1,28 +1,15 @@
 import { FormEventHandler, useState, useEffect } from 'react'
 import debounce from 'lodash.debounce'
 import { useQuery } from '@tanstack/react-query'
-import getUniqueStrings from '../utilities/getUniqueStrings'
-import { SearchResult } from '../types/reddit-api/SearchResult.type'
-
-interface Option {
-  value: string
-  lowerCase: string
-}
-
-const getOptions = (arr: string[]): Option[] =>
-  getUniqueStrings(
-    [...arr]
-      .sort((a, b) => a.localeCompare(b, 'en-US'))
-      .filter(Boolean)
-      .filter((option) => option !== ''),
-  ).map((option) => ({
-    value: option,
-    lowerCase: option.toLowerCase(),
-  }))
+import { Option, getOptions } from '../utilities/getOptions'
 
 interface Props {
   subreddits: string[]
   onSubmit: (value: string) => void
+}
+
+interface RedditNameResponse {
+  names: string[]
 }
 
 function Filters({ onSubmit, subreddits }: Props): JSX.Element {
@@ -34,29 +21,27 @@ function Filters({ onSubmit, subreddits }: Props): JSX.Element {
 
     return getOptions([...userSubreddits, ...subreddits])
   })
-  const { data } = useQuery<SearchResult, { message: string; reason?: string }>(
-    {
-      queryKey: ['subreddit-search', subreddit],
-      queryFn: ({ signal }) =>
-        fetch(
-          `https://www.reddit.com/search/.json?q=${subreddit}&type=sr&raw_json=1`,
-          { signal },
-        ).then((response) => response.json()),
-    },
-  )
+  const { data } = useQuery<
+    RedditNameResponse,
+    { message: string; reason?: string }
+  >({
+    queryKey: ['subreddit-search', subreddit],
+    queryFn: ({ signal }) =>
+      fetch(
+        `https://www.reddit.com/api/search_reddit_names.json?query=${subreddit}`,
+        { signal },
+      ).then((response) => response.json()),
+  })
 
   useEffect(() => {
-    if (!data?.data?.children?.length) {
+    if (!data?.names?.length) {
       return
     }
 
     setOptionsCache((prev) => {
-      return getOptions([
-        ...prev.map((option) => option.value),
-        ...data.data.children.map((result) => result.data.display_name),
-      ])
+      return getOptions([...prev.map((option) => option.value), ...data.names])
     })
-  }, [data?.data?.children])
+  }, [data?.names])
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (event): void => {
     event.preventDefault()
