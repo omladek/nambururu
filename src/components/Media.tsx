@@ -88,7 +88,7 @@ function Media({ post, width }: Props): JSX.Element | null {
     return <Gallery containerWidth={width} items={media_metadata} />
   }
 
-  return <p>no media</p>
+  return null
 }
 
 export default Media

@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react'
 import { useInView } from 'react-intersection-observer'
 import syncMediaPlayback from '../utilities/syncMediaPlayback'
+import deescapeHtml from '../utilities/deescapeHtml'
 
 interface Props {
   url: string
@@ -22,6 +23,11 @@ function VideoPlayer({
   const audioRef = useRef<HTMLAudioElement>(null)
   const [showSrc, setShowSrc] = useState(false)
   const audioUrl = url.replace(/_\d+/, '_audio')
+
+  const hasPoster = !(
+    poster !== null &&
+    ['nsfw', 'spoiler', 'default', 'self', 'image'].includes(poster)
+  )
 
   useEffect(() => {
     if (inView && !showSrc) {
@@ -45,7 +51,7 @@ function VideoPlayer({
         height={height}
         muted
         playsInline
-        poster={poster}
+        poster={hasPoster ? deescapeHtml(poster) : undefined}
         ref={videoRef}
         style={
           {
@@ -55,7 +61,7 @@ function VideoPlayer({
         }
         width={width}
       >
-        <source src={showSrc ? url : undefined} type="video/mp4" />
+        {showSrc ? <source src="url" type="video/mp4" /> : null}
       </video>
 
       {hasAudio ? (

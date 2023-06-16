@@ -70,6 +70,10 @@ a {
   width: 100%;
 }
 
+.thumbnail:is(video) {
+  object-fit: cover;
+}
+
 .thumbnail--video::-webkit-media-controls-volume-slider {
   display: none;
 }
