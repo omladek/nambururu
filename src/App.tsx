@@ -5,31 +5,9 @@ import Filters from './components/Filters'
 import Toaster from './components/Toaster'
 import List from './components/List'
 import Loader from './components/Loader'
-
-interface RedditWikiPage {
-  kind: 'wikipage' | string
-  data: {
-    content_md: string
-  }
-}
-
-const parseSubredditsList = (
-  response: RedditWikiPage | undefined,
-): string[] => {
-  if (!response?.data || response?.kind !== 'wikipage') {
-    return []
-  }
-
-  const { content_md } = response.data
-
-  const subredditRegex = /\/r\/(\w+)/g
-  const subreddits = Array.from(
-    content_md.matchAll(subredditRegex),
-    (match) => match[1],
-  )
-
-  return Array.from(new Set(subreddits))
-}
+import getSubredditsFromMarkdown, {
+  RedditWikiPage,
+} from './utilities/getSubredditsFromMarkdown'
 
 function App(): JSX.Element {
   const [subreddit, setSubreddit] = useState<string>('best')
@@ -44,7 +22,10 @@ function App(): JSX.Element {
         { signal },
       ).then((response) => response.json()),
   })
-  const subreddits = useMemo(() => parseSubredditsList(data), [data])
+  const subreddits = useMemo(
+    () => (data ? getSubredditsFromMarkdown(data) : []),
+    [data],
+  )
 
   const handleSubmit = (nextSubreddit: string): void => {
     setSubreddit(nextSubreddit)
