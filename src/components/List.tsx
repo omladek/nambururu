@@ -1,12 +1,10 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { useInView } from 'react-intersection-observer'
-import { Fragment, useEffect, lazy, Suspense } from 'react'
+import { Fragment, useEffect } from 'react'
 import getSubredditJSONUrl from '../utilities/getSubredditJSONUrl'
 import { ThreadResult } from '../types/reddit-api/ThreadsResult.type'
-
+import Post from './Post'
 import Loader from './Loader'
-
-const Post = lazy(() => import('./Post'))
 
 interface Props {
   subreddit: string
@@ -40,7 +38,7 @@ function List({ subreddit }: Props): JSX.Element {
           }
 
           return {
-            posts: response.data.children,
+            posts: response.data.children.filter((post) => !post.data.stickied),
             after: response.data.after,
             message: null,
           }
@@ -84,11 +82,7 @@ function List({ subreddit }: Props): JSX.Element {
           return (
             <Fragment key={page.after || 'page-last'}>
               {page.posts.map((post) => {
-                return (
-                  <Suspense fallback={null} key={post.data.id}>
-                    <Post key={post.data.id} post={post} />
-                  </Suspense>
-                )
+                return <Post key={post.data.id} post={post} />
               })}
             </Fragment>
           )

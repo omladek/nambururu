@@ -133,6 +133,7 @@ export interface ChildData {
   post_hint?: string
   preview?: Preview
   is_gallery?: boolean
+  url_overridden_by_dest: string
 }
 
 export interface RedditHostedImage {
