@@ -78,7 +78,7 @@ function List({ subreddit }: Props): JSX.Element {
   return (
     <>
       <div className="list">
-        {data?.pages.map((page) => {
+        {data.pages.map((page) => {
           return (
             <Fragment key={page.after || 'page-last'}>
               {page.posts.map((post) => {
