@@ -1,4 +1,4 @@
-const deescapeHtml = (unsafeHTML: string): string =>
+const deescapeHtml = (unsafeHTML = ''): string =>
   unsafeHTML
     .replace(/&amp;/g, '&')
     .replace(/&lt;/g, '<')

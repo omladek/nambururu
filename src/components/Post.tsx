@@ -1,9 +1,11 @@
 import { useElementSize } from 'usehooks-ts'
+import { useState } from 'react'
 
 import { Thread } from '../types/reddit-api/ThreadsResult.type'
 import getDateFromUnixTime from '../utilities/getDateFromUnixTime'
 import deescapeHtml from '../utilities/deescapeHtml'
 import Media from './Media'
+import CommentsPreview from './CommentsPreview'
 
 interface Props {
   post: Thread
@@ -11,9 +13,18 @@ interface Props {
 
 function Post({ post }: Props): JSX.Element {
   const [squareRef, { width }] = useElementSize()
+  const [loadComments, setLoadComments] = useState<boolean>(false)
 
-  const { created_utc, domain, permalink, selftext_html, subreddit, title } =
-    post.data
+  const {
+    created_utc,
+    domain,
+    id,
+    num_comments,
+    permalink,
+    selftext_html,
+    subreddit,
+    title,
+  } = post.data
 
   const description = deescapeHtml(selftext_html || '')
 
@@ -50,6 +61,22 @@ function Post({ post }: Props): JSX.Element {
         {', '}
 
         <span className="post__domain">{domain}</span>
+
+        {', '}
+
+        {num_comments}
+
+        {loadComments ? (
+          <CommentsPreview id={id} />
+        ) : (
+          <div>
+            {!!num_comments && (
+              <button onClick={() => setLoadComments(true)} type="button">
+                Load comments
+              </button>
+            )}
+          </div>
+        )}
       </div>
     </article>
   )
