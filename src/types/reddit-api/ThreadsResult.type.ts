@@ -134,6 +134,7 @@ export interface ChildData {
   preview?: Preview
   is_gallery?: boolean
   url_overridden_by_dest: string
+  upvote_ratio: number
 }
 
 export interface RedditHostedImage {

@@ -1,16 +1,15 @@
 import { Thread } from '../types/reddit-api/ThreadsResult.type'
-import getYoutubeIframe from '../utilities/getYoutubeIframe'
-import getThumbnailDimensions from '../utilities/getThumbnailDimensions'
+
 import Gallery from './Gallery'
 import Thumbnail from './Thumbnail'
 import VideoPlayer from './VideoPlayer'
+import YoutTube from './YouTube'
 
 interface Props {
   post: Thread
-  width: number
 }
 
-function Media({ post, width }: Props): JSX.Element | null {
+function Media({ post }: Props): JSX.Element | null {
   const {
     domain,
     is_gallery,
@@ -29,38 +28,26 @@ function Media({ post, width }: Props): JSX.Element | null {
     ['nsfw', 'spoiler', 'default', 'self', 'image'].includes(thumbnail)
   )
 
-  const hasRedditThumbnail = Boolean(
-    url.startsWith('https://i.redd.it/') && preview && 'images' in preview,
-  )
-
-  const { thumbnailHeight, thumbnailWidth } = getThumbnailDimensions({
-    hasRedditThumbnail,
-    preview,
-    thumbnail_height: thumbnail_height || 0,
-    thumbnail_width: thumbnail_width || 0,
-  })
-
-  const youtubeIframe = media ? getYoutubeIframe(media) : ''
+  const hasYoutubeIframe = media && media?.type === 'youtube.com'
 
   const hasSingleImage =
     hasThumbnail &&
     !is_video &&
     !is_gallery &&
-    !youtubeIframe &&
-    thumbnailHeight &&
-    thumbnailWidth
+    !hasYoutubeIframe &&
+    !!preview?.images[0].source
 
   const hasEmbeddedVideo =
-    is_video && media && media.reddit_video && !youtubeIframe
+    is_video && media && media.reddit_video && !hasYoutubeIframe
 
   const hasGallery = is_gallery && media_metadata
 
   if (hasSingleImage) {
     return (
       <Thumbnail
-        height={thumbnailHeight}
+        height={thumbnail_height || 0}
         thumbnail={['i.redd.it'].includes(domain) ? url : thumbnail}
-        width={thumbnailWidth}
+        width={thumbnail_width || 0}
       />
     )
   }
@@ -77,15 +64,36 @@ function Media({ post, width }: Props): JSX.Element | null {
     )
   }
 
-  if (youtubeIframe) {
+  if (hasGallery) {
+    return <Gallery items={media_metadata} />
+  }
+
+  if (hasYoutubeIframe) {
+    return <YoutTube media={media} />
+  }
+
+  if (['nsfw'].includes(thumbnail)) {
     return (
-      // eslint-disable-next-line react/no-danger
-      <div dangerouslySetInnerHTML={{ __html: youtubeIframe }} />
+      <Thumbnail
+        height={90}
+        thumbnail="https://satyr.dev/160x90/?text=nsfw&type=webp"
+        width={160}
+      />
     )
   }
 
-  if (hasGallery) {
-    return <Gallery containerWidth={width} items={media_metadata} />
+  if (!url.startsWith('https://www.reddit.com/') && url.startsWith('r/')) {
+    return (
+      <a
+        className="post-link"
+        href={url}
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        🔗
+        {url}
+      </a>
+    )
   }
 
   return null

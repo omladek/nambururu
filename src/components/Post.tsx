@@ -1,19 +1,20 @@
-import { useElementSize } from 'usehooks-ts'
 import { useState } from 'react'
+import ReactMarkdown from 'react-markdown'
 
 import { Thread } from '../types/reddit-api/ThreadsResult.type'
 import getDateFromUnixTime from '../utilities/getDateFromUnixTime'
 import deescapeHtml from '../utilities/deescapeHtml'
 import Media from './Media'
 import CommentsPreview from './CommentsPreview'
+import calculateDownvotes from '../utilities/calculateDownvotes'
+import formatNumber from './formatNumber'
 
 interface Props {
   post: Thread
 }
 
 function Post({ post }: Props): JSX.Element {
-  const [squareRef, { width }] = useElementSize()
-  const [loadComments, setLoadComments] = useState<boolean>(false)
+  const [showComments, setShowComments] = useState<boolean>(false)
 
   const {
     created_utc,
@@ -21,57 +22,72 @@ function Post({ post }: Props): JSX.Element {
     id,
     num_comments,
     permalink,
-    selftext_html,
+    selftext,
     subreddit,
     title,
+    ups,
+    upvote_ratio,
   } = post.data
 
-  const description = deescapeHtml(selftext_html || '')
-
   return (
-    <article className="post" ref={squareRef}>
-      <Media post={post} width={width} />
+    <article className="post">
+      <Media post={post} />
 
       <div className="post__info">
         <h2 className="post__title">
+          <small className="post__subreddit">
+            r/
+            {subreddit}
+          </small>
+
           <a
             className="post__link"
             href={`https://www.reddit.com${permalink}`}
-            rel="noreferrer noopener"
+            rel="noopener noreferrer"
             target="_blank"
           >
-            {title}
+            {deescapeHtml(title)}
           </a>
         </h2>
 
-        {description ? (
-          <div
-            className="post__description"
-            // eslint-disable-next-line react/no-danger
-            dangerouslySetInnerHTML={{ __html: description }}
-          />
+        {selftext ? (
+          <ReactMarkdown className="post__description">
+            {deescapeHtml(selftext)}
+          </ReactMarkdown>
         ) : null}
 
-        <strong className="post__subreddit">{subreddit}</strong>
+        <dl className="post__data">
+          <dt>📆</dt>
 
-        {', '}
+          <dd>
+            <time className="post__time">
+              {getDateFromUnixTime(created_utc)}
+            </time>
+          </dd>
 
-        <time className="post__time">{getDateFromUnixTime(created_utc)}</time>
+          <dt>🌐</dt>
 
-        {', '}
+          <dd>{domain.startsWith('self.') ? 'self' : domain}</dd>
 
-        <span className="post__domain">{domain}</span>
+          <dt>💬</dt>
 
-        {', '}
+          <dd>{formatNumber(num_comments)}</dd>
 
-        {num_comments}
+          <dt>⬆️</dt>
 
-        {loadComments ? (
-          <CommentsPreview id={id} />
-        ) : (
-          <div>
-            {!!num_comments && (
-              <button onClick={() => setLoadComments(true)} type="button">
+          <dd>{formatNumber(ups)}</dd>
+
+          <dt>⬇️</dt>
+
+          <dd>{formatNumber(calculateDownvotes(ups, upvote_ratio))}</dd>
+        </dl>
+
+        {!!num_comments && (
+          <div className="post__comments">
+            {showComments ? (
+              <CommentsPreview id={id} />
+            ) : (
+              <button onClick={() => setShowComments(true)} type="button">
                 Load comments
               </button>
             )}

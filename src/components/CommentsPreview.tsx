@@ -1,7 +1,10 @@
 import { useQuery } from '@tanstack/react-query'
-
 import { useMemo } from 'react'
-import { CommentsResult } from '../types/reddit-api/CommentsResult.type'
+
+import {
+  CommentsResult,
+  Comment as CommentType,
+} from '../types/reddit-api/CommentsResult.type'
 import Comment from './Comment'
 
 interface Props {
@@ -13,38 +16,59 @@ function CommentsPreview({ id }: Props): JSX.Element | null {
     CommentsResult[][],
     { message: string; reason?: string }
   >({
-    queryKey: ['subreddit-search', id],
+    queryKey: ['comments', id],
     queryFn: ({ signal }) =>
       Promise.all([
         fetch(
-          `https://www.reddit.com/comments/${id}/.json?limit=1&sort=top&json_raw=1`,
+          `https://www.reddit.com/comments/${id}/.json?limit=2&sort=best&json_raw=1`,
           { signal },
         ).then((response) => response.json()),
         fetch(
-          `https://www.reddit.com/comments/${id}/.json?limit=1&sort=controversial&json_raw=1`,
+          `https://www.reddit.com/comments/${id}/.json?limit=2&sort=controversial&json_raw=1`,
           { signal },
         ).then((response) => response.json()),
       ]),
   })
 
-  const hasComments = useMemo(() => {
+  const uniqueComments: CommentType[] = useMemo(() => {
     if (!data?.length) {
-      return false
+      return []
     }
 
-    let result = true
+    const unique: CommentType[] = []
 
-    for (let index = 0; index < data.length; index += 1) {
-      if (!data[index][1]?.data?.children?.length) {
-        result = false
-        break
-      }
-    }
+    data.forEach((commentsByVotes) => {
+      const groups = commentsByVotes.map((group) =>
+        group.data.children.filter((comment) => !comment.data.stickied),
+      )
 
-    return result
+      groups.forEach((group) => {
+        let found = false
+
+        group
+          .filter((comment) => !!comment?.data?.body?.trim())
+          .forEach((comment) => {
+            if (found) {
+              return
+            }
+
+            const commentId = comment.data.id
+
+            if (unique.find((uniq) => uniq.data.id === commentId)) {
+              return
+            }
+
+            found = true
+
+            unique.push(comment)
+          })
+      })
+    })
+
+    return unique
   }, [data])
 
-  if (isLoading) return <p>loading comments...</p>
+  if (isLoading) return <p>⌛loading comments...</p>
 
   if (error) {
     return (
@@ -55,25 +79,14 @@ function CommentsPreview({ id }: Props): JSX.Element | null {
     )
   }
 
-  if (!hasComments) {
+  if (!uniqueComments?.length) {
     return <p>No comments</p>
   }
 
   return (
     <>
-      {data.map((comment, index) => {
-        const commentId = comment[1].data.children[0].data.id
-
-        if (index < data.length - 1) {
-          const nextId = data[index + 1][1].data.children[0].data.id
-          const isSame = nextId === commentId
-
-          if (isSame) {
-            return null
-          }
-        }
-
-        return <Comment comment={comment[1].data.children[0]} key={commentId} />
+      {uniqueComments.map((k) => {
+        return <Comment comment={k} key={k.data.id} />
       })}
     </>
   )

@@ -2,7 +2,6 @@ import { useMemo, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 
 import Filters from './components/Filters'
-import Toaster from './components/Toaster'
 import List from './components/List'
 import Loader from './components/Loader'
 import getSubredditsFromMarkdown, {
@@ -10,7 +9,9 @@ import getSubredditsFromMarkdown, {
 } from './utilities/getSubredditsFromMarkdown'
 
 function App(): JSX.Element {
-  const [subreddit, setSubreddit] = useState<string>('best')
+  const [settings, setSettings] = useState<{ subreddit: string }>({
+    subreddit: 'best',
+  })
   const { data, error, isLoading } = useQuery<
     RedditWikiPage,
     { message: string; reason?: string }
@@ -27,8 +28,8 @@ function App(): JSX.Element {
     [data],
   )
 
-  const handleSubmit = (nextSubreddit: string): void => {
-    setSubreddit(nextSubreddit)
+  const handleSubmit = (subreddit: string): void => {
+    setSettings({ subreddit })
   }
 
   if (isLoading) return <Loader />
@@ -44,15 +45,13 @@ function App(): JSX.Element {
 
   return (
     <>
-      <header className="header">
+      <header className="header sr-only">
         <h1 className="header__title">Redditlite:</h1>
       </header>
 
       <main className="main">
-        <List key={subreddit} subreddit={subreddit} />
+        <List key={`${settings.subreddit}}`} subreddit={settings.subreddit} />
       </main>
-
-      <Toaster />
 
       <Filters onSubmit={handleSubmit} subreddits={subreddits} />
     </>

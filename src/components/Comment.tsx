@@ -1,5 +1,8 @@
+import ReactMarkdown from 'react-markdown'
 import { Comment as CommentType } from '../types/reddit-api/CommentsResult.type'
 import deescapeHtml from '../utilities/deescapeHtml'
+import formatNumber from './formatNumber'
+import getDateFromUnixTime from '../utilities/getDateFromUnixTime'
 
 interface Props {
   comment: CommentType
@@ -7,16 +10,25 @@ interface Props {
 
 function Comment({ comment }: Props): JSX.Element {
   return (
-    <div>
-      <strong>{comment.data.author}</strong>
+    <section className="comment">
+      <strong className="comment__rating">{comment.data.author}</strong>
 
-      <div
-        // eslint-disable-next-line react/no-danger
-        dangerouslySetInnerHTML={{
-          __html: deescapeHtml(comment.data.body_html),
-        }}
-      />
-    </div>
+      <strong className="comment__rating"> | </strong>
+
+      <strong className="comment__rating">
+        {formatNumber(comment.data.ups)}
+      </strong>
+
+      <strong className="comment__rating"> | </strong>
+
+      <strong className="comment__rating">
+        {getDateFromUnixTime(comment.data.created_utc)}
+      </strong>
+
+      <div className="comment__body">
+        <ReactMarkdown>{deescapeHtml(comment.data.body)}</ReactMarkdown>
+      </div>
+    </section>
   )
 }
 

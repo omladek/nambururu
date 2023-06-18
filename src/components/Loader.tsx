@@ -1,5 +1,5 @@
 function Loader(): JSX.Element {
-  return <div className="loader">Loading...</div>
+  return <div className="loader">⌛loading&hellip;</div>
 }
 
 export default Loader

@@ -5,7 +5,7 @@ import { Option, getOptions } from '../utilities/getOptions'
 
 interface Props {
   subreddits: string[]
-  onSubmit: (value: string) => void
+  onSubmit: (subreddit: string) => void
 }
 
 interface RedditNameResponse {
@@ -21,7 +21,7 @@ function Filters({ onSubmit, subreddits }: Props): JSX.Element {
 
     return getOptions([...userSubreddits, ...subreddits])
   })
-  const { data } = useQuery<
+  const { data, isLoading } = useQuery<
     RedditNameResponse,
     { message: string; reason?: string }
   >({
@@ -77,43 +77,86 @@ function Filters({ onSubmit, subreddits }: Props): JSX.Element {
 
   return (
     <footer className="filters">
-      <form action="" method="GET" onSubmit={handleSubmit}>
-        <fieldset className="fieldset">
-          <label className="label" htmlFor="subreddit">
-            subreddit:
-          </label>
+      <form
+        action=""
+        className="form-groups"
+        method="GET"
+        onSubmit={handleSubmit}
+      >
+        <div className="form-group">
+          <fieldset className="fieldset">
+            <label className="label" htmlFor="subreddit">
+              search:
+            </label>
 
-          <input
-            autoComplete="off"
-            defaultValue="my-mix"
-            id="subreddit"
-            list="subreddits"
-            maxLength={38}
-            name="subreddit"
-            onInput={handleInput}
-            placeholder="search subreddit"
-            type="text"
-          />
+            <input
+              autoComplete="off"
+              // eslint-disable-next-line jsx-a11y/no-autofocus
+              autoFocus={false}
+              defaultValue="my-mix"
+              id="subreddit"
+              list="subreddits"
+              maxLength={38}
+              name="subreddit"
+              onInput={handleInput}
+              placeholder="search subreddit"
+              type="text"
+            />
 
-          <datalist id="subreddits">
-            <option value="my-mix">my-mix</option>
+            <datalist id="subreddits">
+              <option value="my-mix">my-mix</option>
 
-            {optionsCache.map((option) => (
-              <option key={option.lowerCase} value={option.value}>
-                {option.value}
-              </option>
-            ))}
-          </datalist>
+              {optionsCache.map((option) => (
+                <option key={option.lowerCase} value={option.value}>
+                  {option.value}
+                </option>
+              ))}
+            </datalist>
 
+            {isLoading ? <>⌛</> : null}
+          </fieldset>
+        </div>
+
+        <div className="form-group">
+          <fieldset className="fieldset">
+            <label className="label" htmlFor="subreddit-select">
+              r/
+            </label>
+
+            <select
+              // eslint-disable-next-line jsx-a11y/no-autofocus
+              autoFocus={false}
+              defaultValue={subreddit}
+              id="subreddit-select"
+              onChange={(event) => {
+                window.scrollTo({ top: 0 })
+
+                onSubmit(event.target.value)
+              }}
+            >
+              <option value="my-mix">my-mix</option>
+
+              {optionsCache.map((option) => (
+                <option key={option.lowerCase} value={option.value}>
+                  {option.value}
+                </option>
+              ))}
+            </select>
+
+            {isLoading ? <>⌛</> : null}
+          </fieldset>
+        </div>
+
+        <div className="form-group">
           <button
             aria-label="Refresh"
             className="refresh"
             title="refresh"
             type="submit"
           >
-            &#8635;
+            🔍
           </button>
-        </fieldset>
+        </div>
       </form>
     </footer>
   )

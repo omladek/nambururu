@@ -69,16 +69,22 @@ function List({ subreddit }: Props): JSX.Element {
 
   if (isLoading) return <Loader />
 
-  if (error) return <p>An error has occurred</p>
+  if (error) return <p className="message">⚠️An error has occurred</p>
 
   if (!data?.pages?.length) {
-    return <p>No data</p>
+    return <p className="message">😕 No data</p>
+  }
+
+  const nonEmptyPages = data.pages.filter((page) => page.posts.length)
+
+  if (!nonEmptyPages.length) {
+    return <p className="message">😕 No data</p>
   }
 
   return (
     <>
       <div className="list">
-        {data.pages.map((page) => {
+        {nonEmptyPages.map((page) => {
           return (
             <Fragment key={page.after || 'page-last'}>
               {page.posts.map((post) => {
@@ -97,7 +103,7 @@ function List({ subreddit }: Props): JSX.Element {
           ref={ref}
           type="button"
         >
-          {isFetchingNextPage ? 'is loading' : 'load more'}
+          {isFetchingNextPage ? <>⌛loading&hellip;</> : 'load more'}
         </button>
       ) : null}
     </>

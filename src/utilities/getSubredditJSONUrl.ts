@@ -13,7 +13,7 @@ const getSubredditJSONUrl = (subreddit: string, after = ''): URL => {
   const url = new URL(`https://www.reddit.com/${subredditBase}/.json`)
 
   url.searchParams.append('json_raw', '1')
-  url.searchParams.append('limit', '10')
+  url.searchParams.append('limit', '20')
 
   if (after) {
     url.searchParams.append('after', after)

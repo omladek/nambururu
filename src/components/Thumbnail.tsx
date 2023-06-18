@@ -1,8 +1,8 @@
+import { useState } from 'react'
 import deescapeHtml from '../utilities/deescapeHtml'
 
 interface Props {
   thumbnail: string
-  thumbnailRetina?: string
   fullSize?: string
   height: number
   width: number
@@ -14,34 +14,42 @@ function Thumbnail({
   height,
   loading = 'lazy',
   thumbnail,
-  thumbnailRetina = '',
   width,
 }: Props): JSX.Element {
+  const [isHD, setIsHD] = useState(false)
+  const safeThumbnail = deescapeHtml(thumbnail)
+  const safeFullsize = deescapeHtml(fullSize || '')
+
   return (
-    <a
-      href={deescapeHtml(fullSize || thumbnail)}
-      rel="noreferrer noopener"
-      target="_blank"
-    >
-      <img
-        alt=""
-        className="thumbnail"
-        decoding="async"
-        height={height}
-        loading={loading}
-        src={deescapeHtml(thumbnail)}
-        srcSet={`${deescapeHtml(thumbnail)}, ${deescapeHtml(
-          thumbnailRetina || fullSize || thumbnail,
-        )} 2x`}
-        style={
-          {
-            '--ar-width': width,
-            '--ar-height': height,
-          } as React.CSSProperties
-        }
-        width={width}
-      />
-    </a>
+    <div className="thumbnail-wrap">
+      {!isHD && fullSize ? (
+        <button
+          className="thumbnail__hd"
+          onClick={() => setIsHD((prev) => !prev)}
+          type="button"
+        >
+          HD
+        </button>
+      ) : null}
+
+      <a href={safeFullsize} rel="noopener noreferrer" target="_blank">
+        <img
+          alt=""
+          className="thumbnail"
+          decoding="async"
+          height={height}
+          loading={loading}
+          src={isHD ? safeFullsize : safeThumbnail}
+          style={
+            {
+              '--ar-width': width,
+              '--ar-height': height,
+            } as React.CSSProperties
+          }
+          width={width}
+        />
+      </a>
+    </div>
   )
 }
 
