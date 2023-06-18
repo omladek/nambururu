@@ -2,7 +2,7 @@ import { JSX } from 'preact'
 import { Comment as CommentType } from '../types/reddit-api/CommentsResult.type'
 import deescapeHtml from '../utilities/deescapeHtml'
 import formatNumber from './formatNumber'
-import getDateFromUnixTime from '../utilities/getDateFromUnixTime'
+import RichText from './RichText'
 
 interface Props {
   comment: CommentType
@@ -11,22 +11,12 @@ interface Props {
 function Comment({ comment }: Props): JSX.Element {
   return (
     <section className="comment">
-      <strong className="comment__rating">{comment.data.author}</strong>
-
-      <strong className="comment__rating"> | </strong>
-
       <strong className="comment__rating">
-        {formatNumber(comment.data.ups)}
-      </strong>
-
-      <strong className="comment__rating"> | </strong>
-
-      <strong className="comment__rating">
-        {getDateFromUnixTime(comment.data.created_utc)}
+        {comment.data.author} ({formatNumber(comment.data.ups)})
       </strong>
 
       <div className="comment__body">
-        {deescapeHtml(comment.data.body_html)}
+        <RichText html={deescapeHtml(comment.data.body_html)} />
       </div>
     </section>
   )

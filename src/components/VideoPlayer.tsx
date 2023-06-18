@@ -51,11 +51,12 @@ function VideoPlayer({
       {!isLoaded ? (
         <>
           <button
-            className="thumbnail__hd"
+            aria-label="play video"
+            className="thumbnail__btn"
             onClick={() => setIsLoaded((prev) => !prev)}
             type="button"
           >
-            load video
+            ▶
           </button>
 
           <img
@@ -65,10 +66,6 @@ function VideoPlayer({
             height={height}
             loading="lazy"
             src={safePoster}
-            style={{
-              '--ar-width': width,
-              '--ar-height': height,
-            }}
             width={width}
           />
         </>
@@ -84,10 +81,6 @@ function VideoPlayer({
             playsInline
             poster={safePoster}
             ref={videoRef}
-            style={{
-              '--ar-width': width,
-              '--ar-height': height,
-            }}
             width={width}
           >
             <source src={url} type="video/mp4" />

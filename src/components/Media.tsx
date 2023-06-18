@@ -1,16 +1,19 @@
+/* eslint-disable sonarjs/cognitive-complexity */
 import { JSX } from 'preact'
-import { Thread } from '../types/reddit-api/ThreadsResult.type'
 
+import { Thread } from '../types/reddit-api/ThreadsResult.type'
 import Gallery from './Gallery'
 import Thumbnail from './Thumbnail'
 import VideoPlayer from './VideoPlayer'
 import YoutTube from './YouTube'
+import getImageResolutionByContainerWidth from '../utilities/getImageResolutionByContainerWidth'
 
 interface Props {
   post: Thread
+  containerWidth: number
 }
 
-function Media({ post }: Props): JSX.Element | null {
+function Media({ containerWidth, post }: Props): JSX.Element | null {
   const {
     domain,
     is_gallery,
@@ -46,9 +49,19 @@ function Media({ post }: Props): JSX.Element | null {
   if (hasSingleImage) {
     return (
       <Thumbnail
-        height={thumbnail_height || 0}
-        thumbnail={['i.redd.it'].includes(domain) ? url : thumbnail}
-        width={thumbnail_width || 0}
+        fullSize={preview?.images[0].source.url}
+        height={Math.max(
+          ...[thumbnail_height || 0, preview?.images[0].source.height || 0],
+        )}
+        thumbnail={
+          getImageResolutionByContainerWidth(
+            preview?.images[0].resolutions || [],
+            containerWidth,
+          )?.url || thumbnail
+        }
+        width={Math.max(
+          ...[thumbnail_width || 0, preview?.images[0].source.width || 0],
+        )}
       />
     )
   }
@@ -66,24 +79,14 @@ function Media({ post }: Props): JSX.Element | null {
   }
 
   if (hasGallery) {
-    return <Gallery items={media_metadata} />
+    return <Gallery containerWidth={containerWidth} items={media_metadata} />
   }
 
   if (hasYoutubeIframe) {
     return <YoutTube media={media} />
   }
 
-  if (['nsfw'].includes(thumbnail)) {
-    return (
-      <Thumbnail
-        height={90}
-        thumbnail="https://satyr.dev/160x90/?text=nsfw&type=webp"
-        width={160}
-      />
-    )
-  }
-
-  if (!url.startsWith('https://www.reddit.com/') && url.startsWith('r/')) {
+  if (!url.startsWith('https://www.reddit.com/') && !url.startsWith('r/')) {
     return (
       <a
         className="post-link"
@@ -91,8 +94,13 @@ function Media({ post }: Props): JSX.Element | null {
         rel="noopener noreferrer"
         target="_blank"
       >
-        🔗
-        {url}
+        <img
+          alt={`logo: ${domain}`}
+          className="post-link__logo"
+          decoding="async"
+          loading="lazy"
+          src={`https://logo.clearbit.com/${domain.replace(/^m./, '')}`}
+        />
       </a>
     )
   }

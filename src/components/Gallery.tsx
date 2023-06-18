@@ -1,5 +1,4 @@
 import { JSX } from 'preact'
-import { useElementSize } from 'usehooks-ts'
 
 import { RedditMediaMetadata } from '../types/reddit-api/ThreadsResult.type'
 import getImageByContainerWidth from '../utilities/getImageByContainerWidth'
@@ -14,11 +13,10 @@ interface ThumbnailImage {
 
 interface Props {
   items: RedditMediaMetadata
+  containerWidth: number
 }
 
-function Gallery({ items }: Props): JSX.Element {
-  const [squareRef, { width: containerWidth }] = useElementSize()
-
+function Gallery({ containerWidth, items }: Props): JSX.Element {
   const thumbnails: ThumbnailImage[] = Object.keys(items).reduce(
     (acc: ThumbnailImage[], curr) => {
       const image = items[curr]
@@ -47,7 +45,7 @@ function Gallery({ items }: Props): JSX.Element {
   }
 
   return (
-    <div className="gallery" ref={squareRef}>
+    <div className="gallery">
       {thumbnails.map((thumbnail) => (
         <Thumbnail
           fullSize={thumbnail.fullSize}

@@ -9,8 +9,8 @@
   --color-background: #fff;
   --color-link: #385170;
   --color-accent: #dbdbdb;
+  --color-post: rgba(0, 0, 0, 0.02);
   --gutter: 0.5rem;
-  --thumb-max-height: 15rem;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -19,6 +19,7 @@
     --color-background: #000;
     --color-link: #999797;
     --color-accent: #2f3336;
+    --color-post: rgba(255, 255, 255, 0.05);
   }
 }
 
@@ -34,8 +35,12 @@ body {
 }
 
 @media (min-width: 40em) {
+  :root {
+    --gutter: 1.5rem;
+  }
+
   body {
-    font-size: 90%;
+    font-size: 100%;
   }
 }
 
@@ -60,8 +65,8 @@ blockquote {
 input,
 button,
 select {
-  height: 2.5rem;
-  padding-inline: var(--gutter);
+  height: 2rem;
+  padding-inline: 0.25em;
 }
 
 input,
@@ -106,10 +111,8 @@ select {
 }
 
 .thumbnail {
-  aspect-ratio: var(--ar-width) / var(--ar-height);
   background-color: var(--color-accent);
   height: auto;
-  object-fit: contain;
   width: 100%;
 }
 
@@ -117,10 +120,8 @@ select {
   position: relative;
 }
 
-.thumbnail__hd {
-  position: absolute;
-  right: var(--gutter);
-  top: var(--gutter);
+.thumbnail__link {
+  display: block;
 }
 
 .thumbnail--video::-webkit-media-controls-volume-slider {
@@ -155,7 +156,7 @@ select {
   outline: 0;
 }
 
-.refresh {
+.filters__btn {
   aspect-ratio: 1/1;
   margin: 0;
   padding: 0;
@@ -190,7 +191,7 @@ select {
   gap: var(--gutter);
   justify-content: space-between;
   margin: 0;
-  padding-block: var(--gutter);
+  padding-block: 0.5em;
 }
 
 @media (min-width: 40em) {
@@ -239,19 +240,7 @@ select {
 }
 
 .post {
-  position: relative;
-
-  &:after {
-    background-color: var(--color-accent);
-    content: '';
-    height: 100%;
-    left: 0;
-    opacity: 0.25;
-    position: absolute;
-    top: 0;
-    width: 100%;
-    z-index: -1;
-  }
+  background-color: var(--color-post);
 }
 
 .post:not(:only-child) {
@@ -296,6 +285,7 @@ select {
 }
 
 .post__data {
+  --spacing: 0.25rem;
   font-size: 80%;
 
   & dt,
@@ -306,16 +296,16 @@ select {
   }
 
   & dt {
-    padding-inline-end: 0.25rem;
+    filter: grayscale(100%);
+    padding-inline-end: var(--spacing);
   }
 
   & dd:not(:last-child) {
-    margin-inline-end: var(--gutter);
+    margin-inline-end: calc(var(--spacing) * 2);
   }
 }
 
 @media (prefers-color-scheme: dark) {
-  .post__data dt,
   .comment,
   .post__description,
   .post__title {
@@ -331,6 +321,21 @@ select {
   }
 }
 
+.post__comments-btn {
+  background-color: transparent;
+  border: 1px solid var(--color-accent);
+  color: var(--color-link);
+  display: block;
+  opacity: 0.5;
+  width: 100%;
+}
+
+@media (hover: hover) {
+  .post__comments-btn:hover {
+    opacity: 1;
+  }
+}
+
 .list {
   display: grid;
   gap: var(--gutter);
@@ -338,7 +343,7 @@ select {
 
 @media (min-width: 40em) {
   .list {
-    grid-template-columns: repeat(auto-fill, minmax(30em, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(25em, 1fr));
     padding-inline: var(--gutter);
   }
 }
@@ -373,34 +378,50 @@ select {
 }
 
 .comment__body {
-  border-inline-start: 2px solid var(--color-accent);
-  padding-inline-start: var(--gutter);
-}
-
-@media (min-width: 40em) {
-  .gallery {
-    display: grid;
-    gap: var(--gutter);
-    grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
-
-    & > * {
-      max-height: var(--thumb-max-height);
-    }
-
-    & > * img {
-      height: 100% !important;
-    }
-  }
+  border-inline-start: 1px solid var(--color-accent);
+  padding-inline-start: 0.5em;
 }
 
 .post-link {
-  display: block;
+  align-items: center;
+  aspect-ratio: 16/9;
+  background-color: var(--color-accent);
+  display: flex;
+  height: auto;
+  justify-content: center;
   padding: var(--gutter);
-  word-wrap: break-word;
+  width: 100%;
+  word-break: break-all;
 }
 
-@media (min-width: 40em) {
-  .thumbnail {
-    max-height: var(--thumb-max-height);
+@media (prefers-color-scheme: dark) {
+  .post-link__logo {
+    filter: grayscale(100%);
   }
+}
+
+.thumbnail__btn {
+  aspect-ratio: 1/1;
+  background-color: var(--color-accent);
+  border: 0;
+  border-radius: 50%;
+  color: var(--color-text);
+  font-size: 2.5rem;
+  height: 5rem;
+  left: 50%;
+  padding: 0;
+  position: absolute;
+  text-align: center;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.gallery {
+  display: grid;
+  gap: var(--gutter);
+  grid-template-columns: 1fr;
+}
+
+.post__domain {
+  word-break: break-all;
 }

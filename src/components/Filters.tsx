@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'preact/hooks'
+import { useState, useEffect, useRef } from 'preact/hooks'
 import { JSX } from 'preact'
 import debounce from 'lodash.debounce'
 import { useQuery } from '@tanstack/react-query'
@@ -15,6 +15,7 @@ interface RedditNameResponse {
 
 function Filters({ onSubmit, subreddits }: Props): JSX.Element {
   const [subreddit, setSubreddit] = useState('')
+  const searchRef = useRef<HTMLInputElement>(null)
   const [optionsCache, setOptionsCache] = useState<Option[]>(() => {
     const userSubreddits: string[] = (
       import.meta.env.VITE_SUBREDDITS || 'best'
@@ -92,7 +93,6 @@ function Filters({ onSubmit, subreddits }: Props): JSX.Element {
             <label className="label" htmlFor="subreddit">
               search:
             </label>
-
             <input
               autoComplete="off"
               // eslint-disable-next-line jsx-a11y/no-autofocus
@@ -104,9 +104,9 @@ function Filters({ onSubmit, subreddits }: Props): JSX.Element {
               name="subreddit"
               onInput={handleInput}
               placeholder="search subreddit"
+              ref={searchRef}
               type="text"
             />
-
             <datalist id="subreddits">
               <option value="my-mix">my-mix</option>
 
@@ -117,7 +117,32 @@ function Filters({ onSubmit, subreddits }: Props): JSX.Element {
               ))}
             </datalist>
 
-            {isLoading ? <>⌛</> : null}
+            <button
+              aria-label="Clear"
+              className="filters__btn"
+              onClick={() => {
+                if (!searchRef.current) {
+                  return
+                }
+
+                searchRef.current.value = ''
+
+                searchRef.current.focus()
+              }}
+              title="CLear"
+              type="button"
+            >
+              ❌
+            </button>
+
+            <button
+              aria-label="Refresh"
+              className="filters__btn"
+              title="refresh"
+              type="submit"
+            >
+              {isLoading ? <>⌛</> : <>🔍</>}
+            </button>
           </fieldset>
         </div>
 
@@ -146,20 +171,7 @@ function Filters({ onSubmit, subreddits }: Props): JSX.Element {
                 </option>
               ))}
             </select>
-
-            {isLoading ? <>⌛</> : null}
           </fieldset>
-        </div>
-
-        <div className="form-group">
-          <button
-            aria-label="Refresh"
-            className="refresh"
-            title="refresh"
-            type="submit"
-          >
-            🔍
-          </button>
         </div>
       </form>
     </footer>

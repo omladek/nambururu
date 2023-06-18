@@ -1,10 +1,11 @@
-export default function formatNumber(
-  number: number,
-  locale = window.navigator.language,
-): string | number {
-  if (number < 1000) {
-    return number
+export default function formatNumber(number: number): string | number {
+  if (number >= 1000000) {
+    return `${Math.round(number / 1000000)}m`
   }
 
-  return new Intl.NumberFormat(locale).format(number)
+  if (number >= 1000) {
+    return `${Math.round(number / 1000)}k`
+  }
+
+  return number
 }

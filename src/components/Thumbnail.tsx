@@ -1,4 +1,3 @@
-import { useState } from 'preact/hooks'
 import { JSX } from 'preact'
 import deescapeHtml from '../utilities/deescapeHtml'
 
@@ -17,36 +16,29 @@ function Thumbnail({
   thumbnail,
   width,
 }: Props): JSX.Element {
-  const [isHD, setIsHD] = useState(false)
   const safeThumbnail = deescapeHtml(thumbnail)
-  const safeFullsize = deescapeHtml(fullSize || '')
+  const safeFullsize = deescapeHtml(fullSize || '') || safeThumbnail
 
   return (
     <div className="thumbnail-wrap">
-      {!isHD && fullSize ? (
-        <button
-          className="thumbnail__hd"
-          onClick={() => setIsHD((prev) => !prev)}
-          type="button"
-        >
-          HD
-        </button>
-      ) : null}
-
-      <a href={safeFullsize} rel="noopener noreferrer" target="_blank">
-        <img
-          alt=""
-          className="thumbnail"
-          decoding="async"
-          height={height}
-          loading={loading}
-          src={isHD ? safeFullsize : safeThumbnail}
-          style={{
-            '--ar-width': width,
-            '--ar-height': height,
-          }}
-          width={width}
-        />
+      <a
+        className="thumbnail__link"
+        href={safeFullsize}
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        <picture>
+          <source media="(max-width: 40em)" srcSet={safeFullsize} />
+          <img
+            alt=""
+            className="thumbnail"
+            decoding="async"
+            height={height}
+            loading={loading}
+            src={safeThumbnail}
+            width={width}
+          />
+        </picture>
       </a>
     </div>
   )

@@ -39,7 +39,10 @@ function List({ subreddit }: Props): JSX.Element {
           }
 
           return {
-            posts: response.data.children.filter((post) => !post.data.stickied),
+            posts: response.data.children.filter(
+              (post) =>
+                !post.data.stickied && !['nsfw'].includes(post.data.thumbnail),
+            ),
             after: response.data.after,
             message: null,
           }
