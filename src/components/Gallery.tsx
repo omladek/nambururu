@@ -1,3 +1,4 @@
+import { JSX } from 'preact'
 import { useElementSize } from 'usehooks-ts'
 
 import { RedditMediaMetadata } from '../types/reddit-api/ThreadsResult.type'

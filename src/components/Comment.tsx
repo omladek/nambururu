@@ -1,4 +1,4 @@
-import ReactMarkdown from 'react-markdown'
+import { JSX } from 'preact'
 import { Comment as CommentType } from '../types/reddit-api/CommentsResult.type'
 import deescapeHtml from '../utilities/deescapeHtml'
 import formatNumber from './formatNumber'
@@ -26,7 +26,7 @@ function Comment({ comment }: Props): JSX.Element {
       </strong>
 
       <div className="comment__body">
-        <ReactMarkdown>{deescapeHtml(comment.data.body)}</ReactMarkdown>
+        {deescapeHtml(comment.data.body_html)}
       </div>
     </section>
   )

@@ -3,14 +3,12 @@ module.exports = {
   env: { browser: true, es2020: true },
   extends: [
     'airbnb',
+    'preact',
     'prettier',
-    'plugin:react/recommended',
     'plugin:prettier/recommended',
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:react-hooks/recommended',
-    'plugin:react/jsx-runtime',
-    'plugin:react/all',
     'plugin:sonarjs/recommended',
   ],
   parser: '@typescript-eslint/parser',
@@ -24,16 +22,15 @@ module.exports = {
   plugins: [
     'react-refresh',
     '@typescript-eslint',
-    'react',
     'react-hooks',
     'sort-destructure-keys',
     'sonarjs',
   ],
   root: true,
   rules: {
+    'jest/no-deprecated-functions': 0,
     'react-refresh/only-export-components': 'warn',
     semi: 0,
-    'react/react-in-jsx-scope': 'off',
     'import/extensions': [
       'error',
       'ignorePackages',
@@ -90,6 +87,7 @@ module.exports = {
     ],
     'react/prop-types': 'off',
     'react/require-default-props': 'off',
+    'react/jsx-fragments': 'off',
   },
   settings: {
     'import/resolver': {

@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState } from 'preact/hooks'
+import { JSX } from 'preact'
 import deescapeHtml from '../utilities/deescapeHtml'
 
 interface Props {
@@ -40,12 +41,10 @@ function Thumbnail({
           height={height}
           loading={loading}
           src={isHD ? safeFullsize : safeThumbnail}
-          style={
-            {
-              '--ar-width': width,
-              '--ar-height': height,
-            } as React.CSSProperties
-          }
+          style={{
+            '--ar-width': width,
+            '--ar-height': height,
+          }}
           width={width}
         />
       </a>

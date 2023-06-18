@@ -1,3 +1,4 @@
+import { JSX } from 'preact'
 import { Media } from '../types/reddit-api/ThreadsResult.type'
 import parseYouTubeVideoId from '../utilities/parseYouTubeVideoId'
 
@@ -36,13 +37,11 @@ function YoutTube({ media }: Props): JSX.Element | null {
         height={height}
         loading="lazy"
         src={thumbnail_url}
-        style={
-          {
-            '--ar-width': width,
-            '--ar-height': height,
-            objectFit: 'cover',
-          } as React.CSSProperties
-        }
+        style={{
+          '--ar-width': width,
+          '--ar-height': height,
+          objectFit: 'cover',
+        }}
         width={width}
       />
     </a>

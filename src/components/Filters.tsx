@@ -1,4 +1,5 @@
-import { FormEventHandler, useState, useEffect } from 'react'
+import { useState, useEffect } from 'preact/hooks'
+import { JSX } from 'preact'
 import debounce from 'lodash.debounce'
 import { useQuery } from '@tanstack/react-query'
 import { Option, getOptions } from '../utilities/getOptions'
@@ -43,7 +44,7 @@ function Filters({ onSubmit, subreddits }: Props): JSX.Element {
     })
   }, [data?.names])
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = (event): void => {
+  const handleSubmit: JSX.GenericEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault()
 
     const value = (
@@ -59,21 +60,24 @@ function Filters({ onSubmit, subreddits }: Props): JSX.Element {
     onSubmit(value)
   }
 
-  const handleInput: FormEventHandler<HTMLInputElement> = debounce((event) => {
-    const value = event.target.value.trim()
+  const handleInput: JSX.GenericEventHandler<HTMLInputElement> = debounce(
+    (event) => {
+      const value = event.target.value.trim()
 
-    if (value.length < 3) {
-      return
-    }
+      if (value.length < 3) {
+        return
+      }
 
-    if (
-      optionsCache.find((option) => option.lowerCase === value.toLowerCase())
-    ) {
-      return
-    }
+      if (
+        optionsCache.find((option) => option.lowerCase === value.toLowerCase())
+      ) {
+        return
+      }
 
-    setSubreddit(value)
-  }, 300)
+      setSubreddit(value)
+    },
+    300,
+  )
 
   return (
     <footer className="filters">
@@ -131,7 +135,7 @@ function Filters({ onSubmit, subreddits }: Props): JSX.Element {
               onChange={(event) => {
                 window.scrollTo({ top: 0 })
 
-                onSubmit(event.target.value)
+                onSubmit(event.currentTarget.value)
               }}
             >
               <option value="my-mix">my-mix</option>

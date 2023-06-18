@@ -1,4 +1,5 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef } from 'preact/hooks'
+import { JSX } from 'preact/compat'
 import syncMediaPlayback from '../utilities/syncMediaPlayback'
 import deescapeHtml from '../utilities/deescapeHtml'
 
@@ -64,12 +65,10 @@ function VideoPlayer({
             height={height}
             loading="lazy"
             src={safePoster}
-            style={
-              {
-                '--ar-width': width,
-                '--ar-height': height,
-              } as React.CSSProperties
-            }
+            style={{
+              '--ar-width': width,
+              '--ar-height': height,
+            }}
             width={width}
           />
         </>
@@ -85,12 +84,10 @@ function VideoPlayer({
             playsInline
             poster={safePoster}
             ref={videoRef}
-            style={
-              {
-                '--ar-width': width,
-                '--ar-height': height,
-              } as React.CSSProperties
-            }
+            style={{
+              '--ar-width': width,
+              '--ar-height': height,
+            }}
             width={width}
           >
             <source src={url} type="video/mp4" />

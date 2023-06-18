@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
-import { useMemo } from 'react'
+import { useMemo } from 'preact/hooks'
+import { JSX } from 'preact'
 
 import {
   CommentsResult,

@@ -1,6 +1,7 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { useInView } from 'react-intersection-observer'
-import { Fragment, useEffect } from 'react'
+import { Fragment, JSX } from 'preact'
+import { useEffect } from 'preact/hooks'
 import getSubredditJSONUrl from '../utilities/getSubredditJSONUrl'
 import { ThreadResult } from '../types/reddit-api/ThreadsResult.type'
 import Post from './Post'

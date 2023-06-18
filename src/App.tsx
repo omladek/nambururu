@@ -1,4 +1,5 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useState } from 'preact/hooks'
+import { JSX } from 'preact'
 import { useQuery } from '@tanstack/react-query'
 
 import Filters from './components/Filters'

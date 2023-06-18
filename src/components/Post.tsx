@@ -1,6 +1,6 @@
-import { useState } from 'react'
-import ReactMarkdown from 'react-markdown'
+import { useState } from 'preact/hooks'
 
+import { JSX } from 'preact'
 import { Thread } from '../types/reddit-api/ThreadsResult.type'
 import getDateFromUnixTime from '../utilities/getDateFromUnixTime'
 import deescapeHtml from '../utilities/deescapeHtml'
@@ -22,7 +22,7 @@ function Post({ post }: Props): JSX.Element {
     id,
     num_comments,
     permalink,
-    selftext,
+    selftext_html,
     subreddit,
     title,
     ups,
@@ -50,10 +50,8 @@ function Post({ post }: Props): JSX.Element {
           </a>
         </h2>
 
-        {selftext ? (
-          <ReactMarkdown className="post__description">
-            {deescapeHtml(selftext)}
-          </ReactMarkdown>
+        {selftext_html ? (
+          <div className="post__description">{deescapeHtml(selftext_html)}</div>
         ) : null}
 
         <dl className="post__data">

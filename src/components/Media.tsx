@@ -1,3 +1,4 @@
+import { JSX } from 'preact'
 import { Thread } from '../types/reddit-api/ThreadsResult.type'
 
 import Gallery from './Gallery'
