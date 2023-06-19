@@ -15,9 +15,9 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-text: #999797;
+    --color-text: #aaaaaa;
     --color-background: #000;
-    --color-link: #999797;
+    --color-link: #f1f1f1;
     --color-accent: #2f3336;
     --color-post: #141414;
   }
@@ -51,6 +51,11 @@ a {
 
 p {
   margin-block-start: 0;
+}
+
+pre {
+  background-color: var(--color-accent);
+  padding: 0.25em 1em;
 }
 
 code {
@@ -266,7 +271,6 @@ select {
   word-break: break-word;
 
   & a {
-    display: none;
     word-break: break-all;
   }
 }
@@ -376,7 +380,12 @@ select {
 
 .comment__body {
   border-inline-start: 1px solid var(--color-accent);
+  overflow: auto;
   padding-inline-start: 0.5em;
+
+  & a {
+    word-break: break-all;
+  }
 }
 
 .post-link {
