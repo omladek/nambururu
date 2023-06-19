@@ -109,6 +109,16 @@ function Media({ containerWidth, postData }: Props): JSX.Element | null {
     )
   }
 
+  if (['image'].includes(thumbnail) && ['i.redd.it'].includes(domain)) {
+    return (
+      <Thumbnail
+        height={thumbnail_height || 90}
+        thumbnail={url}
+        width={thumbnail_width || 160}
+      />
+    )
+  }
+
   return null
 }
 
