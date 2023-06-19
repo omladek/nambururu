@@ -86,7 +86,11 @@ function Media({ containerWidth, post }: Props): JSX.Element | null {
     return <YoutTube media={media} />
   }
 
-  if (!url.startsWith('https://www.reddit.com/') && !url.startsWith('r/')) {
+  if (
+    !url.startsWith('https://www.reddit.com/') &&
+    !url.startsWith('r/') &&
+    !domain.includes('i.redd.it')
+  ) {
     return (
       <a
         className="post-link"

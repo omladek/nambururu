@@ -159,7 +159,6 @@ function Filters({ onSubmit, subreddits }: Props): JSX.Element {
           >
             ❌
           </button>
-
           <button
             aria-label="Refresh"
             className="filters__btn"

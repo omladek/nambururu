@@ -145,10 +145,16 @@ export interface RedditHostedImage {
 
 export type RedditMediaMetadata = Record<
   string,
-  {
-    p: RedditHostedImage[]
-    s: RedditHostedImage
-  }
+  | {
+      status: 'invalid'
+    }
+  | {
+      status: 'valid'
+      e: string
+      m: string
+      p: RedditHostedImage[]
+      s: RedditHostedImage
+    }
 >
 
 export type Gildings = unknown

@@ -2,10 +2,12 @@ import { useInfiniteQuery } from '@tanstack/react-query'
 import { useInView } from 'react-intersection-observer'
 import { Fragment, JSX } from 'preact'
 import { useEffect } from 'preact/hooks'
+
 import getSubredditJSONUrl from '../utilities/getSubredditJSONUrl'
 import { ThreadResult } from '../types/reddit-api/ThreadsResult.type'
 import Post from './Post'
 import Loader from './Loader'
+import ErrorBoundary from './ErrorBoundary'
 
 interface Props {
   subreddit: string
@@ -95,7 +97,11 @@ function List({ sort, subreddit }: Props): JSX.Element {
           return (
             <Fragment key={page.after || 'page-last'}>
               {page.posts.map((post) => {
-                return <Post key={post.data.id} post={post} />
+                return (
+                  <ErrorBoundary key={post.data.id}>
+                    <Post key={post.data.id} post={post} />
+                  </ErrorBoundary>
+                )
               })}
             </Fragment>
           )

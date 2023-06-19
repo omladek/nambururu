@@ -16,10 +16,15 @@ interface Props {
   containerWidth: number
 }
 
-function Gallery({ containerWidth, items }: Props): JSX.Element {
+function Gallery({ containerWidth, items }: Props): JSX.Element | null {
   const thumbnails: ThumbnailImage[] = Object.keys(items).reduce(
     (acc: ThumbnailImage[], curr) => {
       const image = items[curr]
+
+      if (image.status !== 'valid') {
+        return acc
+      }
+
       const fullSizeImage = image.s
       const responsizeImageStandard = getImageByContainerWidth(
         image.p,
@@ -41,7 +46,7 @@ function Gallery({ containerWidth, items }: Props): JSX.Element {
   )
 
   if (!thumbnails.length) {
-    return <> </>
+    return null
   }
 
   return (
