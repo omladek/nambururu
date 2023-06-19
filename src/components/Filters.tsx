@@ -6,7 +6,7 @@ import { Option, getOptions } from '../utilities/getOptions'
 
 interface Props {
   subreddits: string[]
-  onSubmit: (subreddit: string) => void
+  onSubmit: (payload: { subreddit: string; sort: string }) => void
 }
 
 interface RedditNameResponse {
@@ -14,6 +14,8 @@ interface RedditNameResponse {
 }
 
 function Filters({ onSubmit, subreddits }: Props): JSX.Element {
+  const formRef = useRef<HTMLFormElement>(null)
+  const selectFormRef = useRef<HTMLFormElement>(null)
   const [subreddit, setSubreddit] = useState('')
   const searchRef = useRef<HTMLInputElement>(null)
   const [optionsCache, setOptionsCache] = useState<Option[]>(() => {
@@ -45,20 +47,43 @@ function Filters({ onSubmit, subreddits }: Props): JSX.Element {
     })
   }, [data?.names])
 
-  const handleSubmit: JSX.GenericEventHandler<HTMLFormElement> = (event) => {
+  const handleSearchSubmit: JSX.GenericEventHandler<HTMLFormElement> = (
+    event,
+  ) => {
     event.preventDefault()
 
-    const value = (
+    const subreddit = (
       new FormData(event.currentTarget).get('subreddit')?.toString() || ''
     ).trim()
 
-    if (value.length < 3) {
-      return
-    }
+    const sort = selectFormRef.current
+      ? (
+          new FormData(selectFormRef.current).get('sort')?.toString() || ''
+        ).trim()
+      : 'best'
 
     window.scrollTo({ top: 0 })
 
-    onSubmit(value)
+    onSubmit({ subreddit, sort })
+  }
+
+  const handleSelectSubmit: JSX.GenericEventHandler<HTMLFormElement> = (
+    event,
+  ) => {
+    event.preventDefault()
+
+    const subreddit = (
+      new FormData(event.currentTarget).get('subreddit-select')?.toString() ||
+      ''
+    ).trim()
+
+    const sort = (
+      new FormData(event.currentTarget).get('sort')?.toString() || ''
+    ).trim()
+
+    window.scrollTo({ top: 0 })
+
+    onSubmit({ subreddit, sort })
   }
 
   const handleInput: JSX.GenericEventHandler<HTMLInputElement> = debounce(
@@ -86,93 +111,137 @@ function Filters({ onSubmit, subreddits }: Props): JSX.Element {
         action=""
         className="form-groups"
         method="GET"
-        onSubmit={handleSubmit}
+        onSubmit={handleSearchSubmit}
+        ref={formRef}
       >
-        <div className="form-group">
-          <fieldset className="fieldset">
-            <label className="label" htmlFor="subreddit">
-              search:
-            </label>
-            <input
-              autoComplete="off"
-              // eslint-disable-next-line jsx-a11y/no-autofocus
-              autoFocus={false}
-              defaultValue="my-mix"
-              id="subreddit"
-              list="subreddits"
-              maxLength={38}
-              name="subreddit"
-              onInput={handleInput}
-              placeholder="search subreddit"
-              ref={searchRef}
-              type="text"
-            />
-            <datalist id="subreddits">
-              <option value="my-mix">my-mix</option>
+        <fieldset className="fieldset">
+          <label className="label" htmlFor="subreddit">
+            search:
+          </label>
+          <input
+            autoComplete="off"
+            // eslint-disable-next-line jsx-a11y/no-autofocus
+            autoFocus={false}
+            defaultValue="my-mix"
+            id="subreddit"
+            list="subreddits"
+            maxLength={38}
+            name="subreddit"
+            onInput={handleInput}
+            placeholder="search subreddit"
+            ref={searchRef}
+            type="text"
+          />
+          <datalist id="subreddits">
+            <option value="my-mix">my-mix</option>
 
-              {optionsCache.map((option) => (
-                <option key={option.lowerCase} value={option.value}>
-                  {option.value}
-                </option>
-              ))}
-            </datalist>
+            {optionsCache.map((option) => (
+              <option key={option.lowerCase} value={option.value}>
+                {option.value}
+              </option>
+            ))}
+          </datalist>
 
-            <button
-              aria-label="Clear"
-              className="filters__btn"
-              onClick={() => {
-                if (!searchRef.current) {
-                  return
-                }
+          <button
+            aria-label="Clear"
+            className="filters__btn"
+            onClick={() => {
+              if (!searchRef.current) {
+                return
+              }
 
-                searchRef.current.value = ''
+              searchRef.current.value = ''
 
-                searchRef.current.focus()
-              }}
-              title="CLear"
-              type="button"
-            >
-              ❌
-            </button>
+              searchRef.current.focus()
+            }}
+            title="CLear"
+            type="button"
+          >
+            ❌
+          </button>
 
-            <button
-              aria-label="Refresh"
-              className="filters__btn"
-              title="refresh"
-              type="submit"
-            >
-              {isLoading ? <>⌛</> : <>🔍</>}
-            </button>
-          </fieldset>
-        </div>
+          <button
+            aria-label="Refresh"
+            className="filters__btn"
+            title="refresh"
+            type="submit"
+          >
+            {isLoading ? <>⌛</> : <>🔍</>}
+          </button>
+        </fieldset>
+      </form>
 
-        <div className="form-group">
-          <fieldset className="fieldset">
-            <label className="label" htmlFor="subreddit-select">
-              r/
-            </label>
+      <form
+        action=""
+        className="form-groups"
+        method="GET"
+        onSubmit={handleSelectSubmit}
+        ref={selectFormRef}
+      >
+        <fieldset className="fieldset">
+          <label className="label" htmlFor="subreddit-select">
+            r/
+          </label>
 
-            <select
-              // eslint-disable-next-line jsx-a11y/no-autofocus
-              autoFocus={false}
-              defaultValue={subreddit}
-              id="subreddit-select"
-              onChange={(event) => {
+          <select
+            // eslint-disable-next-line jsx-a11y/no-autofocus
+            autoFocus={false}
+            defaultValue={subreddit}
+            id="subreddit-select"
+            name="subreddit-select"
+            onChange={(event) => {
+              if (selectFormRef.current) {
+                const nextSubreddit = event.currentTarget.value
+                const nextSort =
+                  new FormData(selectFormRef.current).get('sort')?.toString() ||
+                  'best'
+
                 window.scrollTo({ top: 0 })
+                onSubmit({ subreddit: nextSubreddit, sort: nextSort })
+              }
+            }}
+          >
+            <option value="my-mix">my-mix</option>
 
-                onSubmit(event.currentTarget.value)
-              }}
-            >
-              <option value="my-mix">my-mix</option>
+            {optionsCache.map((option) => (
+              <option key={option.lowerCase} value={option.value}>
+                {option.value}
+              </option>
+            ))}
+          </select>
+        </fieldset>
 
-              {optionsCache.map((option) => (
-                <option key={option.lowerCase} value={option.value}>
-                  {option.value}
-                </option>
-              ))}
-            </select>
-          </fieldset>
-        </div>
+        <fieldset className="fieldset">
+          <label className="label" htmlFor="sort">
+            sort
+          </label>
+
+          <select
+            // eslint-disable-next-line jsx-a11y/no-autofocus
+            autoFocus={false}
+            defaultValue="best"
+            id="sort"
+            name="sort"
+            onChange={(event) => {
+              if (selectFormRef.current) {
+                const nextSort = event.currentTarget.value
+                const nextSubreddit =
+                  new FormData(selectFormRef.current)
+                    .get('subreddit-select')
+                    ?.toString() || ''
+
+                window.scrollTo({ top: 0 })
+                onSubmit({ subreddit: nextSubreddit, sort: nextSort })
+              }
+            }}
+          >
+            {['best', 'new', 'top'].map((option) => (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            ))}
+          </select>
+        </fieldset>
       </form>
     </footer>
   )

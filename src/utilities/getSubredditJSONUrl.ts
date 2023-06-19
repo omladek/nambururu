@@ -1,5 +1,18 @@
-const getSubredditJSONUrl = (subreddit: string, after = ''): URL => {
+import getItemsPerLine from './getItemsPerLine'
+
+interface Props {
+  subreddit: string
+  after?: string
+  sort?: string
+}
+
+const getSubredditJSONUrl = ({
+  after = '',
+  sort = 'best',
+  subreddit,
+}: Props): URL => {
   let subredditBase = subreddit
+  let sortBase = sort
 
   if (subreddit === 'my-mix') {
     subredditBase = (import.meta.env.VITE_SUBREDDITS || 'best')
@@ -10,10 +23,22 @@ const getSubredditJSONUrl = (subreddit: string, after = ''): URL => {
   subredditBase =
     subredditBase === 'best' ? subredditBase : `r/${subredditBase}`
 
-  const url = new URL(`https://www.reddit.com/${subredditBase}/.json`)
+  if (subreddit === 'best') {
+    sortBase = ''
+  } else if (sort === '') {
+    sortBase = ``
+  } else {
+    sortBase = `/${sort}`
+  }
+
+  const url = new URL(
+    `https://www.reddit.com/${subredditBase}${sortBase}/.json`,
+  )
+
+  const limit = getItemsPerLine()
 
   url.searchParams.append('json_raw', '1')
-  url.searchParams.append('limit', '20')
+  url.searchParams.append('limit', String(limit * 10))
 
   if (after) {
     url.searchParams.append('after', after)

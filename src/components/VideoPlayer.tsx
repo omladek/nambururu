@@ -47,7 +47,10 @@ function VideoPlayer({
   }, [isLoaded])
 
   return (
-    <div className="thumbnail-wrap">
+    <div
+      className="thumbnail-wrap thumbnail-wrap--video"
+      style={{ '--ar-width': width, '--ar-height': height }}
+    >
       {!isLoaded ? (
         <>
           <button
@@ -74,12 +77,11 @@ function VideoPlayer({
       {isLoaded ? (
         <>
           <video
-            className="thumbnail thumbnail--video js-video"
+            className=""
             controls
             height={height}
             muted
             playsInline
-            poster={safePoster}
             ref={videoRef}
             width={width}
           >

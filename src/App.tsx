@@ -10,9 +10,12 @@ import getSubredditsFromMarkdown, {
 } from './utilities/getSubredditsFromMarkdown'
 
 function App(): JSX.Element {
-  const [settings, setSettings] = useState<{ subreddit: string }>({
-    subreddit: 'best',
-  })
+  const [settings, setSettings] = useState<{ subreddit: string; sort: string }>(
+    {
+      subreddit: 'best',
+      sort: 'best',
+    },
+  )
   const { data, error, isLoading } = useQuery<
     RedditWikiPage,
     { message: string; reason?: string }
@@ -29,8 +32,14 @@ function App(): JSX.Element {
     [data],
   )
 
-  const handleSubmit = (subreddit: string): void => {
-    setSettings({ subreddit })
+  const handleSubmit = ({
+    sort = 'best',
+    subreddit,
+  }: {
+    subreddit: string
+    sort?: string
+  }): void => {
+    setSettings({ subreddit, sort })
   }
 
   if (isLoading) return <Loader />
@@ -51,7 +60,11 @@ function App(): JSX.Element {
       </header>
 
       <main className="main">
-        <List key={`${settings.subreddit}}`} subreddit={settings.subreddit} />
+        <List
+          key={`${settings.subreddit}-${settings.sort}`}
+          sort={settings.sort}
+          subreddit={settings.subreddit}
+        />
       </main>
 
       <Filters onSubmit={handleSubmit} subreddits={subreddits} />

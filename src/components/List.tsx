@@ -9,10 +9,11 @@ import Loader from './Loader'
 
 interface Props {
   subreddit: string
+  sort: string
 }
 
-function List({ subreddit }: Props): JSX.Element {
-  const { inView, ref } = useInView()
+function List({ sort, subreddit }: Props): JSX.Element {
+  const { inView, ref } = useInView({ rootMargin: '500px 0px 0px 0px' })
   const {
     data,
     error,
@@ -21,9 +22,11 @@ function List({ subreddit }: Props): JSX.Element {
     isFetchingNextPage,
     isLoading,
   } = useInfiniteQuery({
-    queryKey: ['subreddit', subreddit],
+    queryKey: ['subreddit', subreddit, sort],
     queryFn: ({ pageParam = '', signal }) =>
-      fetch(getSubredditJSONUrl(subreddit, pageParam), { signal })
+      fetch(getSubredditJSONUrl({ subreddit, after: pageParam, sort }), {
+        signal,
+      })
         .then((response) => response.json())
         .then((response: ThreadResult) => {
           if (
@@ -100,15 +103,16 @@ function List({ subreddit }: Props): JSX.Element {
       </div>
 
       {hasNextPage ? (
-        <button
-          className="load-more"
-          disabled={!isFetchingNextPage}
-          onClick={() => fetchNextPage()}
-          ref={ref}
-          type="button"
-        >
-          {isFetchingNextPage ? <>⌛loading&hellip;</> : 'load more'}
-        </button>
+        <div className="load-more-area" ref={ref}>
+          <button
+            className="load-more"
+            disabled={!isFetchingNextPage}
+            onClick={() => fetchNextPage()}
+            type="button"
+          >
+            {isFetchingNextPage ? <>⌛loading&hellip;</> : 'load more'}
+          </button>
+        </div>
       ) : null}
     </>
   )
