@@ -3,6 +3,7 @@ import { Comment as CommentType } from '../types/reddit-api/CommentsResult.type'
 import deescapeHtml from '../utilities/deescapeHtml'
 import formatNumber from './formatNumber'
 import RichText from './RichText'
+import updateAnchorTags from '../utilities/updateAnchorTags'
 
 interface Props {
   comment: CommentType
@@ -16,7 +17,9 @@ function Comment({ comment }: Props): JSX.Element {
       </strong>
 
       <div className="comment__body">
-        <RichText html={deescapeHtml(comment.data.body_html)} />
+        <RichText
+          html={updateAnchorTags(deescapeHtml(comment.data.body_html))}
+        />
       </div>
     </section>
   )

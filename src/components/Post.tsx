@@ -10,6 +10,7 @@ import CommentsPreview from './CommentsPreview'
 import calculateDownvotes from '../utilities/calculateDownvotes'
 import formatNumber from './formatNumber'
 import RichText from './RichText'
+import updateAnchorTags from '../utilities/updateAnchorTags'
 
 interface Props {
   post: Thread
@@ -64,7 +65,7 @@ function Post({ post }: Props): JSX.Element {
 
         {selftext_html ? (
           <div className="post__description">
-            <RichText html={deescapeHtml(selftext_html)} />
+            <RichText html={updateAnchorTags(deescapeHtml(selftext_html))} />
           </div>
         ) : null}
 
