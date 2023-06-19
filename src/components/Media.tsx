@@ -1,7 +1,7 @@
 /* eslint-disable sonarjs/cognitive-complexity */
 import { JSX } from 'preact'
 
-import { Thread } from '../types/reddit-api/ThreadsResult.type'
+import { ChildData } from '../types/reddit-api/ThreadsResult.type'
 import Gallery from './Gallery'
 import Thumbnail from './Thumbnail'
 import VideoPlayer from './VideoPlayer'
@@ -9,11 +9,11 @@ import YoutTube from './YouTube'
 import getImageResolutionByContainerWidth from '../utilities/getImageResolutionByContainerWidth'
 
 interface Props {
-  post: Thread
+  postData: ChildData
   containerWidth: number
 }
 
-function Media({ containerWidth, post }: Props): JSX.Element | null {
+function Media({ containerWidth, postData }: Props): JSX.Element | null {
   const {
     domain,
     is_gallery,
@@ -25,7 +25,7 @@ function Media({ containerWidth, post }: Props): JSX.Element | null {
     thumbnail_height,
     thumbnail_width,
     url,
-  } = post.data
+  } = postData
 
   const hasThumbnail = !(
     thumbnail !== null &&

@@ -21,6 +21,8 @@ function Post({ post }: Props): JSX.Element {
 
   const {
     created_utc,
+    crosspost_parent,
+    crosspost_parent_list,
     domain,
     id,
     num_comments,
@@ -32,9 +34,16 @@ function Post({ post }: Props): JSX.Element {
     upvote_ratio,
   } = post.data
 
+  const crossPostData =
+    crosspost_parent && !!crosspost_parent_list?.length
+      ? crosspost_parent_list.find((item) => item.name === crosspost_parent)
+      : null
+
+  const postData = crossPostData || post.data
+
   return (
     <article className="post">
-      <Media containerWidth={containerWidth} post={post} />
+      <Media containerWidth={containerWidth} postData={postData} />
 
       <div className="post__info" ref={squareRef}>
         <h2 className="post__title">

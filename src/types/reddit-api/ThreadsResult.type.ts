@@ -135,6 +135,8 @@ export interface ChildData {
   is_gallery?: boolean
   url_overridden_by_dest: string
   upvote_ratio: number
+  crosspost_parent: string | null
+  crosspost_parent_list: ChildData[]
 }
 
 export interface RedditHostedImage {
