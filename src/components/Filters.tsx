@@ -23,7 +23,15 @@ function Filters({ onSubmit, subreddits }: Props): JSX.Element {
       import.meta.env.VITE_SUBREDDITS || 'best'
     ).split(',')
 
-    return getOptions([...userSubreddits, ...subreddits])
+    const userSubredditsSelection: string[] = (
+      import.meta.env.VITE_SUBREDDITS_SELECTION || ''
+    ).split(',')
+
+    return getOptions([
+      ...userSubreddits,
+      ...userSubredditsSelection,
+      ...subreddits,
+    ])
   })
   const { data, isLoading } = useQuery<
     RedditNameResponse,
@@ -133,6 +141,7 @@ function Filters({ onSubmit, subreddits }: Props): JSX.Element {
           />
           <datalist id="subreddits">
             <option value="my-mix">my-mix</option>
+            <option value="my-selection">my-selection</option>
 
             {optionsCache.map((option) => (
               <option key={option.lowerCase} value={option.value}>
@@ -200,6 +209,7 @@ function Filters({ onSubmit, subreddits }: Props): JSX.Element {
             }}
           >
             <option value="my-mix">my-mix</option>
+            <option value="my-selection">my-selection</option>
 
             {optionsCache.map((option) => (
               <option key={option.lowerCase} value={option.value}>

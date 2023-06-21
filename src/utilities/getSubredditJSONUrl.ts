@@ -18,6 +18,12 @@ const getSubredditJSONUrl = ({
       .join('+')
   }
 
+  if (subreddit === 'my-selection') {
+    subredditBase = (import.meta.env.VITE_SUBREDDITS_SELECTION || 'best')
+      .split(',')
+      .join('+')
+  }
+
   subredditBase =
     subredditBase === 'best' ? subredditBase : `r/${subredditBase}`
 
