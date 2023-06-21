@@ -123,22 +123,42 @@ function Filters({ onSubmit, subreddits }: Props): JSX.Element {
         ref={formRef}
       >
         <fieldset className="fieldset">
-          <label className="label" htmlFor="subreddit">
-            search:
+          <label className="label label--touch" htmlFor="subreddit">
+            <span className="label__icon">🔍</span>
+            <span className="label__title">search:</span>
           </label>
-          <input
-            autoComplete="off"
-            // eslint-disable-next-line jsx-a11y/no-autofocus
-            autoFocus={false}
-            id="subreddit"
-            list="subreddits"
-            maxLength={38}
-            name="subreddit"
-            onInput={handleInput}
-            placeholder="search subreddit"
-            ref={searchRef}
-            type="text"
-          />
+          <div className="search">
+            <input
+              autoComplete="off"
+              // eslint-disable-next-line jsx-a11y/no-autofocus
+              autoFocus={false}
+              id="subreddit"
+              list="subreddits"
+              maxLength={38}
+              name="subreddit"
+              onInput={handleInput}
+              placeholder="search subreddit"
+              ref={searchRef}
+              type="text"
+            />
+            <button
+              aria-label="Clear"
+              className="filters__btn search__btn"
+              onClick={() => {
+                if (!searchRef.current) {
+                  return
+                }
+
+                searchRef.current.value = ''
+
+                searchRef.current.focus()
+              }}
+              title="CLear"
+              type="button"
+            >
+              ❌
+            </button>
+          </div>
           <datalist id="subreddits">
             <option value="my-mix">my-mix</option>
             <option value="my-selection">my-selection</option>
@@ -149,24 +169,6 @@ function Filters({ onSubmit, subreddits }: Props): JSX.Element {
               </option>
             ))}
           </datalist>
-
-          <button
-            aria-label="Clear"
-            className="filters__btn"
-            onClick={() => {
-              if (!searchRef.current) {
-                return
-              }
-
-              searchRef.current.value = ''
-
-              searchRef.current.focus()
-            }}
-            title="CLear"
-            type="button"
-          >
-            ❌
-          </button>
           <button
             aria-label="Refresh"
             className="filters__btn"
@@ -180,14 +182,15 @@ function Filters({ onSubmit, subreddits }: Props): JSX.Element {
 
       <form
         action=""
-        className="form-groups"
+        className="form-groups form-groups--equal"
         method="GET"
         onSubmit={handleSelectSubmit}
         ref={selectFormRef}
       >
         <fieldset className="fieldset">
           <label className="label" htmlFor="subreddit-select">
-            r/
+            <span className="label__icon">📋</span>
+            <span className="label__title">r/</span>
           </label>
 
           <select
@@ -221,7 +224,8 @@ function Filters({ onSubmit, subreddits }: Props): JSX.Element {
 
         <fieldset className="fieldset">
           <label className="label" htmlFor="sort">
-            sort
+            <span className="label__icon">↑↓</span>
+            <span className="label__title">sort:</span>
           </label>
 
           <select
