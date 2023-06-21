@@ -158,6 +158,12 @@ select {
   padding: 0;
 }
 
+@media (prefers-color-scheme: dark) {
+  .filters__btn {
+    filter: grayscale(100%);
+  }
+}
+
 .filters {
   background-color: var(--color-background);
   border-top: 1px solid var(--color-accent);
@@ -167,6 +173,10 @@ select {
   position: fixed;
   width: 100%;
   z-index: 1;
+}
+
+.label__title {
+  font-weight: bold;
 }
 
 @media (max-width: 25em) {
@@ -184,16 +194,6 @@ select {
 }
 
 @media (max-width: 25em) {
-  .label__title {
-    clip: rect(0 0 0 0);
-    clip-path: inset(50%);
-    height: 1px;
-    overflow: hidden;
-    position: absolute;
-    white-space: nowrap;
-    width: 1px;
-  }
-
   .label:not(.label--touch) {
     align-items: center;
     display: flex;
@@ -206,7 +206,7 @@ select {
     width: 100%;
   }
 
-  .label--touch .label__icon {
+  .label--touch .label__title {
     display: none;
   }
 
@@ -551,4 +551,21 @@ table td {
   justify-content: center;
   min-height: 5rem;
   text-align: center;
+}
+
+[list]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  .search input,
+  .filters__btn {
+    background-color: transparent;
+    border: 1px solid var(--color-accent);
+    color: var(--color-link);
+  }
+
+  .search input:focus {
+    outline: 0;
+  }
 }

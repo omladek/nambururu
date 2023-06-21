@@ -70,6 +70,10 @@ function Filters({ onSubmit, subreddits }: Props): JSX.Element {
         ).trim()
       : 'best'
 
+    if (!subreddit) {
+      return
+    }
+
     window.scrollTo({ top: 0 })
 
     onSubmit({ subreddit, sort })
@@ -85,8 +89,12 @@ function Filters({ onSubmit, subreddits }: Props): JSX.Element {
       ''
     ).trim()
 
+    if (!subreddit) {
+      return
+    }
+
     const sort = (
-      new FormData(event.currentTarget).get('sort')?.toString() || ''
+      new FormData(event.currentTarget).get('sort')?.toString() || 'best'
     ).trim()
 
     window.scrollTo({ top: 0 })
@@ -124,8 +132,7 @@ function Filters({ onSubmit, subreddits }: Props): JSX.Element {
       >
         <fieldset className="fieldset">
           <label className="label label--touch" htmlFor="subreddit">
-            <span className="label__icon">🔍</span>
-            <span className="label__title">search:</span>
+            <span className="label__title">search</span>
           </label>
           <div className="search">
             <input
@@ -189,7 +196,6 @@ function Filters({ onSubmit, subreddits }: Props): JSX.Element {
       >
         <fieldset className="fieldset">
           <label className="label" htmlFor="subreddit-select">
-            <span className="label__icon">📋</span>
             <span className="label__title">r/</span>
           </label>
 
@@ -224,8 +230,7 @@ function Filters({ onSubmit, subreddits }: Props): JSX.Element {
 
         <fieldset className="fieldset">
           <label className="label" htmlFor="sort">
-            <span className="label__icon">↑↓</span>
-            <span className="label__title">sort:</span>
+            <span className="label__title">sort</span>
           </label>
 
           <select

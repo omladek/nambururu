@@ -74,7 +74,7 @@ function List({ sort, subreddit }: Props): JSX.Element {
     return (
       <div className="message" role="alert">
         <p>
-          ⚠️ An error has occurred:{' '}
+          An error has occurred:{' '}
           {error instanceof Error && <span>{error.message}</span>}
         </p>
       </div>
@@ -83,7 +83,7 @@ function List({ sort, subreddit }: Props): JSX.Element {
   const nonEmptyPages = (data?.pages || []).filter((page) => page.posts.length)
 
   if (!nonEmptyPages.length) {
-    return <p className="message">😕 No results</p>
+    return <p className="message">No results</p>
   }
 
   return (
@@ -112,7 +112,7 @@ function List({ sort, subreddit }: Props): JSX.Element {
             onClick={() => fetchNextPage()}
             type="button"
           >
-            {isFetchingNextPage ? <>⌛loading&hellip;</> : 'load more'}
+            {isFetchingNextPage ? <>loading&hellip;</> : 'load more'}
           </button>
         </div>
       ) : (

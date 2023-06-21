@@ -69,7 +69,7 @@ function CommentsPreview({ id }: Props): JSX.Element | null {
     return unique
   }, [data])
 
-  if (isLoading) return <p>⌛loading comments...</p>
+  if (isLoading) return <p>loading comments&hellip;</p>
 
   if (error) {
     return (
