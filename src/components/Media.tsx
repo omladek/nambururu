@@ -46,6 +46,18 @@ function Media({ containerWidth, postData }: Props): JSX.Element | null {
 
   const hasGallery = is_gallery && media_metadata
 
+  if (['i.imgur.com'].includes(domain) && url.endsWith('.gifv')) {
+    return (
+      <VideoPlayer
+        hasAudio={false}
+        height={thumbnail_height || 9}
+        poster={thumbnail}
+        url={url.replace('.gifv', '.mp4')}
+        width={thumbnail_width || 16}
+      />
+    )
+  }
+
   if (hasSingleImage) {
     return (
       <Thumbnail
