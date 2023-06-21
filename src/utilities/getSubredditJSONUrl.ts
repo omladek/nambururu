@@ -1,5 +1,3 @@
-import getItemsPerLine from './getItemsPerLine'
-
 interface Props {
   subreddit: string
   after?: string
@@ -35,10 +33,8 @@ const getSubredditJSONUrl = ({
     `https://www.reddit.com/${subredditBase}${sortBase}/.json`,
   )
 
-  const limit = getItemsPerLine()
-
   url.searchParams.append('json_raw', '1')
-  url.searchParams.append('limit', String(limit * 10))
+  url.searchParams.append('limit', '25')
 
   if (after) {
     url.searchParams.append('after', after)
