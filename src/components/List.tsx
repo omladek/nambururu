@@ -115,7 +115,11 @@ function List({ sort, subreddit }: Props): JSX.Element {
             {isFetchingNextPage ? <>⌛loading&hellip;</> : 'load more'}
           </button>
         </div>
-      ) : null}
+      ) : (
+        <div className="end">
+          <p>That&apos;s all</p>
+        </div>
+      )}
     </>
   )
 }
