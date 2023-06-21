@@ -12,7 +12,7 @@ import getSubredditsFromMarkdown, {
 function App(): JSX.Element {
   const [settings, setSettings] = useState<{ subreddit: string; sort: string }>(
     {
-      subreddit: 'best',
+      subreddit: 'my-mix',
       sort: 'best',
     },
   )

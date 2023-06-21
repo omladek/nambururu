@@ -1,7 +1,7 @@
 import { Component, ErrorInfo, JSX } from 'preact'
 
 interface Props {
-  children?: JSX
+  children?: JSX.Element
 }
 
 interface State {
@@ -27,7 +27,7 @@ class ErrorBoundary extends Component<Props, State> {
     console.error('Uncaught error:', error, errorInfo)
   }
 
-  public render(): JSX.Element {
+  public render(): JSX.Element | null {
     const { hasError } = this.state
     const { children } = this.props
 
@@ -35,7 +35,7 @@ class ErrorBoundary extends Component<Props, State> {
       return <div>⚠️ Error!</div>
     }
 
-    return children
+    return children || null
   }
 }
 

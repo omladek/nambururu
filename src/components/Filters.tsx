@@ -122,7 +122,6 @@ function Filters({ onSubmit, subreddits }: Props): JSX.Element {
             autoComplete="off"
             // eslint-disable-next-line jsx-a11y/no-autofocus
             autoFocus={false}
-            defaultValue="my-mix"
             id="subreddit"
             list="subreddits"
             maxLength={38}
@@ -234,7 +233,7 @@ function Filters({ onSubmit, subreddits }: Props): JSX.Element {
               }
             }}
           >
-            {['best', 'new', 'top'].map((option) => (
+            {['best', 'hot', 'new', 'top'].map((option) => (
               <option key={option} value={option}>
                 {option}
               </option>
