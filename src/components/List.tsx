@@ -36,35 +36,27 @@ function List({ sort, subreddit }: Props): JSX.Element {
             typeof response.data !== 'object' ||
             !Array.isArray(response.data.children)
           ) {
-            return {
-              posts: [],
-              after: null,
-              message: 'Subreddit is empty or private.',
-            }
+            throw new Error(JSON.stringify(response, null, 2))
           }
 
+          const filteredPosts = response.data.children.filter(
+            (post) =>
+              !post.data.stickied && !['nsfw'].includes(post.data.thumbnail),
+          )
+
           return {
-            posts: response.data.children.filter(
-              (post) =>
-                !post.data.stickied && !['nsfw'].includes(post.data.thumbnail),
-            ),
+            posts: filteredPosts,
             after: response.data.after,
-            message: null,
           }
         })
         .catch((err) => {
-          if (err.name === 'AbortError') {
-            return {
-              posts: [],
-              after: null,
-              message: null,
-            }
+          if (err.name !== 'AbortError') {
+            throw new Error(err.reason || err.message)
           }
 
           return {
             posts: [],
             after: null,
-            message: err.reason || err.message,
           }
         }),
     getNextPageParam: (lastPage) => lastPage.after,
@@ -78,16 +70,20 @@ function List({ sort, subreddit }: Props): JSX.Element {
 
   if (isLoading) return <Loader />
 
-  if (error) return <p className="message">⚠️An error has occurred</p>
+  if (error)
+    return (
+      <div className="message" role="alert">
+        <p>
+          ⚠️ An error has occurred:{' '}
+          {error instanceof Error && <span>{error.message}</span>}
+        </p>
+      </div>
+    )
 
-  if (!data?.pages?.length) {
-    return <p className="message">😕 No data</p>
-  }
-
-  const nonEmptyPages = data.pages.filter((page) => page.posts.length)
+  const nonEmptyPages = (data?.pages || []).filter((page) => page.posts.length)
 
   if (!nonEmptyPages.length) {
-    return <p className="message">😕 No data</p>
+    return <p className="message">😕 No results</p>
   }
 
   return (
