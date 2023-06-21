@@ -106,13 +106,15 @@ function Post({ post }: Props): JSX.Element {
             {showComments ? (
               <CommentsPreview id={id} />
             ) : (
-              <button
-                className="post__comments-btn"
-                onClick={() => setShowComments(true)}
-                type="button"
-              >
-                Load comments
-              </button>
+              <p>
+                <button
+                  className="post__comments-btn"
+                  onClick={() => setShowComments(true)}
+                  type="button"
+                >
+                  Load comments
+                </button>
+              </p>
             )}
           </div>
         )}

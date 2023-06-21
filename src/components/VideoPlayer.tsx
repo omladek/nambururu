@@ -91,8 +91,9 @@ function VideoPlayer({
           {hasAudio ? (
             // eslint-disable-next-line jsx-a11y/media-has-caption
             <audio
+              className="audio"
               controls
-              hidden
+              muted
               preload="none"
               ref={audioRef}
               src={audioUrl}

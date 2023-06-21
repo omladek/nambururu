@@ -55,8 +55,13 @@ function App(): JSX.Element {
 
   return (
     <>
-      <header className="header sr-only">
-        <h1 className="header__title">Redditlite:</h1>
+      <header className="header">
+        <h1 className="header__title">Nambururu</h1>
+        <p>
+          This term could be constructed from the Sumerian words <em>nambur</em>{' '}
+          (to watch, observe) and <em>uru</em> (person). It could be understood
+          as <em>the one who watches</em> or <em>the observer</em>.
+        </p>
       </header>
 
       <main className="main">

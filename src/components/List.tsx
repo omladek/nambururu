@@ -87,25 +87,23 @@ function List({ sort, subreddit }: Props): JSX.Element {
   }
 
   return (
-    <>
-      <div className="list">
-        {nonEmptyPages.map((page) => {
-          return (
-            <Fragment key={page.after || 'page-last'}>
-              {page.posts.map((post) => {
-                return (
-                  <ErrorBoundary key={post.data.id}>
-                    <Post key={post.data.id} post={post} />
-                  </ErrorBoundary>
-                )
-              })}
-            </Fragment>
-          )
-        })}
-      </div>
+    <div className="list">
+      {nonEmptyPages.map((page) => {
+        return (
+          <Fragment key={page.after || 'page-last'}>
+            {page.posts.map((post) => {
+              return (
+                <ErrorBoundary key={post.data.id}>
+                  <Post key={post.data.id} post={post} />
+                </ErrorBoundary>
+              )
+            })}
+          </Fragment>
+        )
+      })}
 
-      {hasNextPage ? (
-        <div className="load-more-area" ref={ref}>
+      <div className="load-more-area" ref={ref}>
+        {hasNextPage ? (
           <button
             className="load-more"
             disabled={!isFetchingNextPage}
@@ -114,13 +112,13 @@ function List({ sort, subreddit }: Props): JSX.Element {
           >
             {isFetchingNextPage ? <>loading&hellip;</> : 'load more'}
           </button>
-        </div>
-      ) : (
-        <div className="end">
-          <p>That&apos;s all</p>
-        </div>
-      )}
-    </>
+        ) : (
+          <div className="end">
+            <p>That&apos;s all</p>
+          </div>
+        )}
+      </div>
+    </div>
   )
 }
 
