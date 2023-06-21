@@ -12,9 +12,9 @@ interface Props {
 function Comment({ comment }: Props): JSX.Element {
   return (
     <section className="comment">
-      <strong className="comment__rating">
+      <h3 className="comment__title">
         {comment.data.author} ({formatNumber(comment.data.ups)})
-      </strong>
+      </h3>
 
       <div className="comment__body">
         <RichText
