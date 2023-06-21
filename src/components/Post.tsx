@@ -46,6 +46,12 @@ function Post({ post }: Props): JSX.Element {
     <article className="post">
       <Media containerWidth={containerWidth} postData={postData} />
 
+      <textarea
+        hidden
+        id={`debug-${postData.id}`}
+        value={JSON.stringify(postData, null, 2)}
+      />
+
       <div className="post__info" ref={squareRef}>
         <h2 className="post__title">
           <small className="post__subreddit">
