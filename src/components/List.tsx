@@ -41,7 +41,12 @@ function List({ sort, subreddit }: Props): JSX.Element {
 
           const filteredPosts = response.data.children.filter(
             (post) =>
-              !post.data.stickied && !['nsfw'].includes(post.data.thumbnail),
+              // ignore moderator notices, etc.
+              !post.data.stickied &&
+              // must be logged-in to view nsfw
+              !['nsfw'].includes(post.data.thumbnail) &&
+              // hide John Oliver protest
+              !post.data.title.toLowerCase().includes('oliver'),
           )
 
           return {
