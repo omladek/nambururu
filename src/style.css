@@ -582,19 +582,6 @@ table td {
   opacity: 0;
 }
 
-@media (prefers-color-scheme: dark) {
-  .search input,
-  .filters__btn {
-    background-color: transparent;
-    border: 1px solid var(--color-accent);
-    color: var(--color-link);
-  }
-
-  .search input:focus {
-    outline: 0;
-  }
-}
-
 .audio {
   width: 100%;
 }
@@ -614,4 +601,68 @@ table td {
   position: absolute;
   right: 0;
   top: 0;
+}
+
+.editor {
+  background-color: var(--color-post);
+  padding: var(--gutter);
+
+  & fieldset {
+    border: 0;
+    padding: 0;
+  }
+
+  & label {
+    display: block;
+    font-weight: bold;
+  }
+
+  & p {
+    font-size: 0.75rem;
+  }
+
+  & textarea {
+    min-height: 10rem;
+    padding: 1em;
+    width: 100%;
+  }
+
+  & button {
+    display: block;
+    width: 100%;
+  }
+}
+
+.editor__btn {
+  background-color: transparent;
+  border: 1px solid var(--color-accent);
+  color: var(--color-link);
+  display: block;
+  height: 2.5rem;
+  max-width: 20em;
+  padding-inline: var(--gutter);
+  width: 100%;
+}
+
+.editor + .loader {
+  display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  .search input,
+  .filters__btn,
+  .editor__btn {
+    background-color: transparent;
+    border: 1px solid var(--color-accent);
+    color: var(--color-link);
+  }
+
+  .search input:focus {
+    outline: 0;
+  }
+
+  .editor textarea {
+    background-color: var(--color-accent);
+    color: var(--color-link);
+  }
 }

@@ -15,13 +15,13 @@ const getSubredditJSONUrl = ({
   let sortBase = sort
 
   if (subreddit === 'my-mix') {
-    subredditBase = (import.meta.env.VITE_SUBREDDITS || 'best')
+    subredditBase = (localStorage.getItem('myMix') || 'best')
       .split(',')
       .join('+')
   }
 
   if (subreddit === 'my-selection') {
-    subredditBase = (import.meta.env.VITE_SUBREDDITS_SELECTION || 'best')
+    subredditBase = (localStorage.getItem('mySelection') || 'best')
       .split(',')
       .join('+')
   }
@@ -30,7 +30,7 @@ const getSubredditJSONUrl = ({
     ? subredditBase
     : `r/${subredditBase}`
 
-  if (basicSubreddits.includes(subreddit)) {
+  if (!subredditBase.startsWith('r/')) {
     sortBase = ''
   } else if (sort === '') {
     sortBase = ``

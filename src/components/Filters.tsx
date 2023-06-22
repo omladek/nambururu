@@ -21,11 +21,11 @@ function Filters({ onSubmit, subreddits }: Props): JSX.Element {
   const searchRef = useRef<HTMLInputElement>(null)
   const [optionsCache, setOptionsCache] = useState<Option[]>(() => {
     const userSubreddits: string[] = (
-      import.meta.env.VITE_SUBREDDITS || 'best'
+      localStorage.getItem('myMix') || 'best'
     ).split(',')
 
     const userSubredditsSelection: string[] = (
-      import.meta.env.VITE_SUBREDDITS_SELECTION || ''
+      localStorage.getItem('mySelection') || ''
     ).split(',')
 
     return getOptions([
