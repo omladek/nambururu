@@ -10,7 +10,9 @@ export default defineConfig({
   },
   plugins: [
     preact(),
-    VitePWA({ registerType: 'autoUpdate' }),
+    VitePWA({
+      registerType: 'autoUpdate',
+    }),
     stylelint(),
     eslint(),
   ],
