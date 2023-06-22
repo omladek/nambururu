@@ -33,6 +33,7 @@ body {
   line-height: 1.5;
   margin: 0;
   padding: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
 @media (min-width: 40em) {
@@ -599,4 +600,15 @@ table td {
   .audio {
     opacity: 0.5;
   }
+}
+
+.thumbnail__hd {
+  background-color: var(--color-post);
+  color: var(--color-text);
+  display: block;
+  font-size: 0.75rem;
+  padding-inline: 0.5em;
+  position: absolute;
+  right: 0;
+  top: 0;
 }
