@@ -3,6 +3,7 @@ import { JSX } from 'preact'
 import debounce from 'lodash.debounce'
 import { useQuery } from '@tanstack/react-query'
 import { Option, getOptions } from '../utilities/getOptions'
+import basicSubreddits from '../constants/basicSubreddits'
 
 interface Props {
   subreddits: string[]
@@ -31,6 +32,7 @@ function Filters({ onSubmit, subreddits }: Props): JSX.Element {
       ...userSubreddits,
       ...userSubredditsSelection,
       ...subreddits,
+      ...basicSubreddits,
     ])
   })
   const { data, isLoading } = useQuery<

@@ -1,3 +1,5 @@
+import basicSubreddits from '../constants/basicSubreddits'
+
 interface Props {
   subreddit: string
   after?: string
@@ -24,10 +26,11 @@ const getSubredditJSONUrl = ({
       .join('+')
   }
 
-  subredditBase =
-    subredditBase === 'best' ? subredditBase : `r/${subredditBase}`
+  subredditBase = basicSubreddits.includes(subredditBase)
+    ? subredditBase
+    : `r/${subredditBase}`
 
-  if (subreddit === 'best') {
+  if (basicSubreddits.includes(subreddit)) {
     sortBase = ''
   } else if (sort === '') {
     sortBase = ``
@@ -35,12 +38,14 @@ const getSubredditJSONUrl = ({
     sortBase = `/${sort}`
   }
 
+  const limit = window.matchMedia('(min-width: 40em)').matches ? 100 : 50
+
   const url = new URL(
     `https://www.reddit.com/${subredditBase}${sortBase}/.json`,
   )
 
   url.searchParams.append('json_raw', '1')
-  url.searchParams.append('limit', '25')
+  url.searchParams.append('limit', String(limit))
 
   if (after) {
     url.searchParams.append('after', after)
