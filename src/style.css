@@ -135,7 +135,9 @@ select {
 }
 
 .thumbnail__link {
+  aspect-ratio: var(--ar-width, 16) / var(--ar-height, 9);
   display: block;
+  position: relative;
 }
 
 video:-webkit-media-controls-volume-slider {

@@ -96,10 +96,14 @@ function List({ sort, subreddit }: Props): JSX.Element {
       {nonEmptyPages.map((page) => {
         return (
           <Fragment key={page.after || 'page-last'}>
-            {page.posts.map((post) => {
+            {page.posts.map((post, postIndex) => {
               return (
                 <ErrorBoundary key={post.data.id}>
-                  <Post key={post.data.id} post={post} />
+                  <Post
+                    key={post.data.id}
+                    mediaLoading={postIndex === 0 ? 'eager' : 'lazy'}
+                    post={post}
+                  />
                 </ErrorBoundary>
               )
             })}

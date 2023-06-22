@@ -11,9 +11,14 @@ import getImageResolutionByContainerWidth from '../utilities/getImageResolutionB
 interface Props {
   postData: ChildData
   containerWidth: number
+  mediaLoading: 'lazy' | 'eager'
 }
 
-function Media({ containerWidth, postData }: Props): JSX.Element | null {
+function Media({
+  containerWidth,
+  mediaLoading,
+  postData,
+}: Props): JSX.Element | null {
   const {
     domain,
     is_gallery,
@@ -65,10 +70,19 @@ function Media({ containerWidth, postData }: Props): JSX.Element | null {
         height={Math.max(
           ...[thumbnail_height || 0, preview?.images[0].source.height || 0],
         )}
+        loading={mediaLoading}
+        retina={
+          getImageResolutionByContainerWidth(
+            preview?.images[0].resolutions || [],
+            containerWidth,
+            2,
+          )?.url || ''
+        }
         thumbnail={
           getImageResolutionByContainerWidth(
             preview?.images[0].resolutions || [],
             containerWidth,
+            1,
           )?.url || thumbnail
         }
         width={Math.max(
@@ -91,7 +105,13 @@ function Media({ containerWidth, postData }: Props): JSX.Element | null {
   }
 
   if (hasGallery) {
-    return <Gallery containerWidth={containerWidth} items={media_metadata} />
+    return (
+      <Gallery
+        containerWidth={containerWidth}
+        items={media_metadata}
+        mediaLoading={mediaLoading}
+      />
+    )
   }
 
   if (hasYoutubeIframe) {
@@ -114,7 +134,7 @@ function Media({ containerWidth, postData }: Props): JSX.Element | null {
           alt={`logo: ${domain}`}
           className="post-link__logo"
           decoding="async"
-          loading="lazy"
+          loading={mediaLoading}
           src={`https://logo.clearbit.com/${domain.replace(/^m./, '')}`}
         />
       </a>
@@ -125,6 +145,7 @@ function Media({ containerWidth, postData }: Props): JSX.Element | null {
     return (
       <Thumbnail
         height={thumbnail_height || 90}
+        loading={mediaLoading}
         thumbnail={url}
         width={thumbnail_width || 160}
       />

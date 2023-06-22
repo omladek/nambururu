@@ -14,9 +14,10 @@ import updateAnchorTags from '../utilities/updateAnchorTags'
 
 interface Props {
   post: Thread
+  mediaLoading: 'lazy' | 'eager'
 }
 
-function Post({ post }: Props): JSX.Element {
+function Post({ mediaLoading, post }: Props): JSX.Element {
   const [showComments, setShowComments] = useState<boolean>(false)
   const [squareRef, { width: containerWidth }] = useElementSize()
 
@@ -44,7 +45,11 @@ function Post({ post }: Props): JSX.Element {
 
   return (
     <article className="post">
-      <Media containerWidth={containerWidth} postData={postData} />
+      <Media
+        containerWidth={containerWidth}
+        mediaLoading={mediaLoading}
+        postData={postData}
+      />
 
       <textarea
         hidden

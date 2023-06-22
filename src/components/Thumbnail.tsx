@@ -9,18 +9,30 @@ interface Props {
   height: number
   width: number
   loading?: 'lazy' | 'eager'
+  retina?: string
 }
 
 function Thumbnail({
   fullSize = '',
   height,
   loading = 'lazy',
+  retina,
   thumbnail,
   width,
 }: Props): JSX.Element {
   const [showFullSize, setShowFullSize] = useState(!fullSize)
   const safeThumbnail = deescapeHtml(thumbnail)
   const safeFullsize = deescapeHtml(fullSize || '') || safeThumbnail
+  const safeRetina = deescapeHtml(retina || '')
+
+  const srcSetSD = showFullSize && fullSize ? safeFullsize : safeThumbnail
+  let srcSetHD = showFullSize && fullSize ? safeFullsize : safeRetina
+
+  if (!safeRetina) {
+    srcSetHD = ''
+  } else {
+    srcSetHD = `, ${srcSetHD} 2x`
+  }
 
   const handleClick: JSX.MouseEventHandler<HTMLAnchorElement> = (event) => {
     if (!showFullSize) {
@@ -37,6 +49,10 @@ function Thumbnail({
         href={safeFullsize}
         onClick={fullSize ? handleClick : undefined}
         rel="noopener noreferrer"
+        style={{
+          '--ar-width': width,
+          '--ar-height': height,
+        }}
         target="_blank"
       >
         {fullSize && (
@@ -48,7 +64,7 @@ function Thumbnail({
           decoding="async"
           height={height}
           loading={loading}
-          src={showFullSize && fullSize ? safeFullsize : safeThumbnail}
+          srcSet={`${srcSetSD} 1x${srcSetHD}`}
           width={width}
         />
       </a>

@@ -9,14 +9,20 @@ interface ThumbnailImage {
   fullSize: string
   height: number
   width: number
+  retina: string
 }
 
 interface Props {
   items: RedditMediaMetadata
   containerWidth: number
+  mediaLoading: 'lazy' | 'eager'
 }
 
-function Gallery({ containerWidth, items }: Props): JSX.Element | null {
+function Gallery({
+  containerWidth,
+  items,
+  mediaLoading,
+}: Props): JSX.Element | null {
   const thumbnails: ThumbnailImage[] = Object.keys(items).reduce(
     (acc: ThumbnailImage[], curr) => {
       const image = items[curr]
@@ -32,11 +38,18 @@ function Gallery({ containerWidth, items }: Props): JSX.Element | null {
         containerWidth,
       )
 
+      const responsizeImageRetina = getImageByContainerWidth(
+        image.p,
+        2,
+        containerWidth,
+      )
+
       return [
         ...acc,
         {
           thumbnail: responsizeImageStandard.u,
           fullSize: fullSizeImage.u,
+          retina: responsizeImageRetina.u,
           height: fullSizeImage.y,
           width: fullSizeImage.x,
         },
@@ -56,6 +69,8 @@ function Gallery({ containerWidth, items }: Props): JSX.Element | null {
           fullSize={thumbnail.fullSize}
           height={thumbnail.height}
           key={thumbnail.thumbnail}
+          loading={mediaLoading}
+          retina={thumbnail.retina}
           thumbnail={thumbnail.thumbnail}
           width={thumbnail.width}
         />
