@@ -18,7 +18,7 @@ function Thumbnail({
   thumbnail,
   width,
 }: Props): JSX.Element {
-  const [showFullSize, setShowFullSize] = useState(false)
+  const [showFullSize, setShowFullSize] = useState(!fullSize)
   const safeThumbnail = deescapeHtml(thumbnail)
   const safeFullsize = deescapeHtml(fullSize || '') || safeThumbnail
 
@@ -35,17 +35,20 @@ function Thumbnail({
       <a
         className="thumbnail__link"
         href={safeFullsize}
-        onClick={handleClick}
+        onClick={fullSize ? handleClick : undefined}
         rel="noopener noreferrer"
         target="_blank"
       >
+        {fullSize && (
+          <span className="thumbnail__hd">{showFullSize ? 'HD' : 'SD'}</span>
+        )}
         <img
           alt=""
           className="thumbnail"
           decoding="async"
           height={height}
           loading={loading}
-          src={showFullSize ? safeFullsize : safeThumbnail}
+          src={showFullSize && fullSize ? safeFullsize : safeThumbnail}
           width={width}
         />
       </a>
