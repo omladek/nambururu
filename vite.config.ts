@@ -5,6 +5,7 @@ import eslint from 'vite-plugin-eslint'
 import preact from '@preact/preset-vite'
 
 export default defineConfig({
+  base: '/nambururu/',
   build: {
     target: 'esnext',
   },
