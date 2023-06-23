@@ -11,6 +11,7 @@
   --color-accent: #dbdbdb;
   --color-post: #fbfbfb;
   --gutter: 0.5rem;
+  --form-element-height: 2rem;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -77,7 +78,7 @@ blockquote {
 input,
 button,
 select {
-  height: 2rem;
+  height: var(--form-element-height);
   padding-inline: 0.25em;
 }
 
@@ -191,21 +192,21 @@ video::-webkit-media-controls-volume-slider-container {
   font-weight: bold;
 }
 
-@media (max-width: 25em) {
+@media (max-width: 40em) {
   .filters {
     display: grid;
-    grid-template-columns: 75% 1fr;
+    grid-template-columns: 50% 1fr;
   }
 }
 
-@media (min-width: 25em) {
+@media (min-width: 40em) {
   .filters {
     gap: var(--gutter);
     padding-inline: var(--gutter);
   }
 }
 
-@media (max-width: 25em) {
+@media (max-width: 40em) {
   .label:not(.label--touch) {
     align-items: center;
     display: flex;
@@ -552,6 +553,10 @@ table td {
   width: 100%;
 }
 
+.search input:not(:placeholder-shown) {
+  padding-right: var(--form-element-height);
+}
+
 .search:has(input:placeholder-shown) .search__btn {
   display: none;
 }
@@ -708,5 +713,20 @@ table td {
 
   100% {
     transform: rotate(360deg);
+  }
+}
+
+.filters__settings {
+  align-items: center;
+  display: flex;
+  height: var(--form-element-height);
+  justify-content: center;
+  text-decoration: none;
+  width: 100%;
+}
+
+@media (prefers-color-scheme: dark) {
+  .filters__settings {
+    filter: grayscale(100%);
   }
 }

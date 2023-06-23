@@ -262,6 +262,12 @@ function Filters({ onSubmit, subreddits }: Props): JSX.Element {
             ))}
           </select>
         </fieldset>
+
+        <div className="fieldset">
+          <a className="filters__settings" href="/" title="settings">
+            ⚙<span className="sr-only">Settings</span>
+          </a>
+        </div>
       </form>
     </footer>
   )
