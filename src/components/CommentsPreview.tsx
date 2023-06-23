@@ -14,21 +14,26 @@ interface Props {
 }
 
 function CommentsPreview({ id }: Props): JSX.Element | null {
-  const { data, error, isLoading } = useQuery<
-    CommentsResult[][],
-    { message: string; reason?: string }
-  >({
+  const { data, error, isLoading } = useQuery({
     queryKey: ['comments', id],
     queryFn: ({ signal }) =>
       Promise.all([
         fetch(
           `https://www.reddit.com/comments/${id}/.json?limit=2&sort=best&json_raw=1`,
           { signal },
-        ).then((response) => response.json()),
+        ).then(async (response) => {
+          const comments: CommentsResult[] = await response.json()
+
+          return { comments, type: 'best' }
+        }),
         fetch(
           `https://www.reddit.com/comments/${id}/.json?limit=2&sort=controversial&json_raw=1`,
           { signal },
-        ).then((response) => response.json()),
+        ).then(async (response) => {
+          const comments: CommentsResult[] = await response.json()
+
+          return { comments, type: 'controversial' }
+        }),
       ]),
   })
 
@@ -40,7 +45,8 @@ function CommentsPreview({ id }: Props): JSX.Element | null {
     const unique: CommentType[] = []
 
     data.forEach((commentsByVotes) => {
-      const groups = commentsByVotes.map((group) =>
+      const { comments, type } = commentsByVotes
+      const groups = comments.map((group) =>
         group.data.children.filter((comment) => !comment.data.stickied),
       )
 
@@ -62,7 +68,7 @@ function CommentsPreview({ id }: Props): JSX.Element | null {
 
             found = true
 
-            unique.push(comment)
+            unique.push({ ...comment, data: { ...comment.data, author: type } })
           })
       })
     })
@@ -76,7 +82,7 @@ function CommentsPreview({ id }: Props): JSX.Element | null {
     return (
       <p>
         An error has occurred:
-        {error.message}
+        {error instanceof Error && <span>{error.message}</span>}
       </p>
     )
   }
