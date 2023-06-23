@@ -631,9 +631,14 @@ table td {
   color: var(--color-link);
   display: block;
   height: 2.5rem;
-  max-width: 20em;
   padding-inline: var(--gutter);
   width: 100%;
+}
+
+@media (min-width: 40em) {
+  .editor__btn {
+    max-width: 20em;
+  }
 }
 
 .editor + .loader {
