@@ -1,7 +1,7 @@
 import { JSX } from 'preact'
 import { Comment as CommentType } from '../types/reddit-api/CommentsResult.type'
 import deescapeHtml from '../utilities/deescapeHtml'
-import formatNumber from './formatNumber'
+import formatNumber from '../utilities/formatNumber'
 import RichText from './RichText'
 import updateAnchorTags from '../utilities/updateAnchorTags'
 

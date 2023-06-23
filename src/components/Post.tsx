@@ -8,7 +8,7 @@ import deescapeHtml from '../utilities/deescapeHtml'
 import Media from './Media'
 import CommentsPreview from './CommentsPreview'
 import calculateDownvotes from '../utilities/calculateDownvotes'
-import formatNumber from './formatNumber'
+import formatNumber from '../utilities/formatNumber'
 import RichText from './RichText'
 import updateAnchorTags from '../utilities/updateAnchorTags'
 
