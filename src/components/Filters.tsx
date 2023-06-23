@@ -266,7 +266,7 @@ function Filters({ onSubmit, subreddits }: Props): JSX.Element {
         </fieldset>
 
         <div className="fieldset">
-          <a className="filters__settings" href="/" title="settings">
+          <a className="filters__settings" href="/nambururu/" title="settings">
             ⚙<span className="sr-only">Settings</span>
           </a>
         </div>
