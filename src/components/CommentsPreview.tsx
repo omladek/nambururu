@@ -7,6 +7,7 @@ import {
   Comment as CommentType,
 } from '../types/reddit-api/CommentsResult.type'
 import Comment from './Comment'
+import Loader from './Loader'
 
 interface Props {
   id: string
@@ -69,7 +70,7 @@ function CommentsPreview({ id }: Props): JSX.Element | null {
     return unique
   }, [data])
 
-  if (isLoading) return <p>loading comments&hellip;</p>
+  if (isLoading) return <Loader size="xs" />
 
   if (error) {
     return (

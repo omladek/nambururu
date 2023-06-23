@@ -4,6 +4,7 @@ import debounce from 'lodash.debounce'
 import { useQuery } from '@tanstack/react-query'
 import { Option, getOptions } from '../utilities/getOptions'
 import basicSubreddits from '../constants/basicSubreddits'
+import Loader from './Loader'
 
 interface Props {
   subreddits: string[]
@@ -184,7 +185,7 @@ function Filters({ onSubmit, subreddits }: Props): JSX.Element {
             title="refresh"
             type="submit"
           >
-            {isLoading ? <>⌛</> : <>🔍</>}
+            {isLoading ? <Loader size="xs" /> : <>🔍</>}
           </button>
         </fieldset>
       </form>
