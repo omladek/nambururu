@@ -21,13 +21,15 @@ function Filters({ onSubmit, subreddits }: Props): JSX.Element {
   const [subreddit, setSubreddit] = useState('')
   const searchRef = useRef<HTMLInputElement>(null)
   const [optionsCache, setOptionsCache] = useState<Option[]>(() => {
-    const userSubreddits: string[] = (
-      localStorage.getItem('myMix') || 'best'
-    ).split(',')
+    const userSubreddits: string[] = (localStorage.getItem('myMix') || 'best')
+      .split(',')
+      .filter(Boolean)
 
     const userSubredditsSelection: string[] = (
       localStorage.getItem('mySelection') || ''
-    ).split(',')
+    )
+      .split(',')
+      .filter(Boolean)
 
     return getOptions([
       ...userSubreddits,

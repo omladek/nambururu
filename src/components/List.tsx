@@ -18,10 +18,14 @@ interface Props {
 function List({ sort, subreddit }: Props): JSX.Element {
   const myBlockedSubreddits = (
     localStorage.getItem('myBlockedSubreddits')?.split(',') || []
-  ).map((blockedSubreddit) => blockedSubreddit.toLowerCase())
+  )
+    .map((blockedSubreddit) => blockedSubreddit.toLowerCase())
+    .filter(Boolean)
   const myBlockedTitleKeywords = (
     localStorage.getItem('myBlockedTitleKeywords')?.split(',') || []
-  ).map((keyword) => keyword.toLowerCase())
+  )
+    .map((keyword) => keyword.toLowerCase())
+    .filter(Boolean)
   const { inView, ref } = useInView({ rootMargin: '500px 0px 0px 0px' })
   const {
     data,
@@ -46,22 +50,30 @@ function List({ sort, subreddit }: Props): JSX.Element {
             throw new Error(JSON.stringify(response, null, 2))
           }
 
-          const filteredPosts = response.data.children.filter(
-            (post) =>
-              // ignore moderator notices, etc.
-              !post.data.stickied &&
-              // must be logged-in to view nsfw
-              !['nsfw'].includes(post.data.thumbnail) &&
-              // blocked by user subreddit(s) preferences
-              !myBlockedSubreddits.includes(
-                post.data.subreddit.toLowerCase(),
-              ) &&
-              // blocked by user title keyword(s) preferences
-              !containsKeyword(
-                myBlockedTitleKeywords,
-                post.data.title.toLowerCase(),
-              ),
-          )
+          const filteredPosts = response.data.children.filter((post) => {
+            // ignore moderator notices, etc.
+            if (post.data.stickied) {
+              return false
+            }
+
+            // must be logged-in to view nsfw
+            if (['nsfw'].includes(post.data.thumbnail)) {
+              return false
+            }
+
+            // blocked by user subreddit(s) preferences
+            if (
+              myBlockedSubreddits.includes(post.data.subreddit.toLowerCase())
+            ) {
+              return false
+            }
+
+            // blocked by user title keyword(s) preferences
+            return !containsKeyword(
+              myBlockedTitleKeywords,
+              post.data.title.toLowerCase(),
+            )
+          })
 
           return {
             posts: filteredPosts,
