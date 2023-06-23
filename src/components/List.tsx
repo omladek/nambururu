@@ -8,6 +8,7 @@ import { ThreadResult } from '../types/reddit-api/ThreadsResult.type'
 import Post from './Post'
 import Loader from './Loader'
 import ErrorBoundary from './ErrorBoundary'
+import containsKeyword from '../utilities/containsKeyword'
 
 interface Props {
   subreddit: string
@@ -15,6 +16,12 @@ interface Props {
 }
 
 function List({ sort, subreddit }: Props): JSX.Element {
+  const myBlockedSubreddits = (
+    localStorage.getItem('myBlockedSubreddits')?.split(',') || []
+  ).map((blockedSubreddit) => blockedSubreddit.toLowerCase())
+  const myBlockedTitleKeywords = (
+    localStorage.getItem('myBlockedTitleKeywords')?.split(',') || []
+  ).map((keyword) => keyword.toLowerCase())
   const { inView, ref } = useInView({ rootMargin: '500px 0px 0px 0px' })
   const {
     data,
@@ -45,8 +52,15 @@ function List({ sort, subreddit }: Props): JSX.Element {
               !post.data.stickied &&
               // must be logged-in to view nsfw
               !['nsfw'].includes(post.data.thumbnail) &&
-              // hide John Oliver protest
-              !post.data.title.toLowerCase().includes('oliver'),
+              // blocked by user subreddit(s) preferences
+              !myBlockedSubreddits.includes(
+                post.data.subreddit.toLowerCase(),
+              ) &&
+              // blocked by user title keyword(s) preferences
+              !containsKeyword(
+                myBlockedTitleKeywords,
+                post.data.title.toLowerCase(),
+              ),
           )
 
           return {
@@ -86,6 +100,12 @@ function List({ sort, subreddit }: Props): JSX.Element {
     )
 
   const nonEmptyPages = (data?.pages || []).filter((page) => page.posts.length)
+
+  const isBlocked = myBlockedSubreddits.includes(subreddit.toLowerCase())
+
+  if (isBlocked) {
+    return <p className="message">This subreddit is blocked by you!</p>
+  }
 
   if (!nonEmptyPages.length) {
     return <p className="message">No results</p>
