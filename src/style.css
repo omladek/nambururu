@@ -195,7 +195,7 @@ video::-webkit-media-controls-volume-slider-container {
 @media (max-width: 40em) {
   .filters {
     display: grid;
-    grid-template-columns: 50% 1fr;
+    grid-template-columns: 56% 1fr;
   }
 }
 
@@ -553,12 +553,13 @@ table td {
   width: 100%;
 }
 
-.search input:not(:placeholder-shown) {
+.search input {
   padding-right: var(--form-element-height);
 }
 
 .search:has(input:placeholder-shown) .search__btn {
-  display: none;
+  pointer-events: none;
+  visibility: hidden;
 }
 
 .search__btn {
