@@ -142,8 +142,10 @@ function Media({
           alt={`logo: ${domain}`}
           className="post-link__logo"
           decoding="async"
+          height="50"
           loading={mediaLoading}
           src={`https://logo.clearbit.com/${domain.replace(/^m./, '')}`}
+          width="50"
         />
       </a>
     )

@@ -23,6 +23,10 @@ function List({ sort, subreddit }: Props): JSX.Element {
       getNextPageParam: (lastPage) => lastPage.after || undefined,
     })
 
+  const lazyLoadingLimit = window.matchMedia('(min-width: 40em)').matches
+    ? 4
+    : 2
+
   useEffect(() => {
     if (inView) {
       fetchNextPage()
@@ -57,7 +61,9 @@ function List({ sort, subreddit }: Props): JSX.Element {
                 <ErrorBoundary key={post.data.id}>
                   <Post
                     key={post.data.id}
-                    mediaLoading={postIndex === 0 ? 'eager' : 'lazy'}
+                    mediaLoading={
+                      postIndex <= lazyLoadingLimit ? 'eager' : 'lazy'
+                    }
                     post={post}
                   />
                 </ErrorBoundary>
