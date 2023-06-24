@@ -1,49 +1,31 @@
 import { JSX } from 'preact'
 import { useState } from 'preact/hooks'
 
+import Storage from '../constants/storage'
+import getDefaultValue from '../utilities/getDefaultValue'
+
 interface Props {
   children: JSX.Element
 }
 
 function Editor({ children }: Props): JSX.Element {
-  const [myMix] = useState(localStorage.getItem('myMix') || '')
-  const [mySelection] = useState(localStorage.getItem('mySelection') || '')
-  const [myBlockedSubreddits] = useState(
-    localStorage.getItem('myBlockedSubreddits') || '',
-  )
-  const [myBlockedTitleKeywords] = useState(
-    localStorage.getItem('myBlockedTitleKeywords') || '',
-  )
-
   const [isInitialized, setIsInitialized] = useState(false)
+
+  const myMix = getDefaultValue(Storage.MY_MIX)
+  const mySelection = getDefaultValue(Storage.MY_SELECTION)
+  const myBlockedSubreddits = getDefaultValue(Storage.MY_BLOCKED_SUBREDDITS)
+  const myBlockedTitleKeywords = getDefaultValue(
+    Storage.MY_BLOCKED_TITLE_KEYWORDS,
+  )
 
   const handleSubmit: JSX.GenericEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault()
 
-    const nextMyMix = (
-      new FormData(event.currentTarget).get('my-mix')?.toString() || ''
-    ).trim()
+    const entries = [...new FormData(event.currentTarget).entries()]
 
-    const nextMySelection = (
-      new FormData(event.currentTarget).get('my-selection')?.toString() || ''
-    ).trim()
-
-    const nextMyBlockedSubreddits = (
-      new FormData(event.currentTarget)
-        .get('my-blocked-subreddits')
-        ?.toString() || ''
-    ).trim()
-
-    const nextMyBlockedTitleKeywords = (
-      new FormData(event.currentTarget)
-        .get('my-blocked-title-keywords')
-        ?.toString() || ''
-    ).trim()
-
-    localStorage.setItem('myMix', nextMyMix)
-    localStorage.setItem('mySelection', nextMySelection)
-    localStorage.setItem('myBlockedSubreddits', nextMyBlockedSubreddits)
-    localStorage.setItem('myBlockedTitleKeywords', nextMyBlockedTitleKeywords)
+    entries.forEach(([key, value]) => {
+      localStorage.setItem(key, value.toString())
+    })
 
     setIsInitialized(true)
   }
@@ -55,36 +37,42 @@ function Editor({ children }: Props): JSX.Element {
           <h1 className="editor__title">Settings</h1>
 
           <fieldset className="editor__fieldset">
-            <label htmlFor="my-mix">my mix</label>
-            <p>comma separated subreddit names</p>
-            <textarea defaultValue={myMix} id="my-mix" name="my-mix" />
-          </fieldset>
-
-          <fieldset className="editor__fieldset">
-            <label htmlFor="my-selection">my selection</label>
+            <label htmlFor={Storage.MY_MIX}>my mix</label>
             <p>comma separated subreddit names</p>
             <textarea
-              defaultValue={mySelection}
-              id="my-selection"
-              name="my-selection"
+              defaultValue={myMix}
+              id={Storage.MY_MIX}
+              name={Storage.MY_MIX}
             />
           </fieldset>
 
           <fieldset className="editor__fieldset">
-            <label htmlFor="my-blocked-subreddits">my blocked subreddits</label>
+            <label htmlFor={Storage.MY_SELECTION}>my selection</label>
+            <p>comma separated subreddit names</p>
+            <textarea
+              defaultValue={mySelection}
+              id={Storage.MY_SELECTION}
+              name={Storage.MY_SELECTION}
+            />
+          </fieldset>
+
+          <fieldset className="editor__fieldset">
+            <label htmlFor={Storage.MY_BLOCKED_SUBREDDITS}>
+              my blocked subreddits
+            </label>
             <p>
               comma separated subreddit names which should not be shown in the
               best/top/hot list(s)
             </p>
             <textarea
               defaultValue={myBlockedSubreddits}
-              id="my-blocked-subreddits"
-              name="my-blocked-subreddits"
+              id={Storage.MY_BLOCKED_SUBREDDITS}
+              name={Storage.MY_BLOCKED_SUBREDDITS}
             />
           </fieldset>
 
           <fieldset className="editor__fieldset">
-            <label htmlFor="my-blocked-title-keywords">
+            <label htmlFor={Storage.MY_BLOCKED_TITLE_KEYWORDS}>
               my blocked title keywords
             </label>
             <p>
@@ -93,8 +81,8 @@ function Editor({ children }: Props): JSX.Element {
             </p>
             <textarea
               defaultValue={myBlockedTitleKeywords}
-              id="my-blocked-title-keywords"
-              name="my-blocked-title-keywords"
+              id={Storage.MY_BLOCKED_TITLE_KEYWORDS}
+              name={Storage.MY_BLOCKED_TITLE_KEYWORDS}
             />
           </fieldset>
 

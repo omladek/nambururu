@@ -1,4 +1,7 @@
 import basicSubreddits from '../constants/basicSubreddits'
+import getSubredditsURLValue from './getSubredditsURLValue'
+
+import Storage from '../constants/storage'
 
 interface Props {
   subreddit: string
@@ -14,16 +17,12 @@ const getSubredditJSONUrl = ({
   let subredditBase = subreddit
   let sortBase = sort
 
-  if (subreddit === 'my-mix') {
-    subredditBase = (localStorage.getItem('myMix') || 'best')
-      .split(',')
-      .join('+')
+  if (subreddit === Storage.MY_MIX) {
+    subredditBase = getSubredditsURLValue(Storage.MY_MIX)
   }
 
-  if (subreddit === 'my-selection') {
-    subredditBase = (localStorage.getItem('mySelection') || 'best')
-      .split(',')
-      .join('+')
+  if (subreddit === Storage.MY_SELECTION) {
+    subredditBase = getSubredditsURLValue(Storage.MY_SELECTION)
   }
 
   subredditBase = basicSubreddits.includes(subredditBase)

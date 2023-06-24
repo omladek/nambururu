@@ -3,11 +3,12 @@ import { JSX } from 'preact'
 
 import Filters from './components/Filters'
 import List from './components/List'
+import Storage from './constants/storage'
 
 function App(): JSX.Element {
   const [settings, setSettings] = useState<{ subreddit: string; sort: string }>(
     {
-      subreddit: 'my-mix',
+      subreddit: Storage.MY_MIX,
       sort: 'best',
     },
   )

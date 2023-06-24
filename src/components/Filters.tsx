@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query'
 import { Option, getOptions } from '../utilities/getOptions'
 import Loader from './Loader'
 import getInitialOptions from '../utilities/getInitialOptions'
+import Storage from '../constants/storage'
 
 interface Props {
   onSubmit: (subreddit: string) => void
@@ -157,8 +158,8 @@ function Filters({ onSort, onSubmit }: Props): JSX.Element {
             </button>
           </div>
           <datalist id="subreddits">
-            <option value="my-mix">my-mix</option>
-            <option value="my-selection">my-selection</option>
+            <option value={Storage.MY_MIX}>my-mix</option>
+            <option value={Storage.MY_SELECTION}>my-selection</option>
 
             {suggestionsCache.map((option) => (
               <option key={option.lowerCase} value={option.value}>
@@ -204,8 +205,8 @@ function Filters({ onSort, onSubmit }: Props): JSX.Element {
               }
             }}
           >
-            <option value="my-mix">my-mix</option>
-            <option value="my-selection">my-selection</option>
+            <option value={Storage.MY_MIX}>my-mix</option>
+            <option value={Storage.MY_SELECTION}>my-selection</option>
 
             {optionsCache.map((option) => (
               <option key={option.lowerCase} value={option.value}>

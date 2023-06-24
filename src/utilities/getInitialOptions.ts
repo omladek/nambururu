@@ -1,16 +1,11 @@
 import { Option, getOptions } from './getOptions'
 import basicSubreddits from '../constants/basicSubreddits'
+import parseStorage from './parseStorage'
+import Storage from '../constants/storage'
 
 const getInitialOptions = (): Option[] => {
-  const userSubreddits: string[] = (localStorage.getItem('myMix') || 'best')
-    .split(',')
-    .filter(Boolean)
-
-  const userSubredditsSelection: string[] = (
-    localStorage.getItem('mySelection') || ''
-  )
-    .split(',')
-    .filter(Boolean)
+  const userSubreddits = parseStorage(Storage.MY_MIX)
+  const userSubredditsSelection = parseStorage(Storage.MY_SELECTION)
 
   return getOptions([
     ...userSubreddits,
