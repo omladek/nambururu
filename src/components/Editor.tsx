@@ -50,55 +50,59 @@ function Editor({ children }: Props): JSX.Element {
 
   if (!isInitialized) {
     return (
-      <form className="editor" onSubmit={handleSubmit}>
-        <fieldset>
-          <label htmlFor="my-mix">my mix</label>
-          <p>comma separated subreddit names</p>
-          <textarea defaultValue={myMix} id="my-mix" name="my-mix" />
-        </fieldset>
+      <main className="main">
+        <form className="editor" onSubmit={handleSubmit}>
+          <h1 className="editor__title">Settings</h1>
 
-        <fieldset>
-          <label htmlFor="my-selection">my selection</label>
-          <p>comma separated subreddit names</p>
-          <textarea
-            defaultValue={mySelection}
-            id="my-selection"
-            name="my-selection"
-          />
-        </fieldset>
+          <fieldset className="editor__fieldset">
+            <label htmlFor="my-mix">my mix</label>
+            <p>comma separated subreddit names</p>
+            <textarea defaultValue={myMix} id="my-mix" name="my-mix" />
+          </fieldset>
 
-        <fieldset>
-          <label htmlFor="my-blocked-subreddits">my blocked subreddits</label>
-          <p>
-            comma separated subreddit names which should not be shown in the
-            best/top/hot list(s)
-          </p>
-          <textarea
-            defaultValue={myBlockedSubreddits}
-            id="my-blocked-subreddits"
-            name="my-blocked-subreddits"
-          />
-        </fieldset>
+          <fieldset className="editor__fieldset">
+            <label htmlFor="my-selection">my selection</label>
+            <p>comma separated subreddit names</p>
+            <textarea
+              defaultValue={mySelection}
+              id="my-selection"
+              name="my-selection"
+            />
+          </fieldset>
 
-        <fieldset>
-          <label htmlFor="my-blocked-title-keywords">
-            my blocked title keywords
-          </label>
-          <p>
-            comma separated words; if a post title includes this word(s) it will
-            not be shown
-          </p>
-          <textarea
-            defaultValue={myBlockedTitleKeywords}
-            id="my-blocked-title-keywords"
-            name="my-blocked-title-keywords"
-          />
-        </fieldset>
+          <fieldset className="editor__fieldset">
+            <label htmlFor="my-blocked-subreddits">my blocked subreddits</label>
+            <p>
+              comma separated subreddit names which should not be shown in the
+              best/top/hot list(s)
+            </p>
+            <textarea
+              defaultValue={myBlockedSubreddits}
+              id="my-blocked-subreddits"
+              name="my-blocked-subreddits"
+            />
+          </fieldset>
 
-        <button className="editor__btn" type="submit">
-          Save
-        </button>
-      </form>
+          <fieldset className="editor__fieldset">
+            <label htmlFor="my-blocked-title-keywords">
+              my blocked title keywords
+            </label>
+            <p>
+              comma separated words; if a post title includes this word(s) it
+              will not be shown
+            </p>
+            <textarea
+              defaultValue={myBlockedTitleKeywords}
+              id="my-blocked-title-keywords"
+              name="my-blocked-title-keywords"
+            />
+          </fieldset>
+
+          <button className="editor__btn" type="submit">
+            Save
+          </button>
+        </form>
+      </main>
     )
   }
 

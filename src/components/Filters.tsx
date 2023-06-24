@@ -3,11 +3,10 @@ import { JSX } from 'preact'
 import debounce from 'lodash.debounce'
 import { useQuery } from '@tanstack/react-query'
 import { Option, getOptions } from '../utilities/getOptions'
-import basicSubreddits from '../constants/basicSubreddits'
 import Loader from './Loader'
+import getInitialOptions from '../utilities/getInitialOptions'
 
 interface Props {
-  subreddits: string[]
   onSubmit: (payload: { subreddit: string; sort: string }) => void
 }
 
@@ -15,30 +14,18 @@ interface RedditNameResponse {
   names: string[]
 }
 
-function Filters({ onSubmit, subreddits }: Props): JSX.Element {
+function Filters({ onSubmit }: Props): JSX.Element {
   const formRef = useRef<HTMLFormElement>(null)
   const selectFormRef = useRef<HTMLFormElement>(null)
   const [subreddit, setSubreddit] = useState('')
   const searchRef = useRef<HTMLInputElement>(null)
-  const [optionsCache, setOptionsCache] = useState<Option[]>(() => {
-    const userSubreddits: string[] = (localStorage.getItem('myMix') || 'best')
-      .split(',')
-      .filter(Boolean)
-
-    const userSubredditsSelection: string[] = (
-      localStorage.getItem('mySelection') || ''
-    )
-      .split(',')
-      .filter(Boolean)
-
-    return getOptions([
-      ...userSubreddits,
-      ...userSubredditsSelection,
-      ...subreddits,
-      ...basicSubreddits,
-    ])
-  })
-  const { data, isLoading } = useQuery<
+  const [optionsCache, setOptionsCache] = useState<Option[]>(() =>
+    getInitialOptions(),
+  )
+  const [suggestionsCache, setSuggestionsCache] = useState<Option[]>(() =>
+    getInitialOptions(),
+  )
+  const { data, isInitialLoading, isLoading } = useQuery<
     RedditNameResponse,
     { message: string; reason?: string }
   >({
@@ -48,6 +35,7 @@ function Filters({ onSubmit, subreddits }: Props): JSX.Element {
         `https://www.reddit.com/api/search_reddit_names.json?query=${subreddit}`,
         { signal },
       ).then((response) => response.json()),
+    enabled: !!subreddit,
   })
 
   useEffect(() => {
@@ -55,7 +43,7 @@ function Filters({ onSubmit, subreddits }: Props): JSX.Element {
       return
     }
 
-    setOptionsCache((prev) => {
+    setSuggestionsCache((prev) => {
       return getOptions([...prev.map((option) => option.value), ...data.names])
     })
   }, [data?.names])
@@ -78,6 +66,10 @@ function Filters({ onSubmit, subreddits }: Props): JSX.Element {
     if (!subreddit) {
       return
     }
+
+    setOptionsCache((prev) => {
+      return getOptions([...prev.map((option) => option.value), subreddit])
+    })
 
     window.scrollTo({ top: 0 })
 
@@ -116,7 +108,9 @@ function Filters({ onSubmit, subreddits }: Props): JSX.Element {
       }
 
       if (
-        optionsCache.find((option) => option.lowerCase === value.toLowerCase())
+        suggestionsCache.find(
+          (option) => option.lowerCase === value.toLowerCase(),
+        )
       ) {
         return
       }
@@ -175,7 +169,7 @@ function Filters({ onSubmit, subreddits }: Props): JSX.Element {
             <option value="my-mix">my-mix</option>
             <option value="my-selection">my-selection</option>
 
-            {optionsCache.map((option) => (
+            {suggestionsCache.map((option) => (
               <option key={option.lowerCase} value={option.value}>
                 {option.value}
               </option>
@@ -187,7 +181,7 @@ function Filters({ onSubmit, subreddits }: Props): JSX.Element {
             title="refresh"
             type="submit"
           >
-            {isLoading ? <Loader size="xs" /> : <>🔍</>}
+            {isLoading && isInitialLoading ? <Loader size="xs" /> : <>🔍</>}
           </button>
         </fieldset>
       </form>
