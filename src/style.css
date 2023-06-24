@@ -345,6 +345,11 @@ video::-webkit-media-controls-volume-slider-container {
     padding-inline-end: var(--spacing);
   }
 
+  & dd:first-of-type {
+    display: block;
+    margin-block-end: calc(var(--spacing) * 2);
+  }
+
   & dd:not(:last-child) {
     margin-inline-end: calc(var(--spacing) * 2);
   }
@@ -406,6 +411,7 @@ video::-webkit-media-controls-volume-slider-container {
 }
 
 .youtube__logo {
+  background-color: var(--color-background);
   left: 50%;
   position: absolute;
   top: 50%;
@@ -414,6 +420,7 @@ video::-webkit-media-controls-volume-slider-container {
 
 @media (prefers-color-scheme: dark) {
   .youtube__logo {
+    background-color: var(--color-link);
     filter: grayscale(100%);
   }
 }
@@ -469,7 +476,7 @@ video::-webkit-media-controls-volume-slider-container {
 .thumbnail__btn {
   background: none;
   border: 0;
-  color: var(--color-accent);
+  color: var(--color-background);
   font-size: 5rem;
   height: 100%;
   left: 0;
@@ -498,10 +505,15 @@ video::-webkit-media-controls-volume-slider-container {
 .thumbnail-wrap--video {
   aspect-ratio: var(--ar-width) / var(--ar-height);
 
-  .thumbnail--video {
+  .thumbnail--video,
+  .thumbnail__bg {
     height: 100%;
     object-fit: cover;
     width: 100%;
+  }
+
+  .thumbnail__bg {
+    background-color: var(--color-accent);
   }
 }
 

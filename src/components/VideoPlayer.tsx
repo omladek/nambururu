@@ -28,9 +28,7 @@ function VideoPlayer({
     ['nsfw', 'spoiler', 'default', 'self', 'image', ''].includes(poster)
   )
 
-  const safePoster = hasPoster
-    ? deescapeHtml(poster)
-    : `https://www.satyr.dev/${width}x${height}/?text=reddit+video`
+  const safePoster = hasPoster ? deescapeHtml(poster) : null
 
   useEffect(() => {
     if (videoRef.current && audioRef.current) {
@@ -62,15 +60,19 @@ function VideoPlayer({
             ▶
           </button>
 
-          <img
-            alt=""
-            className="thumbnail thumbnail--video"
-            decoding="async"
-            height={height}
-            loading="lazy"
-            src={safePoster}
-            width={width}
-          />
+          {safePoster ? (
+            <img
+              alt=""
+              className="thumbnail thumbnail--video"
+              decoding="async"
+              height={height}
+              loading="lazy"
+              src={safePoster}
+              width={width}
+            />
+          ) : (
+            <div className="thumbnail__bg" />
+          )}
         </>
       ) : null}
 

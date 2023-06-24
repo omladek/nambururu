@@ -25,7 +25,6 @@ function YoutTube({ media }: Props): JSX.Element | null {
         className="youtube__logo"
         decoding="async"
         height="60"
-        src="https://satyr.dev/80x60/red?brand=youtube"
         srcSet="https://satyr.dev/80x60/FF0000?brand=youtube 1x, https://satyr.dev/160x120/FF0000?brand=youtube 2x"
         width="80"
       />

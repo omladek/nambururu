@@ -83,13 +83,11 @@ function Post({ mediaLoading, post }: Props): JSX.Element {
         <dl className="post__data">
           <dt className="sr-only">date:</dt>
 
-          <dd>
-            <time className="post__time">
-              {getDateFromUnixTime(created_utc)}
-            </time>
+          <dd className="post__time">
+            <time>{getDateFromUnixTime(created_utc)}</time>
           </dd>
 
-          <dt>🌐</dt>
+          <dt className="sr-only">domain:</dt>
 
           <dd className="post__domain">{domain}</dd>
 
