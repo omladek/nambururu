@@ -4,14 +4,18 @@ import { JSX } from 'preact'
 import Filters from './components/Filters'
 import List from './components/List'
 import Storage from './constants/storage'
+import Editor from './components/Editor'
 
 function App(): JSX.Element {
+  const [showEditor, setShowEditor] = useState(false)
   const [settings, setSettings] = useState<{ subreddit: string; sort: string }>(
     {
       subreddit: Storage.MY_MIX,
       sort: 'best',
     },
   )
+
+  const handleToggleSettings = (): void => setShowEditor((prev) => !prev)
 
   return (
     <>
@@ -24,22 +28,28 @@ function App(): JSX.Element {
         </p>
       </header>
 
-      <main className="main">
-        <List
-          key={JSON.stringify(settings)}
-          sort={settings.sort}
-          subreddit={settings.subreddit}
-        />
-      </main>
-
-      <Filters
-        onSort={(sort) => {
-          setSettings((prev) => ({ ...prev, sort }))
-        }}
-        onSubmit={(subreddit) => {
-          setSettings((prev) => ({ ...prev, subreddit }))
-        }}
-      />
+      {showEditor ? (
+        <Editor onSave={handleToggleSettings} />
+      ) : (
+        <>
+          <main className="main">
+            <List
+              key={JSON.stringify(settings)}
+              sort={settings.sort}
+              subreddit={settings.subreddit}
+            />
+          </main>
+          <Filters
+            onSort={(sort) => {
+              setSettings((prev) => ({ ...prev, sort }))
+            }}
+            onSubmit={(subreddit) => {
+              setSettings((prev) => ({ ...prev, subreddit }))
+            }}
+            onToggleSettings={handleToggleSettings}
+          />
+        </>
+      )}
     </>
   )
 }

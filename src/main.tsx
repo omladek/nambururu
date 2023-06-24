@@ -1,6 +1,6 @@
 import { render } from 'preact'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import Editor from './components/Editor'
+
 import App from './App'
 
 const queryClient = new QueryClient({
@@ -29,9 +29,7 @@ rootElement.removeChild(loaderElement)
 
 render(
   <QueryClientProvider client={queryClient}>
-    <Editor>
-      <App />
-    </Editor>
+    <App />
   </QueryClientProvider>,
   rootElement,
 )
