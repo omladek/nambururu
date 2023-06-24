@@ -6,7 +6,7 @@ import Gallery from './Gallery'
 import Thumbnail from './Thumbnail'
 import VideoPlayer from './VideoPlayer'
 import YoutTube from './YouTube'
-import getImageResolutionByContainerWidth from '../utilities/getImageResolutionByContainerWidth'
+import getImageByContainerWidth from '../utilities/getImageByContainerWidth'
 
 interface Props {
   postData: ChildData
@@ -72,18 +72,26 @@ function Media({
         )}
         loading={mediaLoading}
         retina={
-          getImageResolutionByContainerWidth(
-            preview?.images[0].resolutions || [],
+          getImageByContainerWidth(
+            preview?.images[0].resolutions.map((image) => ({
+              u: image.url,
+              x: image.width,
+              y: image.height,
+            })) || [],
             containerWidth,
             2,
-          )?.url || ''
+          )?.u || ''
         }
         thumbnail={
-          getImageResolutionByContainerWidth(
-            preview?.images[0].resolutions || [],
+          getImageByContainerWidth(
+            preview?.images[0].resolutions.map((image) => ({
+              u: image.url,
+              x: image.width,
+              y: image.height,
+            })) || [],
             containerWidth,
             1,
-          )?.url || thumbnail
+          )?.u || thumbnail
         }
         width={Math.max(
           ...[thumbnail_width || 0, preview?.images[0].source.width || 0],
