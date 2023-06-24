@@ -31,7 +31,14 @@ function App(): JSX.Element {
         />
       </main>
 
-      <Filters onSubmit={setSettings} />
+      <Filters
+        onSort={(sort) => {
+          setSettings((prev) => ({ ...prev, sort }))
+        }}
+        onSubmit={(subreddit) => {
+          setSettings((prev) => ({ ...prev, subreddit }))
+        }}
+      />
     </>
   )
 }

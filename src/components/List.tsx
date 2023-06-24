@@ -84,7 +84,7 @@ function List({ sort, subreddit }: Props): JSX.Element {
               after: null,
             }
           }),
-      getNextPageParam: (lastPage) => lastPage.after,
+      getNextPageParam: (lastPage) => lastPage.after || undefined,
     })
 
   useEffect(() => {

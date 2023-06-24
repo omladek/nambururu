@@ -7,14 +7,15 @@ import Loader from './Loader'
 import getInitialOptions from '../utilities/getInitialOptions'
 
 interface Props {
-  onSubmit: (payload: { subreddit: string; sort: string }) => void
+  onSubmit: (subreddit: string) => void
+  onSort: (sort: string) => void
 }
 
 interface RedditNameResponse {
   names: string[]
 }
 
-function Filters({ onSubmit }: Props): JSX.Element {
+function Filters({ onSort, onSubmit }: Props): JSX.Element {
   const formRef = useRef<HTMLFormElement>(null)
   const selectFormRef = useRef<HTMLFormElement>(null)
   const [subreddit, setSubreddit] = useState('')
@@ -57,12 +58,6 @@ function Filters({ onSubmit }: Props): JSX.Element {
       new FormData(event.currentTarget).get('subreddit')?.toString() || ''
     ).trim()
 
-    const sort = selectFormRef.current
-      ? (
-          new FormData(selectFormRef.current).get('sort')?.toString() || ''
-        ).trim()
-      : 'best'
-
     if (!subreddit) {
       return
     }
@@ -73,7 +68,7 @@ function Filters({ onSubmit }: Props): JSX.Element {
 
     window.scrollTo({ top: 0 })
 
-    onSubmit({ subreddit, sort })
+    onSubmit(subreddit)
   }
 
   const handleSelectSubmit: JSX.GenericEventHandler<HTMLFormElement> = (
@@ -90,13 +85,9 @@ function Filters({ onSubmit }: Props): JSX.Element {
       return
     }
 
-    const sort = (
-      new FormData(event.currentTarget).get('sort')?.toString() || 'best'
-    ).trim()
-
     window.scrollTo({ top: 0 })
 
-    onSubmit({ subreddit, sort })
+    onSubmit(subreddit)
   }
 
   const handleInput: JSX.GenericEventHandler<HTMLInputElement> = debounce(
@@ -207,12 +198,9 @@ function Filters({ onSubmit }: Props): JSX.Element {
             onChange={(event) => {
               if (selectFormRef.current) {
                 const nextSubreddit = event.currentTarget.value
-                const nextSort =
-                  new FormData(selectFormRef.current).get('sort')?.toString() ||
-                  'best'
 
                 window.scrollTo({ top: 0 })
-                onSubmit({ subreddit: nextSubreddit, sort: nextSort })
+                onSubmit(nextSubreddit)
               }
             }}
           >
@@ -241,13 +229,9 @@ function Filters({ onSubmit }: Props): JSX.Element {
             onChange={(event) => {
               if (selectFormRef.current) {
                 const nextSort = event.currentTarget.value
-                const nextSubreddit =
-                  new FormData(selectFormRef.current)
-                    .get('subreddit-select')
-                    ?.toString() || ''
 
                 window.scrollTo({ top: 0 })
-                onSubmit({ subreddit: nextSubreddit, sort: nextSort })
+                onSort(nextSort)
               }
             }}
           >
