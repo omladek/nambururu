@@ -29,7 +29,7 @@ function Editor({ onSave }: Props): JSX.Element {
   return (
     <main className="main">
       <form className="editor" onSubmit={handleSubmit}>
-        <h1 className="editor__title">Settings</h1>
+        <h2 className="editor__title">Settings</h2>
 
         <fieldset className="editor__fieldset">
           <label htmlFor={Storage.MY_MIX}>my mix</label>
