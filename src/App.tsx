@@ -15,7 +15,10 @@ function App(): JSX.Element {
     },
   )
 
-  const handleToggleSettings = (): void => setShowEditor((prev) => !prev)
+  const handleToggleSettings = (): void => {
+    window.scrollTo({ top: 0 })
+    setShowEditor((prev) => !prev)
+  }
 
   return (
     <>

@@ -159,8 +159,8 @@ function Filters({ onSort, onSubmit, onToggleSettings }: Props): JSX.Element {
             </button>
           </div>
           <datalist id="subreddits">
-            <option value={Storage.MY_MIX}>my-mix</option>
-            <option value={Storage.MY_SELECTION}>my-selection</option>
+            <option value={Storage.MY_MIX}>{Storage.MY_MIX}</option>
+            <option value={Storage.MY_SELECTION}>{Storage.MY_SELECTION}</option>
 
             {suggestionsCache.map((option) => (
               <option key={option.lowerCase} value={option.value}>
@@ -206,8 +206,8 @@ function Filters({ onSort, onSubmit, onToggleSettings }: Props): JSX.Element {
               }
             }}
           >
-            <option value={Storage.MY_MIX}>my-mix</option>
-            <option value={Storage.MY_SELECTION}>my-selection</option>
+            <option value={Storage.MY_MIX}>{Storage.MY_MIX}</option>
+            <option value={Storage.MY_SELECTION}>{Storage.MY_SELECTION}</option>
 
             {optionsCache.map((option) => (
               <option key={option.lowerCase} value={option.value}>
