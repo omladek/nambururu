@@ -12,13 +12,26 @@ const queryClient = new QueryClient({
   },
 })
 
+const rootElement = document.querySelector<HTMLDivElement>('#root')
+
+if (!rootElement) {
+  throw new Error('Missing root element!')
+}
+
+const loaderElement =
+  rootElement.querySelector<HTMLDivElement>('#initial-loader')
+
+if (!loaderElement) {
+  throw new Error('Missing loader element!')
+}
+
+rootElement.removeChild(loaderElement)
+
 render(
   <QueryClientProvider client={queryClient}>
-    <div>
-      <Editor>
-        <App />
-      </Editor>
-    </div>
+    <Editor>
+      <App />
+    </Editor>
   </QueryClientProvider>,
-  document.getElementById('root') as HTMLElement,
+  rootElement,
 )
