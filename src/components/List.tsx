@@ -27,71 +27,65 @@ function List({ sort, subreddit }: Props): JSX.Element {
     .map((keyword) => keyword.toLowerCase())
     .filter(Boolean)
   const { inView, ref } = useInView({ rootMargin: '500px 0px 0px 0px' })
-  const {
-    data,
-    error,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-  } = useInfiniteQuery({
-    queryKey: ['subreddit', subreddit, sort],
-    queryFn: ({ pageParam = '', signal }) =>
-      fetch(getSubredditJSONUrl({ subreddit, after: pageParam, sort }), {
-        signal,
-      })
-        .then((response) => response.json())
-        .then((response: ThreadResult) => {
-          if (
-            typeof response !== 'object' ||
-            typeof response.data !== 'object' ||
-            !Array.isArray(response.data.children)
-          ) {
-            throw new Error(JSON.stringify(response, null, 2))
-          }
-
-          const filteredPosts = response.data.children.filter((post) => {
-            // ignore moderator notices, etc.
-            if (post.data.stickied) {
-              return false
-            }
-
-            // must be logged-in to view nsfw
-            if (['nsfw'].includes(post.data.thumbnail)) {
-              return false
-            }
-
-            // blocked by user subreddit(s) preferences
-            if (
-              myBlockedSubreddits.includes(post.data.subreddit.toLowerCase())
-            ) {
-              return false
-            }
-
-            // blocked by user title keyword(s) preferences
-            return !containsKeyword(
-              myBlockedTitleKeywords,
-              post.data.title.toLowerCase(),
-            )
-          })
-
-          return {
-            posts: filteredPosts,
-            after: response.data.after,
-          }
+  const { data, error, fetchNextPage, hasNextPage, isLoading } =
+    useInfiniteQuery({
+      queryKey: ['subreddit', subreddit, sort],
+      queryFn: ({ pageParam = '', signal }) =>
+        fetch(getSubredditJSONUrl({ subreddit, after: pageParam, sort }), {
+          signal,
         })
-        .catch((err) => {
-          if (err.name !== 'AbortError') {
-            throw new Error(err.reason || err.message)
-          }
+          .then((response) => response.json())
+          .then((response: ThreadResult) => {
+            if (
+              typeof response !== 'object' ||
+              typeof response.data !== 'object' ||
+              !Array.isArray(response.data.children)
+            ) {
+              throw new Error(JSON.stringify(response, null, 2))
+            }
 
-          return {
-            posts: [],
-            after: null,
-          }
-        }),
-    getNextPageParam: (lastPage) => lastPage.after,
-  })
+            const filteredPosts = response.data.children.filter((post) => {
+              // ignore moderator notices, etc.
+              if (post.data.stickied) {
+                return false
+              }
+
+              // must be logged-in to view nsfw
+              if (['nsfw'].includes(post.data.thumbnail)) {
+                return false
+              }
+
+              // blocked by user subreddit(s) preferences
+              if (
+                myBlockedSubreddits.includes(post.data.subreddit.toLowerCase())
+              ) {
+                return false
+              }
+
+              // blocked by user title keyword(s) preferences
+              return !containsKeyword(
+                myBlockedTitleKeywords,
+                post.data.title.toLowerCase(),
+              )
+            })
+
+            return {
+              posts: filteredPosts,
+              after: response.data.after,
+            }
+          })
+          .catch((err) => {
+            if (err.name !== 'AbortError') {
+              throw new Error(err.reason || err.message)
+            }
+
+            return {
+              posts: [],
+              after: null,
+            }
+          }),
+      getNextPageParam: (lastPage) => lastPage.after,
+    })
 
   useEffect(() => {
     if (inView) {
@@ -99,7 +93,7 @@ function List({ sort, subreddit }: Props): JSX.Element {
     }
   }, [inView, fetchNextPage])
 
-  if (isLoading) return <Loader />
+  if (isLoading) return <Loader isFullScreen />
 
   if (error)
     return (
@@ -145,14 +139,7 @@ function List({ sort, subreddit }: Props): JSX.Element {
 
       <div className="load-more-area" ref={ref}>
         {hasNextPage ? (
-          <button
-            className="load-more"
-            disabled={!isFetchingNextPage}
-            onClick={() => fetchNextPage()}
-            type="button"
-          >
-            {isFetchingNextPage ? <>loading&hellip;</> : 'load more'}
-          </button>
+          <Loader />
         ) : (
           <div className="end">
             <p>That&apos;s all</p>

@@ -2,10 +2,19 @@ import { JSX } from 'preact'
 
 interface Props {
   size?: 'xs' | 'md' | 'lg'
+  isFullScreen?: boolean
 }
 
-function Loader({ size = 'lg' }: Props): JSX.Element {
-  return <div className={`loader loader--${size}`}>loading&hellip;</div>
+function Loader({ isFullScreen, size = 'lg' }: Props): JSX.Element {
+  const classNames = [
+    'loader',
+    `loader--${size}`,
+    isFullScreen && 'loader--fullscreen',
+  ]
+    .filter(Boolean)
+    .join(' ')
+
+  return <span className={classNames}>loading&hellip;</span>
 }
 
 export default Loader
