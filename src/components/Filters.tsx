@@ -10,14 +10,13 @@ import Storage from '../constants/storage'
 interface Props {
   onSubmit: (subreddit: string) => void
   onSort: (sort: string) => void
-  onToggleSettings: () => void
 }
 
 interface RedditNameResponse {
   names: string[]
 }
 
-function Filters({ onSort, onSubmit, onToggleSettings }: Props): JSX.Element {
+function Filters({ onSort, onSubmit }: Props): JSX.Element {
   const formRef = useRef<HTMLFormElement>(null)
   const selectFormRef = useRef<HTMLFormElement>(null)
   const [subreddit, setSubreddit] = useState('')
@@ -244,17 +243,6 @@ function Filters({ onSort, onSubmit, onToggleSettings }: Props): JSX.Element {
             ))}
           </select>
         </fieldset>
-
-        <div className="fieldset">
-          <button
-            className="filters__settings"
-            onClick={onToggleSettings}
-            title="settings"
-            type="button"
-          >
-            ⚙<span className="sr-only">Settings</span>
-          </button>
-        </div>
       </form>
     </footer>
   )

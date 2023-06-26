@@ -1,12 +1,10 @@
 import { JSX } from 'preact'
+import { useState } from 'preact/hooks'
 import Storage from '../constants/storage'
 import getDefaultValue from '../utilities/getDefaultValue'
 
-interface Props {
-  onSave: () => void
-}
-
-function Editor({ onSave }: Props): JSX.Element {
+function Editor(): JSX.Element {
+  const [isSaved, setIsSaved] = useState(false)
   const myMix = getDefaultValue(Storage.MY_MIX)
   const mySelection = getDefaultValue(Storage.MY_SELECTION)
   const myBlockedSubreddits = getDefaultValue(Storage.MY_BLOCKED_SUBREDDITS)
@@ -14,8 +12,12 @@ function Editor({ onSave }: Props): JSX.Element {
     Storage.MY_BLOCKED_TITLE_KEYWORDS,
   )
 
-  const handleSubmit: JSX.GenericEventHandler<HTMLFormElement> = (event) => {
+  const handleSubmit: JSX.GenericEventHandler<HTMLFormElement> = async (
+    event,
+  ): Promise<void> => {
     event.preventDefault()
+
+    setIsSaved(false)
 
     const entries = [...new FormData(event.currentTarget).entries()]
 
@@ -23,7 +25,11 @@ function Editor({ onSave }: Props): JSX.Element {
       localStorage.setItem(key, value.toString())
     })
 
-    onSave()
+    await new Promise((resolve) => {
+      setTimeout(() => resolve(undefined), 500)
+    })
+
+    setIsSaved(true)
   }
 
   return (
@@ -38,6 +44,7 @@ function Editor({ onSave }: Props): JSX.Element {
             defaultValue={myMix}
             id={Storage.MY_MIX}
             name={Storage.MY_MIX}
+            onChange={() => setIsSaved(false)}
           />
         </fieldset>
 
@@ -48,6 +55,7 @@ function Editor({ onSave }: Props): JSX.Element {
             defaultValue={mySelection}
             id={Storage.MY_SELECTION}
             name={Storage.MY_SELECTION}
+            onChange={() => setIsSaved(false)}
           />
         </fieldset>
 
@@ -63,6 +71,7 @@ function Editor({ onSave }: Props): JSX.Element {
             defaultValue={myBlockedSubreddits}
             id={Storage.MY_BLOCKED_SUBREDDITS}
             name={Storage.MY_BLOCKED_SUBREDDITS}
+            onChange={() => setIsSaved(false)}
           />
         </fieldset>
 
@@ -78,12 +87,14 @@ function Editor({ onSave }: Props): JSX.Element {
             defaultValue={myBlockedTitleKeywords}
             id={Storage.MY_BLOCKED_TITLE_KEYWORDS}
             name={Storage.MY_BLOCKED_TITLE_KEYWORDS}
+            onChange={() => setIsSaved(false)}
           />
         </fieldset>
 
         <button className="editor__btn" type="submit">
           Save
         </button>
+        {isSaved && <p>Changes were saved.</p>}
       </form>
     </main>
   )

@@ -1,0 +1,13 @@
+.subreddits {
+  contain-intrinsic-size: 1px 5000px;
+  content-visibility: auto;
+  display: grid;
+  gap: var(--gutter);
+}
+
+@media (min-width: 40em) {
+  .subreddits {
+    grid-template-columns: repeat(auto-fill, minmax(25em, 1fr));
+    padding-inline: var(--gutter);
+  }
+}
