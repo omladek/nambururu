@@ -14,24 +14,33 @@ interface Props {
 }
 
 function List({ sort, subreddit }: Props): JSX.Element {
-  const { inView, ref } = useInView({ rootMargin: '500px 0px 0px 0px' })
-  const { data, error, fetchNextPage, hasNextPage, isLoading } =
-    useInfiniteQuery({
-      queryKey: ['subreddit', subreddit, sort],
-      queryFn: ({ pageParam = '', signal }) =>
-        getSubreddit({ subreddit, after: pageParam, signal, sort }),
-      getNextPageParam: (lastPage) => lastPage.after || undefined,
-    })
+  const { inView, ref } = useInView({
+    rootMargin: '500px 0px 0px 0px',
+    initialInView: true,
+  })
+  const {
+    data,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+  } = useInfiniteQuery({
+    queryKey: ['subreddit', subreddit, sort],
+    queryFn: ({ pageParam = '', signal }) =>
+      getSubreddit({ subreddit, after: pageParam, signal, sort }),
+    getNextPageParam: (lastPage) => lastPage.after || undefined,
+  })
 
   const lazyLoadingLimit = window.matchMedia('(min-width: 40em)').matches
     ? 4
     : 2
 
   useEffect(() => {
-    if (inView) {
+    if (inView && !isFetchingNextPage) {
       fetchNextPage()
     }
-  }, [inView, fetchNextPage])
+  }, [inView, fetchNextPage, isFetchingNextPage])
 
   if (isLoading) return <Loader isFullScreen />
 
@@ -47,7 +56,7 @@ function List({ sort, subreddit }: Props): JSX.Element {
 
   const nonEmptyPages = (data?.pages || []).filter((page) => page.posts.length)
 
-  if (!nonEmptyPages.length) {
+  if (!nonEmptyPages.length && !hasNextPage) {
     return <p className="message">No results</p>
   }
 

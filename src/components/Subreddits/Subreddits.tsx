@@ -10,22 +10,31 @@ import getSubreddits from '../../utilities/getSubreddits'
 import './Subreddits.css'
 
 function Subreddits(): JSX.Element {
-  const { inView, ref } = useInView({ rootMargin: '500px 0px 0px 0px' })
-  const { data, error, fetchNextPage, hasNextPage, isLoading } =
-    useInfiniteQuery({
-      queryKey: ['subreddits'],
-      queryFn: ({ pageParam = '', signal }) =>
-        getSubreddits({ after: pageParam, signal }),
-      getNextPageParam: (lastPage) => lastPage.after || undefined,
-      cacheTime: Infinity,
-      staleTime: Infinity,
-    })
+  const { inView, ref } = useInView({
+    rootMargin: '500px 0px 0px 0px',
+    initialInView: true,
+  })
+  const {
+    data,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+  } = useInfiniteQuery({
+    queryKey: ['subreddits'],
+    queryFn: ({ pageParam = '', signal }) =>
+      getSubreddits({ after: pageParam, signal }),
+    getNextPageParam: (lastPage) => lastPage.after || undefined,
+    cacheTime: Infinity,
+    staleTime: Infinity,
+  })
 
   useEffect(() => {
-    if (inView) {
+    if (inView && !isFetchingNextPage) {
       fetchNextPage()
     }
-  }, [inView, fetchNextPage])
+  }, [inView, fetchNextPage, isFetchingNextPage])
 
   if (isLoading) return <Loader isFullScreen />
 
@@ -41,7 +50,7 @@ function Subreddits(): JSX.Element {
 
   const nonEmptyPages = (data?.pages || []).filter((page) => page.items.length)
 
-  if (!nonEmptyPages.length) {
+  if (!nonEmptyPages.length && !hasNextPage) {
     return <p className="message">No results</p>
   }
 
