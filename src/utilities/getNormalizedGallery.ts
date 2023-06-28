@@ -21,6 +21,20 @@ export default (post: ChildData): NormalizedGallery | null => {
         }
 
         const fullSizeImage = image.s
+
+        if (!image.p.length) {
+          return [
+            ...acc,
+            {
+              thumbnail: fullSizeImage.u,
+              fullSize: fullSizeImage.u,
+              retina: fullSizeImage.u,
+              height: fullSizeImage.y,
+              width: fullSizeImage.x,
+            },
+          ]
+        }
+
         const responsizeImageStandard = getImageByContainerWidth(
           image.p,
           1,
