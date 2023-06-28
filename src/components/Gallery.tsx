@@ -1,70 +1,21 @@
 import { JSX } from 'preact'
 
-import { RedditMediaMetadata } from '../types/reddit-api/ThreadsResult.type'
-import getImageByContainerWidth from '../utilities/getImageByContainerWidth'
+import { NormalizedGalleryImage } from '../types/reddit-api/ThreadsResult.type'
 import Thumbnail from './Thumbnail'
 
-interface ThumbnailImage {
-  thumbnail: string
-  fullSize: string
-  height: number
-  width: number
-  retina: string
-}
-
 interface Props {
-  items: RedditMediaMetadata
-  containerWidth: number
+  items: NormalizedGalleryImage[]
   mediaLoading: 'lazy' | 'eager'
 }
 
-function Gallery({
-  containerWidth,
-  items,
-  mediaLoading,
-}: Props): JSX.Element | null {
-  const thumbnails: ThumbnailImage[] = Object.keys(items).reduce(
-    (acc: ThumbnailImage[], curr) => {
-      const image = items[curr]
-
-      if (image.status !== 'valid') {
-        return acc
-      }
-
-      const fullSizeImage = image.s
-      const responsizeImageStandard = getImageByContainerWidth(
-        image.p,
-        1,
-        containerWidth,
-      )
-
-      const responsizeImageRetina = getImageByContainerWidth(
-        image.p,
-        2,
-        containerWidth,
-      )
-
-      return [
-        ...acc,
-        {
-          thumbnail: responsizeImageStandard.u,
-          fullSize: fullSizeImage.u,
-          retina: responsizeImageRetina.u,
-          height: fullSizeImage.y,
-          width: fullSizeImage.x,
-        },
-      ]
-    },
-    [],
-  )
-
-  if (!thumbnails.length) {
+function Gallery({ items, mediaLoading }: Props): JSX.Element | null {
+  if (!items.length) {
     return null
   }
 
   return (
     <div className="gallery">
-      {thumbnails.map((thumbnail) => (
+      {items.map((thumbnail) => (
         <Thumbnail
           fullSize={thumbnail.fullSize}
           height={thumbnail.height}

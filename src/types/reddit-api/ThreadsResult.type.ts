@@ -25,6 +25,82 @@ export interface Thread {
   data: ChildData
 }
 
+export type NormalizedPost = {
+  createdDate: string
+  domain: string
+  id: string
+  commentsTotalFormatted: string | number
+  hasComments: boolean
+  permalink: string
+  description: string
+  subreddit: string
+  title: string
+  upVotes: string | number
+  downVotes: string | number
+  media: NormalizedPostMedia
+}
+
+export interface NormalizedVideo {
+  type: 'normalizedVideo'
+  hasAudio: boolean
+  height: number
+  poster: string
+  url: string
+  width: number
+}
+
+export interface NormalizedSingleImage {
+  type: 'singleImage'
+  width: number
+  height: number
+  fullSize: string | null
+  retina: string
+  thumbnail: string
+}
+
+export interface NormalizedGalleryImage {
+  thumbnail: string
+  fullSize: string
+  height: number
+  width: number
+  retina: string
+}
+
+export interface NormalizedGallery {
+  type: 'gallery'
+  items: NormalizedGalleryImage[]
+}
+
+export interface NormalizedYoutube {
+  type: 'youtube'
+  width: number
+  height: number
+  id: string
+  thumbnail: string
+}
+
+export interface NormalizedExternalLink {
+  type: 'externalLink'
+  url: string
+  image: string
+}
+
+export interface NormalizedThumbnail {
+  type: 'thumbnail'
+  height: number
+  width: number
+  url: string
+}
+
+export type NormalizedPostMedia =
+  | NormalizedVideo
+  | NormalizedSingleImage
+  | NormalizedGallery
+  | NormalizedYoutube
+  | NormalizedExternalLink
+  | NormalizedThumbnail
+  | null
+
 export interface ChildData {
   approved_at_utc: null
   subreddit: string

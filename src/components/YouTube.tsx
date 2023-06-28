@@ -1,22 +1,17 @@
 import { JSX } from 'preact'
-import { Media } from '../types/reddit-api/ThreadsResult.type'
-import parseYouTubeVideoId from '../utilities/parseYouTubeVideoId'
 
 interface Props {
-  media: Media
+  width: number
+  height: number
+  id: string
+  thumbnail: string
 }
 
-function YoutTube({ media }: Props): JSX.Element | null {
-  const { html, thumbnail_url } = media.oembed
-  const height = 9
-  const width = 16
-
-  const youtubeId = parseYouTubeVideoId(html)
-
+function YoutTube({ height, id, thumbnail, width }: Props): JSX.Element | null {
   return (
     <a
       className="youtube"
-      href={`https://www.youtube.com/watch?v=${youtubeId}`}
+      href={`https://www.youtube.com/watch?v=${id}`}
       rel="noopener noreferrer"
       target="_blank"
     >
@@ -35,7 +30,7 @@ function YoutTube({ media }: Props): JSX.Element | null {
         decoding="async"
         height={height}
         loading="lazy"
-        src={thumbnail_url}
+        src={thumbnail}
         width={width}
       />
     </a>

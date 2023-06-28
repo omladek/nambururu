@@ -37,14 +37,12 @@ const getSubredditJSONUrl = ({
     sortBase = `/${sort}`
   }
 
-  const limit = window.matchMedia('(min-width: 40em)').matches ? 100 : 50
-
   const url = new URL(
     `https://www.reddit.com/${subredditBase}${sortBase}/.json`,
   )
 
   url.searchParams.append('json_raw', '1')
-  url.searchParams.append('limit', String(limit))
+  url.searchParams.append('limit', '100')
 
   if (after) {
     url.searchParams.append('after', after)

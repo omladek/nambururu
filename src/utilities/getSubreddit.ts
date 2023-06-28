@@ -1,6 +1,10 @@
 import getSubredditJSONUrl from './getSubredditJSONUrl'
-import { ThreadResult, Thread } from '../types/reddit-api/ThreadsResult.type'
+import {
+  ThreadResult,
+  NormalizedPost,
+} from '../types/reddit-api/ThreadsResult.type'
 import getFilteredPosts from './getFilteredPosts'
+import getNormalizedPost from './getNormalizedPost'
 
 interface Props {
   subreddit: string
@@ -9,13 +13,13 @@ interface Props {
   signal: AbortSignal | undefined
 }
 
-const getSubreddit = ({
+const getSubreddit = async ({
   after,
   signal,
   sort,
   subreddit,
-}: Props): Promise<{ posts: Thread[]; after: string | null }> =>
-  fetch(getSubredditJSONUrl({ subreddit, after, sort }), {
+}: Props): Promise<{ posts: NormalizedPost[]; after: string | null }> => {
+  const result = await fetch(getSubredditJSONUrl({ subreddit, after, sort }), {
     signal,
   })
     .then((response) => response.json())
@@ -28,8 +32,12 @@ const getSubreddit = ({
         throw new Error(JSON.stringify(response, null, 2))
       }
 
+      const posts = getFilteredPosts(response.data.children).map((post) =>
+        getNormalizedPost(post.data),
+      )
+
       return {
-        posts: getFilteredPosts(response.data.children),
+        posts,
         after: response.data.after,
       }
     })
@@ -43,5 +51,12 @@ const getSubreddit = ({
         after: null,
       }
     })
+
+  if (result.posts.length < 4 && result.after) {
+    return getSubreddit({ after: result.after, signal, sort, subreddit })
+  }
+
+  return result
+}
 
 export default getSubreddit
