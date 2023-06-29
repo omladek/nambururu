@@ -4,6 +4,7 @@ import {
   NormalizedGallery,
   NormalizedGalleryImage,
 } from '../types/reddit-api/ThreadsResult.type'
+import deescapeHtml from './deescapeHtml'
 import getImageByContainerWidth from './getImageByContainerWidth'
 
 export default (post: ChildData): NormalizedGallery | null => {
@@ -26,9 +27,9 @@ export default (post: ChildData): NormalizedGallery | null => {
           return [
             ...acc,
             {
-              thumbnail: fullSizeImage.u,
-              fullSize: fullSizeImage.u,
-              retina: fullSizeImage.u,
+              thumbnail: deescapeHtml(fullSizeImage.u),
+              fullSize: deescapeHtml(fullSizeImage.u),
+              retina: deescapeHtml(fullSizeImage.u),
               height: fullSizeImage.y,
               width: fullSizeImage.x,
             },
@@ -50,9 +51,9 @@ export default (post: ChildData): NormalizedGallery | null => {
         return [
           ...acc,
           {
-            thumbnail: responsizeImageStandard.u,
-            fullSize: fullSizeImage.u,
-            retina: responsizeImageRetina.u,
+            thumbnail: deescapeHtml(responsizeImageStandard.u),
+            fullSize: deescapeHtml(fullSizeImage.u),
+            retina: deescapeHtml(responsizeImageRetina.u),
             height: fullSizeImage.y,
             width: fullSizeImage.x,
           },

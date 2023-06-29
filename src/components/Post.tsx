@@ -33,12 +33,6 @@ function Post({ mediaLoading, post }: Props): JSX.Element {
     <article className="post">
       <Media media={media} mediaLoading={mediaLoading} />
 
-      <textarea
-        hidden
-        id={`debug-${id}`}
-        value={JSON.stringify(post, null, 2)}
-      />
-
       <div className="post__info">
         <h2 className="post__title">
           <small className="post__subreddit">

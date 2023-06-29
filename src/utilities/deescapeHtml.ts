@@ -8,6 +8,10 @@ const deescapeHtml = (unsafeHTML = ''): string => {
     '&#x2F;': '/',
   }
 
+  if (!unsafeHTML) {
+    return ''
+  }
+
   return unsafeHTML.replace(/&(amp|lt|gt|quot|#39|#x2F);/g, (match) => {
     return entityMap[match]
   })

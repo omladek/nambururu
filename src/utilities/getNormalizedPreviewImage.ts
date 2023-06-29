@@ -3,6 +3,7 @@ import {
   ChildData,
   NormalizedPreviewImage,
 } from '../types/reddit-api/ThreadsResult.type'
+import deescapeHtml from './deescapeHtml'
 import getImageByContainerWidth from './getImageByContainerWidth'
 
 export default function getNormalizedPreviewImage(
@@ -25,7 +26,7 @@ export default function getNormalizedPreviewImage(
       type: 'previewImage',
       width: image.x,
       height: image.y,
-      url: image.u,
+      url: deescapeHtml(image.u),
     }
   }
 

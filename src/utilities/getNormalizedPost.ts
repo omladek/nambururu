@@ -25,12 +25,16 @@ const getNormalizedPost = (post: ChildData): NormalizedPost => {
     upvote_ratio,
   } = post
 
-  const crossPostData =
+  const crossPost =
     crosspost_parent && !!crosspost_parent_list?.length
       ? crosspost_parent_list.find((item) => item.name === crosspost_parent)
       : null
 
-  const media = getPostMedia(crossPostData || post)
+  if (crossPost) {
+    return getNormalizedPost(crossPost)
+  }
+
+  const media = getPostMedia(post)
 
   return {
     createdDate: getDateFromUnixTime(created_utc),
@@ -39,9 +43,7 @@ const getNormalizedPost = (post: ChildData): NormalizedPost => {
     commentsTotalFormatted: formatNumber(num_comments),
     hasComments: num_comments > 0,
     permalink: `https://www.reddit.com${permalink}`,
-    description: updateAnchorTags(
-      deescapeHtml(crossPostData?.selftext_html || selftext_html || ''),
-    ),
+    description: updateAnchorTags(deescapeHtml(selftext_html || '')),
     subreddit,
     title,
     upVotes: formatNumber(ups),

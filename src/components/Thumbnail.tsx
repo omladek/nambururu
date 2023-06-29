@@ -1,8 +1,6 @@
 import { JSX } from 'preact'
 import { useState } from 'preact/hooks'
 
-import deescapeHtml from '../utilities/deescapeHtml'
-
 interface Props {
   thumbnail: string
   fullSize?: string
@@ -21,14 +19,11 @@ function Thumbnail({
   width,
 }: Props): JSX.Element {
   const [showFullSize, setShowFullSize] = useState(!fullSize)
-  const safeThumbnail = deescapeHtml(thumbnail)
-  const safeFullsize = deescapeHtml(fullSize || '') || safeThumbnail
-  const safeRetina = deescapeHtml(retina || '')
 
-  const srcSetSD = showFullSize && fullSize ? safeFullsize : safeThumbnail
-  let srcSetHD = showFullSize && fullSize ? safeFullsize : safeRetina
+  const srcSetSD = showFullSize && fullSize ? fullSize : thumbnail
+  let srcSetHD = showFullSize && fullSize ? fullSize : retina
 
-  if (!safeRetina) {
+  if (!retina) {
     srcSetHD = ''
   } else {
     srcSetHD = `, ${srcSetHD} 2x`
@@ -46,7 +41,7 @@ function Thumbnail({
     <div className="thumbnail-wrap">
       <a
         className="thumbnail__link"
-        href={safeFullsize}
+        href={fullSize || thumbnail}
         onClick={fullSize ? handleClick : undefined}
         rel="noopener noreferrer"
         style={{

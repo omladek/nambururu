@@ -3,6 +3,7 @@ import {
   ChildData,
   NormalizedSingleImage,
 } from '../types/reddit-api/ThreadsResult.type'
+import deescapeHtml from './deescapeHtml'
 import getImageByContainerWidth from './getImageByContainerWidth'
 
 export default (post: ChildData): NormalizedSingleImage | null => {
@@ -33,11 +34,11 @@ export default (post: ChildData): NormalizedSingleImage | null => {
   if (hasSingleImage) {
     return {
       type: 'singleImage',
-      fullSize: preview?.images[0].source.url,
+      fullSize: deescapeHtml(preview?.images[0].source.url),
       height: Math.max(
         ...[thumbnail_height || 0, preview?.images[0].source.height || 0],
       ),
-      retina:
+      retina: deescapeHtml(
         getImageByContainerWidth(
           preview?.images[0].resolutions.map((image) => ({
             u: image.url,
@@ -47,7 +48,8 @@ export default (post: ChildData): NormalizedSingleImage | null => {
           settings.IMAGE_CONTAINER_WIDTH,
           2,
         )?.u || '',
-      thumbnail:
+      ),
+      thumbnail: deescapeHtml(
         getImageByContainerWidth(
           preview?.images[0].resolutions.map((image) => ({
             u: image.url,
@@ -57,6 +59,7 @@ export default (post: ChildData): NormalizedSingleImage | null => {
           settings.IMAGE_CONTAINER_WIDTH,
           1,
         )?.u || thumbnail,
+      ),
       width: Math.max(
         ...[thumbnail_width || 0, preview?.images[0].source.width || 0],
       ),
