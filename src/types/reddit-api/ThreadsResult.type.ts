@@ -92,6 +92,13 @@ export interface NormalizedThumbnail {
   url: string
 }
 
+export interface NormalizedPreviewImage {
+  type: 'previewImage'
+  height: number
+  width: number
+  url: string
+}
+
 export type NormalizedPostMedia =
   | NormalizedVideo
   | NormalizedSingleImage
@@ -99,6 +106,7 @@ export type NormalizedPostMedia =
   | NormalizedYoutube
   | NormalizedExternalLink
   | NormalizedThumbnail
+  | NormalizedPreviewImage
   | null
 
 export interface ChildData {
@@ -264,6 +272,7 @@ export interface Oembed {
   thumbnail_url: string
   thumbnail_height: number
   author_url: string
+  url: string
 }
 
 export interface MediaEmbed {

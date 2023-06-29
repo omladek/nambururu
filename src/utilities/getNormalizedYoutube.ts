@@ -9,14 +9,21 @@ export default (post: ChildData): NormalizedYoutube | null => {
 
   const hasYoutubeIframe = media && media?.type === 'youtube.com'
 
-  if (hasYoutubeIframe) {
-    return {
-      type: 'youtube',
-      width: 16,
-      height: 9,
-      id: parseYouTubeVideoId(media.oembed.html),
-      thumbnail: media.oembed.thumbnail_url,
-    }
+  if (!hasYoutubeIframe) {
+    return null
   }
-  return null
+
+  const id = parseYouTubeVideoId(media.oembed.html, media.oembed.url)
+
+  if (!id) {
+    return null
+  }
+
+  return {
+    type: 'youtube',
+    width: 16,
+    height: 9,
+    id,
+    thumbnail: media.oembed.thumbnail_url,
+  }
 }

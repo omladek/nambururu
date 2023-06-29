@@ -78,7 +78,8 @@ function Media({ media, mediaLoading }: Props): JSX.Element | null {
       )
     }
 
-    case 'thumbnail': {
+    case 'thumbnail':
+    case 'previewImage': {
       return (
         <Thumbnail
           height={media.height}

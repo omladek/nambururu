@@ -5,6 +5,7 @@ import {
 import getNormalizedEmbeddedVideo from './getNormalizedEmbeddedVideo'
 import getNormalizedExternalLink from './getNormalizedExternalLink'
 import getNormalizedGallery from './getNormalizedGallery'
+import getNormalizedPreviewImage from './getNormalizedPreviewImage'
 import getNormalizedSingleImage from './getNormalizedSingleImage'
 import getNormalizedThumbnail from './getNormalizedThumbnail'
 import getNormalizedVideo from './getNormalizedVideo'
@@ -51,6 +52,12 @@ export default function getPostMedia(post: ChildData): NormalizedPostMedia {
 
   if (normalizedThumbnail) {
     return normalizedThumbnail
+  }
+
+  const normalizedPreviewImage = getNormalizedPreviewImage(post)
+
+  if (normalizedPreviewImage) {
+    return normalizedPreviewImage
   }
 
   return null

@@ -39,7 +39,9 @@ const getNormalizedPost = (post: ChildData): NormalizedPost => {
     commentsTotalFormatted: formatNumber(num_comments),
     hasComments: num_comments > 0,
     permalink: `https://www.reddit.com${permalink}`,
-    description: updateAnchorTags(deescapeHtml(selftext_html || '')),
+    description: updateAnchorTags(
+      deescapeHtml(crossPostData?.selftext_html || selftext_html || ''),
+    ),
     subreddit,
     title,
     upVotes: formatNumber(ups),
