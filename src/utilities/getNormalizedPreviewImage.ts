@@ -12,8 +12,17 @@ export default function getNormalizedPreviewImage(
   const { preview } = post
 
   if (preview && preview?.images?.length) {
+    const images = [
+      ...(preview.images[0].resolutions || []),
+      preview.images[0].source,
+    ].filter(Boolean)
+
+    if (!images.length) {
+      return null
+    }
+
     const image = getImageByContainerWidth(
-      preview.images[0].resolutions.map(({ height, url, width }) => ({
+      images.map(({ height, url, width }) => ({
         u: url,
         x: width,
         y: height,
