@@ -25,6 +25,13 @@ export interface Comment {
   data: ChildData
 }
 
+export interface NormalizedComment {
+  voteResult: string
+  upVotes: string | number
+  text: string
+  id: string
+}
+
 export interface ChildData {
   awarders: unknown[]
   total_awards_received: number

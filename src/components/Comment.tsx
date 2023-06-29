@@ -1,25 +1,23 @@
 import { JSX } from 'preact'
-import { Comment as CommentType } from '../types/reddit-api/CommentsResult.type'
-import deescapeHtml from '../utilities/deescapeHtml'
-import formatNumber from '../utilities/formatNumber'
+
+import { NormalizedComment } from '../types/reddit-api/CommentsResult.type'
 import RichText from './RichText'
-import updateAnchorTags from '../utilities/updateAnchorTags'
 
 interface Props {
-  comment: CommentType
+  comment: NormalizedComment
 }
 
 function Comment({ comment }: Props): JSX.Element {
+  const { text, upVotes, voteResult } = comment
+
   return (
     <section className="comment">
       <h3 className="comment__title">
-        {comment.data.author} ({formatNumber(comment.data.ups)})
+        {voteResult} ({upVotes})
       </h3>
 
       <div className="comment__body">
-        <RichText
-          html={updateAnchorTags(deescapeHtml(comment.data.body_html))}
-        />
+        <RichText html={text} />
       </div>
     </section>
   )
