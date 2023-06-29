@@ -6,6 +6,8 @@ import { Option, getOptions } from '../utilities/getOptions'
 import Loader from './Loader'
 import getInitialOptions from '../utilities/getInitialOptions'
 import Storage from '../constants/storage'
+import parseSortFromURL from '../utilities/parseSortFromURL'
+import parseSubredditFromURL from '../utilities/parseSubredditFromURL'
 
 interface Props {
   onSubmit: (subreddit: string) => void
@@ -17,6 +19,9 @@ interface RedditNameResponse {
 }
 
 function Filters({ onSort, onSubmit }: Props): JSX.Element {
+  const defaultSubreddit =
+    parseSubredditFromURL(window.location.href) || Storage.MY_MIX
+  const defaultSort = parseSortFromURL(window.location.href) || 'best'
   const formRef = useRef<HTMLFormElement>(null)
   const selectFormRef = useRef<HTMLFormElement>(null)
   const [subreddit, setSubreddit] = useState('')
@@ -193,7 +198,7 @@ function Filters({ onSort, onSubmit }: Props): JSX.Element {
           <select
             // eslint-disable-next-line jsx-a11y/no-autofocus
             autoFocus={false}
-            defaultValue={subreddit}
+            defaultValue={defaultSubreddit}
             id="subreddit-select"
             name="subreddit-select"
             onChange={(event) => {
@@ -224,7 +229,7 @@ function Filters({ onSort, onSubmit }: Props): JSX.Element {
           <select
             // eslint-disable-next-line jsx-a11y/no-autofocus
             autoFocus={false}
-            defaultValue="best"
+            defaultValue={defaultSort}
             id="sort"
             name="sort"
             onChange={(event) => {
