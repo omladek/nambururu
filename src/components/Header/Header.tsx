@@ -10,7 +10,7 @@ function Header(): JSX.Element {
         <ul className="header__nav-list">
           <li className="header__nav-list-item">
             <Link className="header__logo" href="/">
-              <h1 className="header__title">Nambururu</h1>
+              Nambururu
             </Link>
           </li>
           <li className="header__nav-list-item">
@@ -20,15 +20,6 @@ function Header(): JSX.Element {
               href="/"
             >
               Home
-            </Link>
-          </li>
-          <li className="header__nav-list-item">
-            <Link
-              activeClassName="is-active"
-              className="header__nav-list-item-link"
-              href="/discover/"
-            >
-              Discover
             </Link>
           </li>
           <li className="header__nav-list-item">
