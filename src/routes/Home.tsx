@@ -2,8 +2,8 @@ import { JSX } from 'preact'
 import { route } from 'preact-router'
 
 import Storage from '../constants/storage'
-import Filters from './Filters'
-import List from './List'
+import Filters from '../components/Filters'
+import List from '../components/List'
 import parseSubredditFromURL from '../utilities/parseSubredditFromURL'
 import parseSortFromURL from '../utilities/parseSortFromURL'
 
