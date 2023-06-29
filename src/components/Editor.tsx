@@ -34,9 +34,8 @@ function Editor(): JSX.Element {
 
   return (
     <main className="main">
+      <h1 className="title">Settings</h1>
       <form className="editor" onSubmit={handleSubmit}>
-        <h2 className="editor__title">Settings</h2>
-
         <fieldset className="editor__fieldset">
           <label htmlFor={Storage.MY_MIX}>my mix</label>
           <p>comma separated subreddit names</p>

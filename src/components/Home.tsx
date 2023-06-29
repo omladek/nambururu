@@ -19,6 +19,7 @@ function Home({ url }: Props): JSX.Element {
   return (
     <>
       <main className="main">
+        <h1 className="title">{subreddit}</h1>
         <List sort={sort} subreddit={subreddit} />
       </main>
       <Filters

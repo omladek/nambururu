@@ -620,10 +620,9 @@ table td {
   }
 }
 
-.editor__title {
+.title {
   font-size: 1.25rem;
-  margin: 0;
-  margin-block-end: var(--gutter);
+  margin: var(--gutter);
   padding: 0;
 }
 
