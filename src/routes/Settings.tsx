@@ -1,6 +1,6 @@
 import { JSX } from 'preact'
 
-import Editor from '../components/Editor'
+import Editor from '../components/Editor/Editor'
 
 function Settings(): JSX.Element {
   return (

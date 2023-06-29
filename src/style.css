@@ -588,64 +588,15 @@ table td {
   top: 0;
 }
 
-.editor {
-  background-color: var(--color-post);
-  margin: var(--gutter);
-  padding: var(--gutter);
-
-  & fieldset {
-    border: 0;
-    margin-block-end: var(--gutter);
-    padding: 0;
-  }
-
-  & label {
-    display: block;
-    font-weight: bold;
-  }
-
-  & p {
-    font-size: 0.75rem;
-  }
-
-  & textarea {
-    min-height: 10rem;
-    padding: 1em;
-    width: 100%;
-  }
-
-  & button {
-    display: block;
-    width: 100%;
-  }
-}
-
 .title {
   font-size: 1.25rem;
   margin: var(--gutter);
   padding: 0;
 }
 
-.editor__btn {
-  background-color: transparent;
-  border: 1px solid var(--color-accent);
-  color: var(--color-link);
-  display: block;
-  height: 2.5rem;
-  padding-inline: var(--gutter);
-  width: 100%;
-}
-
-@media (min-width: 40em) {
-  .editor__btn {
-    max-width: 20em;
-  }
-}
-
 @media (prefers-color-scheme: dark) {
   .search input,
-  .filters__btn,
-  .editor__btn {
+  .filters__btn {
     background-color: transparent;
     border: 1px solid var(--color-accent);
     color: var(--color-link);
@@ -653,11 +604,6 @@ table td {
 
   .search input:focus {
     outline: 0;
-  }
-
-  .editor textarea {
-    background-color: var(--color-accent);
-    color: var(--color-link);
   }
 }
 

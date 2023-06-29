@@ -1,7 +1,8 @@
 import { JSX } from 'preact'
 import { useState } from 'preact/hooks'
-import Storage from '../constants/storage'
-import getDefaultValue from '../utilities/getDefaultValue'
+import Storage from '../../constants/storage'
+import getDefaultValue from '../../utilities/getDefaultValue'
+import './Editor.css'
 
 function Editor(): JSX.Element {
   const [isSaved, setIsSaved] = useState(false)
