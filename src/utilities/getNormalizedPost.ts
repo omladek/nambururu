@@ -37,6 +37,7 @@ const getNormalizedPost = (post: ChildData): NormalizedPost => {
   const media = getPostMedia(post)
 
   return {
+    uniqueId: crypto.randomUUID(),
     createdDate: getDateFromUnixTime(created_utc),
     domain,
     id,

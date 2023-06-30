@@ -26,6 +26,7 @@ export interface Thread {
 }
 
 export type NormalizedPost = {
+  uniqueId: string
   createdDate: string
   domain: string
   id: string

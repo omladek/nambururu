@@ -67,9 +67,8 @@ function List({ sort, subreddit }: Props): JSX.Element {
           <Fragment key={page.after || 'page-last'}>
             {page.posts.map((post, postIndex) => {
               return (
-                <ErrorBoundary key={post.id}>
+                <ErrorBoundary key={post.uniqueId}>
                   <Post
-                    key={post.id}
                     mediaLoading={
                       postIndex <= lazyLoadingLimit ? 'eager' : 'lazy'
                     }
