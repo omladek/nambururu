@@ -10,7 +10,7 @@ import getImageByContainerWidth from './getImageByContainerWidth'
 export default (post: ChildData): NormalizedGallery | null => {
   const { is_gallery, media_metadata } = post
 
-  const hasGallery = is_gallery && media_metadata
+  const hasGallery = (is_gallery && media_metadata) || media_metadata
 
   if (hasGallery) {
     const items: NormalizedGalleryImage[] = Object.keys(media_metadata).reduce(
@@ -18,6 +18,10 @@ export default (post: ChildData): NormalizedGallery | null => {
         const image = media_metadata[curr]
 
         if (image.status !== 'valid') {
+          return acc
+        }
+
+        if (!image?.s) {
           return acc
         }
 
