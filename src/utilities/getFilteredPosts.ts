@@ -4,8 +4,8 @@ import parseStorage from './parseStorage'
 import Storage from '../constants/storage'
 
 export default function getFilteredPosts(posts: Thread[]): Thread[] {
-  const myBlockedSubreddits = parseStorage(Storage.MY_BLOCKED_SUBREDDITS)
-  const myBlockedTitleKeywords = parseStorage(Storage.MY_BLOCKED_TITLE_KEYWORDS)
+  const myBlockedSubreddits = parseStorage(Storage.BLOCKED_SUBREDDITS)
+  const myBlockedTitleKeywords = parseStorage(Storage.BLOCKED_TITLE_KEYWORDS)
 
   return posts.filter((post) => {
     // ignore moderator notices, etc.

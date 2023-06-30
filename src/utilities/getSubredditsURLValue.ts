@@ -1,8 +1,6 @@
 import parseStorage from './parseStorage'
 
-import Storage from '../constants/storage'
-
-export default function getSubredditsURLValue(key: Storage): string {
+export default function getSubredditsURLValue(key: string): string {
   const values = parseStorage(key)
 
   if (!values.length) {

@@ -1,17 +1,20 @@
 import { Option, getOptions } from './getOptions'
 import basicSubreddits from '../constants/basicSubreddits'
+import getListValue from './getListValue'
 import parseStorage from './parseStorage'
-import Storage from '../constants/storage'
 
 const getInitialOptions = (): Option[] => {
-  const userSubreddits = parseStorage(Storage.MY_MIX)
-  const userSubredditsSelection = parseStorage(Storage.MY_SELECTION)
+  const userLists = parseStorage('lists')
 
-  return getOptions([
-    ...userSubreddits,
-    ...userSubredditsSelection,
-    ...basicSubreddits,
-  ])
+  let options = [...basicSubreddits]
+
+  userLists.forEach((list) => {
+    const value = getListValue(list)
+
+    options = [...options, ...value]
+  })
+
+  return getOptions([...options])
 }
 
 export default getInitialOptions

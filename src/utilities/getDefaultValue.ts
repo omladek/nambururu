@@ -1,5 +1,3 @@
-import Storage from '../constants/storage'
-
-export default function getDefaultValue(key: Storage): string {
+export default function getDefaultValue(key: string): string {
   return localStorage.getItem(key) || ''
 }

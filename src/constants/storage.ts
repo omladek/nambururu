@@ -1,8 +1,6 @@
 const enum Storage {
-  MY_MIX = 'myMix',
-  MY_SELECTION = 'mySelection',
-  MY_BLOCKED_SUBREDDITS = 'myBlockedSubreddits',
-  MY_BLOCKED_TITLE_KEYWORDS = 'myBlockedTitleKeywords',
+  BLOCKED_SUBREDDITS = 'blockedSubreddits',
+  BLOCKED_TITLE_KEYWORDS = 'blockedTitleKeywords',
 }
 
 export default Storage

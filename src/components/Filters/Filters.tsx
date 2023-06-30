@@ -2,12 +2,13 @@ import { useState, useEffect, useRef } from 'preact/hooks'
 import { JSX } from 'preact'
 import debounce from 'lodash.debounce'
 import { useQuery } from '@tanstack/react-query'
-import { Option, getOptions } from '../utilities/getOptions'
-import Loader from './Loader'
-import getInitialOptions from '../utilities/getInitialOptions'
-import Storage from '../constants/storage'
-import parseSortFromURL from '../utilities/parseSortFromURL'
-import parseSubredditFromURL from '../utilities/parseSubredditFromURL'
+import { Option, getOptions } from '../../utilities/getOptions'
+import Loader from '../Loader'
+import getInitialOptions from '../../utilities/getInitialOptions'
+import parseSortFromURL from '../../utilities/parseSortFromURL'
+import parseSubredditFromURL from '../../utilities/parseSubredditFromURL'
+
+import './Filters.css'
 
 interface Props {
   onSubmit: (subreddit: string) => void
@@ -19,9 +20,10 @@ interface RedditNameResponse {
 }
 
 function Filters({ onSort, onSubmit }: Props): JSX.Element {
-  const defaultSubreddit =
-    parseSubredditFromURL(window.location.href) || Storage.MY_MIX
+  const defaultSubreddit = parseSubredditFromURL(window.location.href) || 'best'
   const defaultSort = parseSortFromURL(window.location.href) || 'best'
+  const userLists =
+    localStorage.getItem('lists')?.split(',').filter(Boolean) || []
   const formRef = useRef<HTMLFormElement>(null)
   const selectFormRef = useRef<HTMLFormElement>(null)
   const [subreddit, setSubreddit] = useState('')
@@ -140,9 +142,10 @@ function Filters({ onSort, onSubmit }: Props): JSX.Element {
               maxLength={38}
               name="subreddit"
               onInput={handleInput}
+              pattern="[a-zA-Z0-9_\-]+"
               placeholder="search subreddit"
               ref={searchRef}
-              type="text"
+              type="search"
             />
             <button
               aria-label="Clear"
@@ -163,14 +166,23 @@ function Filters({ onSort, onSubmit }: Props): JSX.Element {
             </button>
           </div>
           <datalist id="subreddits">
-            <option value={Storage.MY_MIX}>{Storage.MY_MIX}</option>
-            <option value={Storage.MY_SELECTION}>{Storage.MY_SELECTION}</option>
+            {!!userLists.length && (
+              <optgroup label="my lists">
+                {userLists.map((userList) => (
+                  <option key={userList} value={userList}>
+                    {userList}
+                  </option>
+                ))}
+              </optgroup>
+            )}
 
-            {suggestionsCache.map((option) => (
-              <option key={option.lowerCase} value={option.value}>
-                {option.value}
-              </option>
-            ))}
+            <optgroup label="subreddits">
+              {suggestionsCache.map((option) => (
+                <option key={option.lowerCase} value={option.value}>
+                  {option.value}
+                </option>
+              ))}
+            </optgroup>
           </datalist>
           <button
             aria-label="Refresh"
@@ -210,14 +222,23 @@ function Filters({ onSort, onSubmit }: Props): JSX.Element {
               }
             }}
           >
-            <option value={Storage.MY_MIX}>{Storage.MY_MIX}</option>
-            <option value={Storage.MY_SELECTION}>{Storage.MY_SELECTION}</option>
+            {!!userLists.length && (
+              <optgroup label="my lists">
+                {userLists.map((userList) => (
+                  <option key={userList} value={userList}>
+                    {userList}
+                  </option>
+                ))}
+              </optgroup>
+            )}
 
-            {optionsCache.map((option) => (
-              <option key={option.lowerCase} value={option.value}>
-                {option.value}
-              </option>
-            ))}
+            <optgroup label="subreddits">
+              {optionsCache.map((option) => (
+                <option key={option.lowerCase} value={option.value}>
+                  {option.value}
+                </option>
+              ))}
+            </optgroup>
           </select>
         </fieldset>
 

@@ -1,8 +1,7 @@
 import { JSX } from 'preact'
 import { route } from 'preact-router'
 
-import Storage from '../constants/storage'
-import Filters from '../components/Filters'
+import Filters from '../components/Filters/Filters'
 import List from '../components/List'
 import parseSubredditFromURL from '../utilities/parseSubredditFromURL'
 import parseSortFromURL from '../utilities/parseSortFromURL'
@@ -13,7 +12,10 @@ interface Props {
 }
 
 function Home({ url }: Props): JSX.Element {
-  const subreddit = parseSubredditFromURL(url) || Storage.MY_MIX
+  const subreddit =
+    parseSubredditFromURL(url) ||
+    localStorage.getItem('lists')?.split(',').filter(Boolean)[0] ||
+    'best'
   const sort = parseSortFromURL(url) || 'best'
 
   return (
