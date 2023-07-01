@@ -74,6 +74,7 @@
   },
   "dependencies": {
     "@tanstack/react-query": "4.29.15",
-    "preact": "10.15.1"
+    "preact": "10.15.1",
+    "preact-async-route": "2.2.1"
   }
 }
