@@ -1,7 +1,6 @@
-import Storage from '../constants/storage'
 import parseStorage from './parseStorage'
 
-export default function isInStorage(key: Storage, value: string): boolean {
+export default function isInStorage(key: string, value: string): boolean {
   const currentValue = parseStorage(key)
 
   return Boolean(
