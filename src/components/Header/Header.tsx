@@ -1,7 +1,7 @@
 import { JSX } from 'preact'
-import { Link } from 'preact-router/match'
 
 import './Header.css'
+import Link from '../Link'
 
 function Header(): JSX.Element {
   return (
@@ -9,7 +9,7 @@ function Header(): JSX.Element {
       <nav className="header__nav">
         <ul className="header__nav-list">
           <li className="header__nav-list-item">
-            <Link className="header__logo" href="/">
+            <Link className="header__logo" href="/nambururu/#/">
               Nambururu
             </Link>
           </li>
@@ -17,7 +17,7 @@ function Header(): JSX.Element {
             <Link
               activeClassName="is-active"
               className="header__nav-list-item-link"
-              href="/"
+              href="/nambururu/#/"
             >
               Home
             </Link>
@@ -26,7 +26,7 @@ function Header(): JSX.Element {
             <Link
               activeClassName="is-active"
               className="header__nav-list-item-link"
-              href="/settings/"
+              href="/nambururu/#/settings/"
             >
               Settings
             </Link>

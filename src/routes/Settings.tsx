@@ -1,6 +1,6 @@
 import { JSX } from 'preact'
 
-import { Link } from 'preact-router'
+import Link from '../components/Link'
 
 function Settings(): JSX.Element {
   return (
@@ -9,13 +9,17 @@ function Settings(): JSX.Element {
       <div className="block">
         <ul>
           <li>
-            <Link href="/lists/">My lists</Link>
+            <Link href="/nambururu/#/lists/">My lists</Link>
           </li>
           <li>
-            <Link href="/blocked-subreddits/">Blocked subreddits</Link>
+            <Link href="/nambururu/#/blocked-subreddits/">
+              Blocked subreddits
+            </Link>
           </li>
           <li>
-            <Link href="/blocked-title-keywords/">Blocked title keywords</Link>
+            <Link href="/nambururu/#/blocked-title-keywords/">
+              Blocked title keywords
+            </Link>
           </li>
         </ul>
       </div>

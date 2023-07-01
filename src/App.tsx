@@ -1,7 +1,8 @@
-import { JSX } from 'preact'
+import { JSX, createContext } from 'preact'
 import { Router, Route } from 'preact-router'
 import { createHashHistory } from 'history'
 
+import { useState } from 'preact/hooks'
 import Home from './routes/Home'
 import Settings from './routes/Settings'
 import hashHistoryAdapter from './utilities/hashHistoryAdapter'
@@ -11,11 +12,22 @@ import EditBlockedSubreddits from './components/Editor/components/EditBlockedSub
 import EditBlockedTitleKeywords from './components/Editor/components/EditBlockedTitleKeywords/EditBlockedTitleKeywords'
 import Lists from './components/Editor/components/Lists/Lists'
 
+export const NavigationContext = createContext(window.location.href)
+
 function App(): JSX.Element {
+  const [currentUrl, setCurrentUrl] = useState(window.location.href)
+
+  const handleRouteChange = ({ url }: { url: string }): void => {
+    setCurrentUrl(url)
+  }
+
   return (
-    <>
+    <NavigationContext.Provider value={currentUrl}>
       <Header />
-      <Router history={hashHistoryAdapter(createHashHistory())}>
+      <Router
+        history={hashHistoryAdapter(createHashHistory())}
+        onChange={handleRouteChange}
+      >
         <Route component={Home} default path="/:subreddit?" />
         <Route component={Settings} path="/settings/" />
         <Route component={Lists} path="/lists/" />
@@ -26,7 +38,7 @@ function App(): JSX.Element {
         />
         <Route component={EditList} path="/edit/:list?" />
       </Router>
-    </>
+    </NavigationContext.Provider>
   )
 }
 

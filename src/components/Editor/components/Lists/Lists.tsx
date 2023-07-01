@@ -1,8 +1,8 @@
 import { JSX } from 'preact'
-import { Link } from 'preact-router/match'
 import { useState } from 'preact/hooks'
 
 import AddList from '../AddList/AddList'
+import Link from '../../../Link'
 
 function Lists(): JSX.Element | null {
   const [lists, setLists] = useState(
@@ -56,7 +56,7 @@ function Lists(): JSX.Element | null {
                   <tr key={list}>
                     <td>{list}</td>
                     <td>
-                      <Link href={`/edit/?list=${list}`}>edit</Link>
+                      <Link href={`/nambururu/#/edit/?list=${list}`}>edit</Link>
                     </td>
                     <td>
                       <button
