@@ -23,10 +23,9 @@ function YoutTube({ height, id, thumbnail, width }: Props): JSX.Element | null {
         srcSet="https://satyr.dev/80x60/FF0000?brand=youtube 1x, https://satyr.dev/160x120/FF0000?brand=youtube 2x"
         width="80"
       />
-
       <img
         alt=""
-        className="thumbnail"
+        className="youtube__thumbnail"
         decoding="async"
         height={height}
         loading="lazy"

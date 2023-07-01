@@ -1,7 +1,9 @@
 import { JSX } from 'preact'
 
-import { NormalizedComment } from '../types/reddit-api/CommentsResult.type'
-import RichText from './RichText'
+import { NormalizedComment } from '../../types/reddit-api/CommentsResult.type'
+import RichText from '../RichText'
+
+import './Comment.css'
 
 interface Props {
   comment: NormalizedComment

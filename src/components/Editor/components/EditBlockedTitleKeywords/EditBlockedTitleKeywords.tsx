@@ -49,7 +49,9 @@ function EditBlockedTitleKeywords(): JSX.Element {
             />
           </fieldset>
 
-          <button type="submit">Save</button>
+          <button className="btn" type="submit">
+            Save
+          </button>
           {isSaved && <p>Changes were saved.</p>}
         </form>
       </div>

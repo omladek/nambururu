@@ -49,7 +49,9 @@ function AddList({ lists, onSubmit }: Props): JSX.Element {
         <p>
           <small>Allowed: letters, numbers</small>
         </p>
-        <button type="submit">Create</button>
+        <button className="btn" type="submit">
+          Create
+        </button>
       </fieldset>
     </form>
   )

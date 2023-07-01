@@ -1,6 +1,8 @@
 import { JSX } from 'preact'
 
 import Link from '../components/Link'
+import parseStorage from '../utilities/parseStorage'
+import Storage from '../constants/storage'
 
 function Settings(): JSX.Element {
   return (
@@ -9,17 +11,20 @@ function Settings(): JSX.Element {
       <div className="block">
         <ul>
           <li>
-            <Link href="/nambururu/#/lists/">My lists</Link>
+            <Link href="/nambururu/#/lists/">My lists</Link> (
+            {parseStorage('lists').length})
           </li>
           <li>
             <Link href="/nambururu/#/blocked-subreddits/">
               Blocked subreddits
-            </Link>
+            </Link>{' '}
+            ({parseStorage(Storage.BLOCKED_SUBREDDITS).length})
           </li>
           <li>
             <Link href="/nambururu/#/blocked-title-keywords/">
               Blocked title keywords
-            </Link>
+            </Link>{' '}
+            ({parseStorage(Storage.BLOCKED_TITLE_KEYWORDS).length})
           </li>
         </ul>
       </div>

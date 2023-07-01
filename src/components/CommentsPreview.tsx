@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { JSX } from 'preact'
 
-import Comment from './Comment'
+import Comment from './Comment/Comment'
 import Loader from './Loader'
 import getCommentsPreview from '../utilities/getCommentsPreview'
 

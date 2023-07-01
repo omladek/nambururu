@@ -19,7 +19,7 @@ function Tags({ onClick, value }: Props): JSX.Element | null {
       {tags.map((tag) => {
         return (
           <button
-            className="tags__tag"
+            className="btn tags__tag"
             key={tag}
             onClick={() => {
               onClick(tag)

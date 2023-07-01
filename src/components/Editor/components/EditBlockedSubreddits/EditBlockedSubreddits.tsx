@@ -79,7 +79,7 @@ function EditBlockedSubreddits(): JSX.Element {
           }}
         />
 
-        <button form={formId} type="submit">
+        <button className="btn" form={formId} type="submit">
           Save
         </button>
         {isSaved && <p>Changes were saved.</p>}

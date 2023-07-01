@@ -1,0 +1,39 @@
+.lists {
+  border: 1px solid var(--color-accent);
+  table-layout: fixed;
+
+  & th {
+    border: 0;
+    border-bottom: 1px solid var(--color-accent);
+    text-align: left;
+  }
+
+  & th,
+  & td {
+    padding: 0.25em 0.5em;
+  }
+
+  & td {
+    border: 0;
+  }
+
+  & tbody tr {
+    border-bottom: 1px solid var(--color-accent);
+  }
+}
+
+.lists:not(:last-child) {
+  margin-block-end: var(--gutter);
+}
+
+.lists__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5em;
+
+  & .btn {
+    flex: 1;
+    white-space: nowrap;
+    width: 100%;
+  }
+}

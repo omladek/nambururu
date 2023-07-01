@@ -3,7 +3,7 @@ import { useInView } from 'react-intersection-observer'
 import { Fragment, JSX } from 'preact'
 import { useEffect } from 'preact/hooks'
 
-import Post from './Post'
+import Post from './Post/Post'
 import Loader from './Loader'
 import ErrorBoundary from './ErrorBoundary'
 import getSubreddit from '../utilities/getSubreddit'

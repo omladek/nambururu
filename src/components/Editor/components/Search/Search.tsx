@@ -113,7 +113,7 @@ function Search({ id, onSubmit }: Props): JSX.Element {
             </option>
           ))}
         </datalist>
-        <button type="submit">
+        <button className="btn" type="submit">
           {isLoading && isInitialLoading ? <Loader size="xs" /> : <>🔍</>}
         </button>
       </fieldset>

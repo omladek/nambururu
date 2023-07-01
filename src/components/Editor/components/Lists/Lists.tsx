@@ -3,11 +3,17 @@ import { useState } from 'preact/hooks'
 
 import AddList from '../AddList/AddList'
 import Link from '../../../Link'
+import parseStorage from '../../../../utilities/parseStorage'
+import './Lists.css'
 
 function Lists(): JSX.Element | null {
   const [lists, setLists] = useState(
     (localStorage.getItem('lists') || '').split(',').filter(Boolean),
   )
+
+  const getSubredditsTotalByList = (id: string): number => {
+    return parseStorage(id).length
+  }
 
   const removeFromLists = (id: string): void => {
     // eslint-disable-next-line no-restricted-globals, no-alert
@@ -43,11 +49,12 @@ function Lists(): JSX.Element | null {
       <h1 className="title">My lists</h1>
       <div className="block">
         {lists.length ? (
-          <table>
+          <table className="lists">
             <thead>
               <tr>
                 <th>title</th>
-                <th colSpan={2}>actions</th>
+                <th>subreddits</th>
+                <th>actions</th>
               </tr>
             </thead>
             <tbody>
@@ -55,11 +62,16 @@ function Lists(): JSX.Element | null {
                 return (
                   <tr key={list}>
                     <td>{list}</td>
-                    <td>
-                      <Link href={`/nambururu/#/edit/?list=${list}`}>edit</Link>
-                    </td>
-                    <td>
+                    <td>{getSubredditsTotalByList(list)}</td>
+                    <td className="lists__actions">
+                      <Link
+                        className="btn"
+                        href={`/nambururu/#/edit/?list=${list}`}
+                      >
+                        edit
+                      </Link>
                       <button
+                        className="btn"
                         onClick={() => removeFromLists(list)}
                         type="button"
                       >
