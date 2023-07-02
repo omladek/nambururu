@@ -24,9 +24,6 @@ export default function getFilteredPosts(posts: Thread[]): Thread[] {
     }
 
     // blocked by user title keyword(s) preferences
-    return !containsKeyword(
-      myBlockedTitleKeywords,
-      post.data.title.toLowerCase(),
-    )
+    return !containsKeyword(myBlockedTitleKeywords, post.data.title)
   })
 }

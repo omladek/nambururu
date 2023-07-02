@@ -15,4 +15,11 @@ describe('containsKeyword', () => {
     const result = containsKeyword(keywords, sentence)
     expect(result).toBeFalsy()
   })
+
+  test('should return true if sentence contains any keyword regardless of case sensitivity', () => {
+    const keywords = ['Joe smith', 'banana']
+    const sentence = 'I am Joe Smith, watch me eat an orange.'
+    const result = containsKeyword(keywords, sentence)
+    expect(result).toBeTruthy()
+  })
 })
