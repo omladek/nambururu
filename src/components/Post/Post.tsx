@@ -1,5 +1,3 @@
-import { useState } from 'preact/hooks'
-
 import { JSX } from 'preact'
 import { NormalizedPost } from '../../types/reddit-api/ThreadsResult.type'
 import Media from '../Media'
@@ -15,8 +13,6 @@ interface Props {
 }
 
 function Post({ mediaLoading, post }: Props): JSX.Element {
-  const [showComments, setShowComments] = useState<boolean>(false)
-
   const {
     commentsTotalFormatted,
     createdDate,
@@ -103,19 +99,7 @@ function Post({ mediaLoading, post }: Props): JSX.Element {
 
         {hasComments && (
           <div className="post__comments">
-            {showComments ? (
-              <CommentsPreview id={id} />
-            ) : (
-              <p>
-                <button
-                  className="btn btn--block"
-                  onClick={() => setShowComments(true)}
-                  type="button"
-                >
-                  Load comments
-                </button>
-              </p>
-            )}
+            <CommentsPreview id={id} />
           </div>
         )}
       </div>
