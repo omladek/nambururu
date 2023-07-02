@@ -8,8 +8,6 @@ import RichText from '../RichText'
 
 import './Post.css'
 import Link from '../Link'
-import isInStorage from '../../utilities/isInStorage'
-import parseStorage from '../../utilities/parseStorage'
 
 interface Props {
   post: NormalizedPost
@@ -33,10 +31,6 @@ function Post({ mediaLoading, post }: Props): JSX.Element {
     title,
     upVotes,
   } = post
-
-  const userLists = parseStorage('lists').filter((list) =>
-    isInStorage(list, subreddit),
-  )
 
   return (
     <article className="post">
@@ -77,26 +71,6 @@ function Post({ mediaLoading, post }: Props): JSX.Element {
               {`r/${subreddit}`}
             </Link>
           </dd>
-
-          {!!userLists.length && (
-            <>
-              <dt>
-                <span className="sr-only">in my lists:</span>
-                <span aria-hidden>📚</span>
-              </dt>
-              <dd>
-                {userLists.map((list) => (
-                  <Link
-                    className="post__subreddit-link"
-                    href={`/nambururu/#/?subreddit=${list}&sort=best`}
-                    key={list}
-                  >
-                    {list}
-                  </Link>
-                ))}
-              </dd>
-            </>
-          )}
 
           <dt>
             <span className="sr-only">domain:</span>
