@@ -11,7 +11,7 @@
   --color-accent: #dbdbdb;
   --color-post: #fbfbfb;
   --gutter: 0.5rem;
-  --form-element-height: 2rem;
+  --form-element-height: 44px;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -88,8 +88,49 @@ select {
   padding-inline: 0.25em;
 }
 
+input:placeholder-shown {
+  text-overflow: ellipsis;
+}
+
 input,
 select {
+  width: 100%;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+}
+
+input,
+textarea,
+select {
+  border: 1px solid var(--color-accent);
+  color: var(--color-text);
+  padding: 0.5em;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  /* TODO */
+  outline: none;
+}
+
+[list]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+}
+
+@media (prefers-color-scheme: dark) {
+  input,
+  textarea,
+  select {
+    background-color: var(--color-background);
+  }
+}
+
+textarea {
+  min-height: 15em;
   width: 100%;
 }
 
@@ -240,21 +281,6 @@ fieldset:not([class]) {
     margin: 0;
     padding: 0;
   }
-
-  & label {
-    font-weight: bold;
-  }
-
-  & input,
-  & textarea {
-    border: 1px solid var(--color-accent);
-    padding: 0.5em;
-  }
-
-  & textarea {
-    min-height: 15em;
-    width: 100%;
-  }
 }
 
 .btn {
@@ -267,9 +293,10 @@ fieldset:not([class]) {
   font-family: inherit;
   font-size: 0.8rem;
   font-weight: 500;
-  height: auto;
+  height: var(--form-element-height);
   margin: 0;
   padding: 0.75em 1.5em;
+  position: relative;
   text-align: center;
   text-decoration: none;
 }
@@ -279,6 +306,19 @@ fieldset:not([class]) {
     background-color: var(--color-link);
     color: var(--color-accent);
     text-decoration: none;
+  }
+}
+
+.btn.is-loading {
+  & .btn__text {
+    visibility: hidden;
+  }
+
+  & .loader {
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
   }
 }
 

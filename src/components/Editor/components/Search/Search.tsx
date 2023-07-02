@@ -6,6 +6,7 @@ import { useQuery } from '@tanstack/react-query'
 import { Option, getOptions } from '../../../../utilities/getOptions'
 import Loader from '../../../Loader'
 import getInitialOptions from '../../../../utilities/getInitialOptions'
+import './Search.css'
 
 interface Props {
   onSubmit: (subreddit: string) => void
@@ -90,32 +91,45 @@ function Search({ id, onSubmit }: Props): JSX.Element {
   )
 
   return (
-    <form action="" method="GET" onSubmit={handleSearchSubmit}>
+    <form
+      action=""
+      className="search"
+      method="GET"
+      onSubmit={handleSearchSubmit}
+    >
       <fieldset>
-        <label htmlFor="subreddit">search</label>
-        <input
-          autoComplete="off"
-          id={inputId}
-          list={listId}
-          maxLength={38}
-          name={inputId}
-          onInput={handleInput}
-          pattern="[a-zA-Z0-9_\-]+"
-          placeholder="search subreddit"
-          ref={searchRef}
-          required
-          type="search"
-        />
-        <datalist id={listId}>
-          {suggestionsCache.map((option) => (
-            <option key={option.lowerCase} value={option.value}>
-              {option.value}
-            </option>
-          ))}
-        </datalist>
-        <button className="btn" type="submit">
-          {isLoading && isInitialLoading ? <Loader size="xs" /> : <>🔍</>}
-        </button>
+        <label htmlFor={inputId}>search</label>
+        <div className="search__group">
+          <input
+            autoComplete="off"
+            id={inputId}
+            list={listId}
+            maxLength={38}
+            name={inputId}
+            onInput={handleInput}
+            pattern="[a-zA-Z0-9_\-]+"
+            placeholder="search subreddit"
+            ref={searchRef}
+            required
+            type="search"
+          />
+          <datalist id={listId}>
+            {suggestionsCache.map((option) => (
+              <option key={option.lowerCase} value={option.value}>
+                {option.value}
+              </option>
+            ))}
+          </datalist>
+          <button
+            className={`btn ${
+              isLoading && isInitialLoading ? 'is-loading' : ''
+            }`}
+            type="submit"
+          >
+            {isLoading && isInitialLoading && <Loader size="xs" />}
+            <span className="btn__text">🔍</span>
+          </button>
+        </div>
       </fieldset>
     </form>
   )

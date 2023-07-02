@@ -12,7 +12,7 @@ interface Props {
 
 function CommentsPreview({ id }: Props): JSX.Element | null {
   const [showComments, setShowComments] = useState(false)
-  const { data, error, isLoading } = useQuery({
+  const { data, error, isInitialLoading, isLoading } = useQuery({
     queryKey: ['comments', id],
     queryFn: ({ signal }) => getCommentsPreview(id, signal),
     enabled: showComments,
@@ -20,19 +20,19 @@ function CommentsPreview({ id }: Props): JSX.Element | null {
     staleTime: Infinity,
   })
 
-  if (!showComments) {
+  if (!showComments || isLoading) {
     return (
       <button
-        className="btn btn--block"
+        className={`btn btn--block ${isInitialLoading ? 'is-loading' : ''}`}
+        disabled={isInitialLoading}
         onClick={() => setShowComments(true)}
         type="button"
       >
-        Load comments
+        {isInitialLoading && <Loader size="xs" />}
+        <span className="btn__text">Load comments</span>
       </button>
     )
   }
-
-  if (isLoading) return <Loader size="xs" />
 
   if (error) {
     return (

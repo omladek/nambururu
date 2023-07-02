@@ -1,0 +1,7 @@
+.search__group {
+  display: flex;
+
+  & input ~ .btn {
+    border-inline-start: 0;
+  }
+}
