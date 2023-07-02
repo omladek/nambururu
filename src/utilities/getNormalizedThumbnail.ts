@@ -7,7 +7,7 @@ import deescapeHtml from './deescapeHtml'
 export default (post: ChildData): NormalizedThumbnail | null => {
   const { domain, thumbnail, thumbnail_height, thumbnail_width, url } = post
 
-  if (['image'].includes(thumbnail) && ['i.redd.it'].includes(domain)) {
+  if (thumbnail === 'image' && domain === 'i.redd.it') {
     return {
       type: 'thumbnail',
       height: thumbnail_height || 90,

@@ -20,13 +20,14 @@ export default function getNormalizedPreviewImage(
     if (!images.length) {
       return null
     }
+    const normalizedImages = images.map(({ height, url, width }) => ({
+      u: url,
+      x: width,
+      y: height,
+    }))
 
     const image = getImageByContainerWidth(
-      images.map(({ height, url, width }) => ({
-        u: url,
-        x: width,
-        y: height,
-      })),
+      normalizedImages,
       1,
       settings.IMAGE_CONTAINER_WIDTH,
     )

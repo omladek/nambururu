@@ -12,8 +12,6 @@ import updateAnchorTags from './updateAnchorTags'
 const getNormalizedPost = (post: ChildData): NormalizedPost => {
   const {
     created_utc,
-    crosspost_parent,
-    crosspost_parent_list,
     domain,
     id,
     num_comments,
@@ -24,15 +22,6 @@ const getNormalizedPost = (post: ChildData): NormalizedPost => {
     ups,
     upvote_ratio,
   } = post
-
-  const crossPost =
-    crosspost_parent && !!crosspost_parent_list?.length
-      ? crosspost_parent_list.find((item) => item.name === crosspost_parent)
-      : null
-
-  if (crossPost) {
-    return getNormalizedPost(crossPost)
-  }
 
   const media = getPostMedia(post)
 

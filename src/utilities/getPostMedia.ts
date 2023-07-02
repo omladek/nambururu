@@ -43,12 +43,6 @@ export default function getPostMedia(post: ChildData): NormalizedPostMedia {
       return normalizedYoutube
     }
 
-    const normalizedExternalLink = getNormalizedExternalLink(post)
-
-    if (normalizedExternalLink) {
-      return normalizedExternalLink
-    }
-
     const normalizedThumbnail = getNormalizedThumbnail(post)
 
     if (normalizedThumbnail) {
@@ -59,6 +53,12 @@ export default function getPostMedia(post: ChildData): NormalizedPostMedia {
 
     if (normalizedPreviewImage) {
       return normalizedPreviewImage
+    }
+
+    const normalizedExternalLink = getNormalizedExternalLink(post)
+
+    if (normalizedExternalLink) {
+      return normalizedExternalLink
     }
 
     return null

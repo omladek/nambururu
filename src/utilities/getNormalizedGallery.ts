@@ -12,64 +12,65 @@ export default (post: ChildData): NormalizedGallery | null => {
 
   const hasGallery = (is_gallery && media_metadata) || media_metadata
 
-  if (hasGallery) {
-    const items: NormalizedGalleryImage[] = Object.keys(media_metadata).reduce(
-      (acc: NormalizedGalleryImage[], curr) => {
-        const image = media_metadata[curr]
+  if (!hasGallery) {
+    return null
+  }
 
-        if (image.status !== 'valid') {
-          return acc
-        }
+  const items: NormalizedGalleryImage[] = Object.keys(media_metadata).reduce(
+    (acc: NormalizedGalleryImage[], curr) => {
+      const image = media_metadata[curr]
 
-        if (!image?.s) {
-          return acc
-        }
+      if (image.status !== 'valid') {
+        return acc
+      }
 
-        const fullSizeImage = image.s
+      if (!image?.s) {
+        return acc
+      }
 
-        if (!image.p.length) {
-          return [
-            ...acc,
-            {
-              thumbnail: deescapeHtml(fullSizeImage.u),
-              fullSize: deescapeHtml(fullSizeImage.u),
-              retina: deescapeHtml(fullSizeImage.u),
-              height: fullSizeImage.y,
-              width: fullSizeImage.x,
-            },
-          ]
-        }
+      const fullSizeImage = image.s
 
-        const responsizeImageStandard = getImageByContainerWidth(
-          image.p,
-          1,
-          settings.IMAGE_CONTAINER_WIDTH,
-        )
-
-        const responsizeImageRetina = getImageByContainerWidth(
-          image.p,
-          2,
-          settings.IMAGE_CONTAINER_WIDTH,
-        )
-
+      if (!image.p.length) {
         return [
           ...acc,
           {
-            thumbnail: deescapeHtml(responsizeImageStandard.u),
+            thumbnail: deescapeHtml(fullSizeImage.u),
             fullSize: deescapeHtml(fullSizeImage.u),
-            retina: deescapeHtml(responsizeImageRetina.u),
+            retina: deescapeHtml(fullSizeImage.u),
             height: fullSizeImage.y,
             width: fullSizeImage.x,
           },
         ]
-      },
-      [],
-    )
+      }
 
-    return {
-      type: 'gallery',
-      items,
-    }
+      const responsizeImageStandard = getImageByContainerWidth(
+        image.p,
+        1,
+        settings.IMAGE_CONTAINER_WIDTH,
+      )
+
+      const responsizeImageRetina = getImageByContainerWidth(
+        image.p,
+        2,
+        settings.IMAGE_CONTAINER_WIDTH,
+      )
+
+      return [
+        ...acc,
+        {
+          thumbnail: deescapeHtml(responsizeImageStandard.u),
+          fullSize: deescapeHtml(fullSizeImage.u),
+          retina: deescapeHtml(responsizeImageRetina.u),
+          height: fullSizeImage.y,
+          width: fullSizeImage.x,
+        },
+      ]
+    },
+    [],
+  )
+
+  return {
+    type: 'gallery',
+    items,
   }
-  return null
 }

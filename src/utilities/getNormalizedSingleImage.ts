@@ -31,39 +31,43 @@ export default (post: ChildData): NormalizedSingleImage | null => {
     !hasYoutubeIframe &&
     !!preview?.images[0].source
 
-  if (hasSingleImage) {
-    return {
-      type: 'singleImage',
-      fullSize: deescapeHtml(preview?.images[0].source.url),
-      height: Math.max(
-        ...[thumbnail_height || 0, preview?.images[0].source.height || 0],
-      ),
-      retina: deescapeHtml(
-        getImageByContainerWidth(
-          preview?.images[0].resolutions.map((image) => ({
-            u: image.url,
-            x: image.width,
-            y: image.height,
-          })) || [],
-          settings.IMAGE_CONTAINER_WIDTH,
-          2,
-        )?.u || '',
-      ),
-      thumbnail: deescapeHtml(
-        getImageByContainerWidth(
-          preview?.images[0].resolutions.map((image) => ({
-            u: image.url,
-            x: image.width,
-            y: image.height,
-          })) || [],
-          settings.IMAGE_CONTAINER_WIDTH,
-          1,
-        )?.u || thumbnail,
-      ),
-      width: Math.max(
-        ...[thumbnail_width || 0, preview?.images[0].source.width || 0],
-      ),
-    }
+  if (!hasSingleImage) {
+    return null
   }
-  return null
+
+  const normalizedResolutions =
+    preview?.images[0].resolutions.map((image) => ({
+      u: image.url,
+      x: image.width,
+      y: image.height,
+    })) || []
+
+  const dpr1 = getImageByContainerWidth(
+    normalizedResolutions,
+    settings.IMAGE_CONTAINER_WIDTH,
+    1,
+  )?.u
+
+  const thumbnailDescaped = dpr1 ? deescapeHtml(dpr1) : deescapeHtml(thumbnail)
+
+  const dpr2 = getImageByContainerWidth(
+    normalizedResolutions,
+    settings.IMAGE_CONTAINER_WIDTH,
+    2,
+  )?.u
+
+  const retina = dpr2 ? deescapeHtml(dpr2) : ''
+
+  return {
+    type: 'singleImage',
+    fullSize: deescapeHtml(preview?.images[0].source.url),
+    height: Math.max(
+      ...[thumbnail_height || 0, preview?.images[0].source.height || 0],
+    ),
+    retina,
+    thumbnail: thumbnailDescaped,
+    width: Math.max(
+      ...[thumbnail_width || 0, preview?.images[0].source.width || 0],
+    ),
+  }
 }

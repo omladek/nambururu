@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef } from 'preact/hooks'
 import { JSX } from 'preact/compat'
 import syncMediaPlayback from '../utilities/syncMediaPlayback'
-import deescapeHtml from '../utilities/deescapeHtml'
 
 interface Props {
   url: string
@@ -22,14 +21,6 @@ function VideoPlayer({
   const audioRef = useRef<HTMLAudioElement>(null)
   const [isLoaded, setIsLoaded] = useState(false)
   const audioUrl = url.replace(/_\d+/, '_audio')
-
-  const hasPoster = !(
-    poster !== null &&
-    ['nsfw', 'spoiler', 'default', 'self', 'image', ''].includes(poster)
-  )
-
-  const safePoster = hasPoster ? deescapeHtml(poster) : null
-
   useEffect(() => {
     if (videoRef.current && audioRef.current) {
       syncMediaPlayback(videoRef.current, audioRef.current)
@@ -60,14 +51,14 @@ function VideoPlayer({
             ▶
           </button>
 
-          {safePoster ? (
+          {poster ? (
             <img
               alt=""
               className="thumbnail thumbnail--video"
               decoding="async"
               height={height}
               loading="lazy"
-              src={safePoster}
+              src={poster}
               width={width}
             />
           ) : (

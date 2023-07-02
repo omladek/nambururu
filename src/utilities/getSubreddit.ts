@@ -3,8 +3,7 @@ import {
   ThreadResult,
   NormalizedPost,
 } from '../types/reddit-api/ThreadsResult.type'
-import getFilteredPosts from './getFilteredPosts'
-import getNormalizedPost from './getNormalizedPost'
+import getPosts from './getPosts'
 
 interface Props {
   subreddit: string
@@ -32,12 +31,8 @@ const getSubreddit = async ({
         throw new Error(JSON.stringify(response, null, 2))
       }
 
-      const posts = getFilteredPosts(response.data.children).map((post) =>
-        getNormalizedPost(post.data),
-      )
-
       return {
-        posts,
+        posts: getPosts(response.data.children),
         after: response.data.after,
       }
     })
