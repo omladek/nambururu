@@ -46,7 +46,7 @@ const getNormalizedPost = (post: ChildData): NormalizedPost => {
     permalink: `https://www.reddit.com${permalink}`,
     description: updateAnchorTags(deescapeHtml(selftext_html || '')),
     subreddit,
-    title,
+    title: deescapeHtml(title),
     upVotes: formatNumber(ups),
     downVotes: formatNumber(calculateDownvotes(ups, upvote_ratio)),
     media,
