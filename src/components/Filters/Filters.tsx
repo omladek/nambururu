@@ -132,57 +132,26 @@ function Filters({ onSort, onSubmit }: Props): JSX.Element {
           <label className="label label--touch" htmlFor="subreddit">
             <span className="label__title">search</span>
           </label>
-          <div className="search">
-            <input
-              autoComplete="off"
-              // eslint-disable-next-line jsx-a11y/no-autofocus
-              autoFocus={false}
-              id="subreddit"
-              list="subreddits"
-              maxLength={38}
-              name="subreddit"
-              onInput={handleInput}
-              pattern="[a-zA-Z0-9_\-]+"
-              placeholder="search subreddit"
-              ref={searchRef}
-              type="search"
-            />
-            <button
-              aria-label="Clear"
-              className="filters__btn search__btn"
-              onClick={() => {
-                if (!searchRef.current) {
-                  return
-                }
-
-                searchRef.current.value = ''
-
-                searchRef.current.focus()
-              }}
-              title="CLear"
-              type="button"
-            >
-              ❌
-            </button>
-          </div>
+          <input
+            autoComplete="off"
+            // eslint-disable-next-line jsx-a11y/no-autofocus
+            autoFocus={false}
+            id="subreddit"
+            list="subreddits"
+            maxLength={38}
+            name="subreddit"
+            onInput={handleInput}
+            pattern="[a-zA-Z0-9_\-]+"
+            placeholder="search subreddit"
+            ref={searchRef}
+            type="search"
+          />
           <datalist id="subreddits">
-            {!!userLists.length && (
-              <optgroup label="my lists">
-                {userLists.map((userList) => (
-                  <option key={userList} value={userList}>
-                    {userList}
-                  </option>
-                ))}
-              </optgroup>
-            )}
-
-            <optgroup label="subreddits">
-              {suggestionsCache.map((option) => (
-                <option key={option.lowerCase} value={option.value}>
-                  {option.value}
-                </option>
-              ))}
-            </optgroup>
+            {suggestionsCache.map((option) => (
+              <option key={option.lowerCase} value={option.value}>
+                {option.value}
+              </option>
+            ))}
           </datalist>
           <button
             aria-label="Refresh"

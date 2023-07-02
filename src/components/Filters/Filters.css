@@ -132,32 +132,12 @@
   }
 }
 
-.search {
-  position: relative;
-  width: 100%;
-}
-
-.search input {
-  padding-right: var(--form-element-height);
-}
-
-.search:has(input:placeholder-shown) .search__btn {
-  pointer-events: none;
-  visibility: hidden;
-}
-
-.search__btn {
-  position: absolute;
-  right: 0;
-  top: 0;
-}
-
 .filters [list]::-webkit-calendar-picker-indicator {
   opacity: 0;
 }
 
 @media (prefers-color-scheme: dark) {
-  .search input,
+  input[type='search'],
   .filters__btn {
     background-color: transparent;
     border: 1px solid var(--color-accent);
