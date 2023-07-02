@@ -17,6 +17,8 @@ function App(): JSX.Element {
 
   const handleRouteChange = ({ url }: { url: string }): void => {
     setCurrentUrl(url)
+
+    window.scrollTo({ top: 0 })
   }
 
   return (
