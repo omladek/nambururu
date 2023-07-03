@@ -15,12 +15,12 @@ function Gallery({ items, mediaLoading }: Props): JSX.Element | null {
 
   return (
     <div className="gallery">
-      {items.map((thumbnail) => (
+      {items.map((thumbnail, thumbnailIndex) => (
         <Thumbnail
           fullSize={thumbnail.fullSize}
           height={thumbnail.height}
           key={thumbnail.thumbnail}
-          loading={mediaLoading}
+          loading={thumbnailIndex < 1 ? mediaLoading : 'lazy'}
           retina={thumbnail.retina}
           thumbnail={thumbnail.thumbnail}
           width={thumbnail.width}

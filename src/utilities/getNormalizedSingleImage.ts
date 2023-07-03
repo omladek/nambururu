@@ -46,7 +46,7 @@ export default (post: ChildData): NormalizedSingleImage | null => {
     normalizedResolutions,
     settings.IMAGE_CONTAINER_WIDTH,
     1,
-  )?.u
+  ).u
 
   const thumbnailDescaped = dpr1 ? deescapeHtml(dpr1) : deescapeHtml(thumbnail)
 
@@ -54,7 +54,7 @@ export default (post: ChildData): NormalizedSingleImage | null => {
     normalizedResolutions,
     settings.IMAGE_CONTAINER_WIDTH,
     2,
-  )?.u
+  ).u
 
   const retina = dpr2 ? deescapeHtml(dpr2) : ''
 
@@ -62,12 +62,11 @@ export default (post: ChildData): NormalizedSingleImage | null => {
     type: 'singleImage',
     fullSize: deescapeHtml(preview?.images[0].source.url),
     height: Math.max(
-      ...[thumbnail_height || 0, preview?.images[0].source.height || 0],
+      thumbnail_height || 0,
+      preview?.images[0].source.height || 0,
     ),
     retina,
     thumbnail: thumbnailDescaped,
-    width: Math.max(
-      ...[thumbnail_width || 0, preview?.images[0].source.width || 0],
-    ),
+    width: Math.max(thumbnail_width || 0, preview?.images[0].source.width || 0),
   }
 }

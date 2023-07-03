@@ -18,7 +18,11 @@ function App(): JSX.Element {
   const handleRouteChange = ({ url }: { url: string }): void => {
     setCurrentUrl(url)
 
-    window.scrollTo({ top: 0 })
+    const scrollableContainer = document.querySelector<HTMLDivElement>('.main')
+
+    if (scrollableContainer) {
+      scrollableContainer.scrollTop = 0
+    }
   }
 
   return (
@@ -38,36 +42,32 @@ function App(): JSX.Element {
         />
         <AsyncRoute
           getComponent={() =>
-            import('./components/Editor/components/Lists/Lists').then(
-              (module) => module.default,
-            )
+            import('./routes/Lists/Lists').then((module) => module.default)
           }
           loading={() => <Loader isFullScreen />}
           path="/lists/"
         />
         <AsyncRoute
           getComponent={() =>
-            import(
-              './components/Editor/components/EditBlockedSubreddits/EditBlockedSubreddits'
-            ).then((module) => module.default)
+            import('./routes/EditBlockedSubreddits').then(
+              (module) => module.default,
+            )
           }
           loading={() => <Loader isFullScreen />}
           path="/blocked-subreddits/"
         />
         <AsyncRoute
           getComponent={() =>
-            import(
-              './components/Editor/components/EditBlockedTitleKeywords/EditBlockedTitleKeywords'
-            ).then((module) => module.default)
+            import('./routes/EditBlockedTitleKeywords').then(
+              (module) => module.default,
+            )
           }
           loading={() => <Loader isFullScreen />}
           path="/blocked-title-keywords/"
         />
         <AsyncRoute
           getComponent={() =>
-            import('./components/Editor/components/EdditList/EditList').then(
-              (module) => module.default,
-            )
+            import('./routes/EditList').then((module) => module.default)
           }
           loading={() => <Loader isFullScreen />}
           path="/edit/:list?"

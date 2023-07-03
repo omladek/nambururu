@@ -1,12 +1,16 @@
+/* eslint-disable no-console */
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { useInView } from 'react-intersection-observer'
-import { Fragment, JSX } from 'preact'
+import { JSX } from 'preact'
 import { useEffect } from 'preact/hooks'
 
 import Post from './Post/Post'
-import Loader from './Loader'
 import ErrorBoundary from './ErrorBoundary'
 import getSubreddit from '../utilities/getSubreddit'
+import Loader from './Loader'
+import transformListData from '../utilities/transformListData'
+
+const lazyLoadingLimit = window.matchMedia('(min-width: 40em)').matches ? 4 : 1
 
 interface Props {
   subreddit: string
@@ -18,6 +22,7 @@ function List({ sort, subreddit }: Props): JSX.Element {
     rootMargin: '500px 0px 0px 0px',
     initialInView: true,
   })
+
   const {
     data,
     error,
@@ -27,14 +32,10 @@ function List({ sort, subreddit }: Props): JSX.Element {
     isLoading,
   } = useInfiniteQuery({
     queryKey: ['subreddit', subreddit, sort],
-    queryFn: ({ pageParam = '', signal }) =>
-      getSubreddit({ subreddit, after: pageParam, signal, sort }),
+    queryFn: getSubreddit,
     getNextPageParam: (lastPage) => lastPage.after || undefined,
+    select: transformListData,
   })
-
-  const lazyLoadingLimit = window.matchMedia('(min-width: 40em)').matches
-    ? 4
-    : 1
 
   useEffect(() => {
     if (inView && !isFetchingNextPage) {
@@ -54,36 +55,29 @@ function List({ sort, subreddit }: Props): JSX.Element {
       </div>
     )
 
-  const nonEmptyPages = (data?.pages || []).filter((page) => page.posts.length)
-
-  if (!nonEmptyPages.length && !hasNextPage) {
+  if (!data?.pages?.length && !hasNextPage) {
     return <p className="message">No results</p>
   }
 
   return (
     <div className="list">
-      {nonEmptyPages.map((page) => {
+      {data?.pages.map((post, postIndex) => {
         return (
-          <Fragment key={page.after || 'page-last'}>
-            {page.posts.map((post, postIndex) => {
-              return (
-                <ErrorBoundary key={post.uniqueId}>
-                  <Post
-                    mediaLoading={
-                      postIndex <= lazyLoadingLimit ? 'eager' : 'lazy'
-                    }
-                    post={post}
-                  />
-                </ErrorBoundary>
-              )
-            })}
-          </Fragment>
+          <ErrorBoundary key={post.id}>
+            <Post
+              mediaLoading={
+                postIndex + 1 <= lazyLoadingLimit ? 'eager' : 'lazy'
+              }
+              post={post}
+            />
+          </ErrorBoundary>
         )
       })}
 
-      <div className="load-more-area" ref={ref}>
+      <div className={`load-more-area ${!hasNextPage ? 'done' : ''}`} ref={ref}>
         {hasNextPage ? (
-          <Loader />
+          // eslint-disable-next-line react/jsx-no-useless-fragment
+          <>{isFetchingNextPage && <Loader />}</>
         ) : (
           <div className="end">
             <p>That&apos;s all</p>

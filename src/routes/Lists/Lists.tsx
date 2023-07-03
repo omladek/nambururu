@@ -1,15 +1,14 @@
 import { JSX } from 'preact'
 import { useState } from 'preact/hooks'
 
-import AddList from '../AddList/AddList'
-import Link from '../../../Link'
-import parseStorage from '../../../../utilities/parseStorage'
+import AddList from '../../components/Editor/components/AddList/AddList'
+import Link from '../../components/Link'
+import parseStorage from '../../utilities/parseStorage'
 import './Lists.css'
+import getSortedList from '../../utilities/getSortedList'
 
 function Lists(): JSX.Element | null {
-  const [lists, setLists] = useState(
-    (localStorage.getItem('lists') || '').split(',').filter(Boolean),
-  )
+  const [lists, setLists] = useState(() => getSortedList(parseStorage('lists')))
 
   const getSubredditsTotalByList = (id: string): number => {
     return parseStorage(id).length
@@ -36,7 +35,7 @@ function Lists(): JSX.Element | null {
 
   const addToLists = (id: string): void => {
     setLists((prevLists) => {
-      const nextLists = [...prevLists, id]
+      const nextLists = getSortedList([...prevLists, id])
 
       localStorage.setItem('lists', nextLists.join(','))
 

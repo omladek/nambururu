@@ -1,10 +1,10 @@
 import { JSX } from 'preact'
 import { useState } from 'preact/hooks'
 
-import Storage from '../../../../constants/storage'
-import getDefaultValue from '../../../../utilities/getDefaultValue'
-import Tags from '../Tags/Tags'
-import Search from '../Search/Search'
+import Storage from '../constants/storage'
+import getDefaultValue from '../utilities/getDefaultValue'
+import Tags from '../components/Editor/components/Tags/Tags'
+import Search from '../components/Editor/components/Search/Search'
 
 function EditBlockedSubreddits(): JSX.Element {
   const formId = 'editBlockedSubreddits'

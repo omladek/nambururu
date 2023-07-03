@@ -13,6 +13,10 @@ function YoutTube({ height, id, thumbnail, width }: Props): JSX.Element | null {
       className="youtube"
       href={`https://www.youtube.com/watch?v=${id}`}
       rel="noopener noreferrer"
+      style={{
+        '--ar-width': width,
+        '--ar-height': height,
+      }}
       target="_blank"
     >
       <img

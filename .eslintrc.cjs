@@ -70,6 +70,7 @@ module.exports = {
         args: 'all',
         ignoreRestSiblings: true,
         argsIgnorePattern: '^_',
+        destructuredArrayIgnorePattern: '^_',
       },
     ],
     'react/jsx-no-literals': 0,

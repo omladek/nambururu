@@ -1,12 +1,9 @@
 .filters {
   background-color: var(--color-background);
-  bottom: 0;
   display: grid;
   gap: 0;
   grid-template-columns: 65% repeat(2, 1fr);
-  position: fixed;
   width: 100%;
-  z-index: 1;
 
   & fieldset {
     border: 0;

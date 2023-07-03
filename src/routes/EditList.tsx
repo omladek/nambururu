@@ -1,10 +1,10 @@
 import { JSX } from 'preact'
 import { useState } from 'preact/hooks'
 
-import getDefaultValue from '../../../../utilities/getDefaultValue'
-import Tags from '../Tags/Tags'
-import Search from '../Search/Search'
-import parseListIdFromURL from '../../../../utilities/parseListIdFromURL'
+import getDefaultValue from '../utilities/getDefaultValue'
+import Tags from '../components/Editor/components/Tags/Tags'
+import Search from '../components/Editor/components/Search/Search'
+import parseListIdFromURL from '../utilities/parseListIdFromURL'
 
 interface Props {
   /** injected by router */

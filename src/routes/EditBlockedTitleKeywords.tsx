@@ -1,8 +1,8 @@
 import { JSX } from 'preact'
 import { useState } from 'preact/hooks'
 
-import Storage from '../../../../constants/storage'
-import getDefaultValue from '../../../../utilities/getDefaultValue'
+import Storage from '../constants/storage'
+import getDefaultValue from '../utilities/getDefaultValue'
 
 function EditBlockedTitleKeywords(): JSX.Element {
   const [isSaved, setIsSaved] = useState(false)

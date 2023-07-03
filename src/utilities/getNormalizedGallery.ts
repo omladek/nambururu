@@ -31,16 +31,17 @@ export default (post: ChildData): NormalizedGallery | null => {
       const fullSizeImage = image.s
 
       if (!image.p.length) {
-        return [
-          ...acc,
-          {
-            thumbnail: deescapeHtml(fullSizeImage.u),
-            fullSize: deescapeHtml(fullSizeImage.u),
-            retina: deescapeHtml(fullSizeImage.u),
-            height: fullSizeImage.y,
-            width: fullSizeImage.x,
-          },
-        ]
+        const src = deescapeHtml(fullSizeImage.u)
+
+        acc.push({
+          thumbnail: src,
+          fullSize: src,
+          retina: src,
+          height: fullSizeImage.y,
+          width: fullSizeImage.x,
+        })
+
+        return acc
       }
 
       const responsizeImageStandard = getImageByContainerWidth(
@@ -55,16 +56,15 @@ export default (post: ChildData): NormalizedGallery | null => {
         settings.IMAGE_CONTAINER_WIDTH,
       )
 
-      return [
-        ...acc,
-        {
-          thumbnail: deescapeHtml(responsizeImageStandard.u),
-          fullSize: deescapeHtml(fullSizeImage.u),
-          retina: deescapeHtml(responsizeImageRetina.u),
-          height: fullSizeImage.y,
-          width: fullSizeImage.x,
-        },
-      ]
+      acc.push({
+        thumbnail: deescapeHtml(responsizeImageStandard.u),
+        fullSize: deescapeHtml(fullSizeImage.u),
+        retina: deescapeHtml(responsizeImageRetina.u),
+        height: fullSizeImage.y,
+        width: fullSizeImage.x,
+      })
+
+      return acc
     },
     [],
   )

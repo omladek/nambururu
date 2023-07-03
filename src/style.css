@@ -24,6 +24,11 @@
   }
 }
 
+html,
+body {
+  height: 100%;
+}
+
 body {
   background-color: var(--color-background);
   color: var(--color-text);
@@ -144,6 +149,30 @@ textarea {
   width: 1px;
 }
 
+.root {
+  display: grid;
+  grid-template-areas:
+    'header'
+    'main'
+    'footer';
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr auto;
+  height: 100%;
+}
+
+.header {
+  grid-area: header;
+}
+
+.main {
+  grid-area: main;
+  overflow-y: scroll;
+}
+
+.filters {
+  grid-area: footer;
+}
+
 .message {
   align-items: center;
   display: grid;
@@ -158,6 +187,10 @@ textarea {
   justify-content: center;
   min-height: 20em;
   text-align: center;
+}
+
+.load-more-area.done {
+  grid-column: 1 / -1;
 }
 
 .list {

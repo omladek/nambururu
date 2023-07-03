@@ -1,26 +1,25 @@
 import getSubredditJSONUrl from './getSubredditJSONUrl'
-import {
-  ThreadResult,
-  NormalizedPost,
-} from '../types/reddit-api/ThreadsResult.type'
-import getPosts from './getPosts'
+import { ThreadResult, ChildData } from '../types/reddit-api/ThreadsResult.type'
+import getFilteredPosts from './getFilteredPosts'
 
 interface Props {
-  subreddit: string
-  after: string
-  sort: string
-  signal: AbortSignal | undefined
+  signal?: AbortSignal | undefined
+  queryKey: readonly ['subreddit', string, string]
+  pageParam?: string
 }
 
 const getSubreddit = async ({
-  after,
+  pageParam = '',
+  queryKey,
   signal,
-  sort,
-  subreddit,
-}: Props): Promise<{ posts: NormalizedPost[]; after: string | null }> => {
-  const result = await fetch(getSubredditJSONUrl({ subreddit, after, sort }), {
-    signal,
-  })
+}: Props): Promise<{ posts: ChildData[]; after: string | null }> => {
+  const [_, subreddit, sort] = queryKey
+  const result = await fetch(
+    getSubredditJSONUrl({ subreddit, after: pageParam, sort }),
+    {
+      signal,
+    },
+  )
     .then((response) => response.json())
     .then((response: ThreadResult) => {
       if (
@@ -32,7 +31,7 @@ const getSubreddit = async ({
       }
 
       return {
-        posts: getPosts(response.data.children),
+        posts: getFilteredPosts(response.data.children),
         after: response.data.after,
       }
     })
@@ -48,7 +47,7 @@ const getSubreddit = async ({
     })
 
   if (result.posts.length < 4 && result.after) {
-    return getSubreddit({ after: result.after, signal, sort, subreddit })
+    return getSubreddit({ pageParam: result.after, signal, queryKey })
   }
 
   return result

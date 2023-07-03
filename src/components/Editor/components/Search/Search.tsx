@@ -1,11 +1,9 @@
-import { useState, useEffect, useRef } from 'preact/hooks'
+import { useState, useRef } from 'preact/hooks'
 import { JSX } from 'preact'
 import debounce from 'lodash.debounce'
 import { useQuery } from '@tanstack/react-query'
 
-import { Option, getOptions } from '../../../../utilities/getOptions'
 import Loader from '../../../Loader'
-import getInitialOptions from '../../../../utilities/getInitialOptions'
 import './Search.css'
 
 interface Props {
@@ -23,9 +21,6 @@ function Search({ id, onSubmit }: Props): JSX.Element {
   const inputId = `search-${id}`
   const listId = `list-${inputId}`
 
-  const [suggestionsCache, setSuggestionsCache] = useState<Option[]>(() =>
-    getInitialOptions(),
-  )
   const { data, isInitialLoading, isLoading } = useQuery<
     RedditNameResponse,
     { message: string; reason?: string }
@@ -38,16 +33,6 @@ function Search({ id, onSubmit }: Props): JSX.Element {
       ).then((response) => response.json()),
     enabled: !!subreddit,
   })
-
-  useEffect(() => {
-    if (!data?.names?.length) {
-      return
-    }
-
-    setSuggestionsCache((prev) => {
-      return getOptions([...prev.map((option) => option.value), ...data.names])
-    })
-  }, [data?.names])
 
   const handleSearchSubmit: JSX.GenericEventHandler<HTMLFormElement> = (
     event,
@@ -74,14 +59,6 @@ function Search({ id, onSubmit }: Props): JSX.Element {
       const value = event.target.value.trim()
 
       if (value.length < 3) {
-        return
-      }
-
-      if (
-        suggestionsCache.find(
-          (option) => option.lowerCase === value.toLowerCase(),
-        )
-      ) {
         return
       }
 
@@ -114,11 +91,12 @@ function Search({ id, onSubmit }: Props): JSX.Element {
             type="search"
           />
           <datalist id={listId}>
-            {suggestionsCache.map((option) => (
-              <option key={option.lowerCase} value={option.value}>
-                {option.value}
-              </option>
-            ))}
+            {!!data?.names?.length &&
+              data?.names.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
           </datalist>
           <button
             className={`btn ${

@@ -3,9 +3,8 @@ export default function containsKeyword(
   sentence: string,
 ): boolean {
   const normalizedSentence = sentence.toLowerCase()
-  const normalizedKeywords = keywords.map((keyword) => keyword.toLowerCase())
 
-  return normalizedKeywords.some((keyword) =>
-    normalizedSentence.includes(keyword),
+  return !!keywords.find((keyword) =>
+    normalizedSentence.includes(keyword.toLowerCase()),
   )
 }

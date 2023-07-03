@@ -21,8 +21,8 @@ export default (post: ChildData): NormalizedYoutube | null => {
 
   return {
     type: 'youtube',
-    width: 16,
-    height: 9,
+    width: media?.oembed?.width || 16,
+    height: media?.oembed?.height || 9,
     id,
     thumbnail: media.oembed.thumbnail_url,
   }

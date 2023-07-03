@@ -1,9 +1,8 @@
-import { useState } from 'preact/hooks'
 import { JSX } from 'preact'
 
-import { Option } from '../../../utilities/getOptions'
-import getInitialOptions from '../../../utilities/getInitialOptions'
+import getSubredditsFromUserLists from '../../../utilities/getSubredditsFromUserLists'
 import parseSubredditFromURL from '../../../utilities/parseSubredditFromURL'
+import parseStorage from '../../../utilities/parseStorage'
 
 interface Props {
   onChange: JSX.GenericEventHandler<HTMLSelectElement>
@@ -11,9 +10,8 @@ interface Props {
 
 function Nav({ onChange }: Props): JSX.Element {
   const defaultSubreddit = parseSubredditFromURL(window.location.href) || 'best'
-  const userLists =
-    localStorage.getItem('lists')?.split(',').filter(Boolean) || []
-  const [optionsCache] = useState<Option[]>(() => getInitialOptions())
+  const userLists = parseStorage('lists') || []
+  const subreddits = getSubredditsFromUserLists(userLists)
 
   return (
     <form action="" method="GET">
@@ -36,9 +34,9 @@ function Nav({ onChange }: Props): JSX.Element {
           )}
 
           <optgroup label="subreddits">
-            {optionsCache.map((option) => (
-              <option key={option.lowerCase} value={option.value}>
-                {option.value}
+            {subreddits.map((subreddit) => (
+              <option key={subreddit} value={subreddit}>
+                {subreddit}
               </option>
             ))}
           </optgroup>
