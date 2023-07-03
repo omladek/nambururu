@@ -1,7 +1,8 @@
 import { JSX } from 'preact'
 import { useContext } from 'preact/hooks'
 import { route } from 'preact-router'
-import { NavigationContext } from '../App'
+
+import NavigationContext from '../context/NavigationContext'
 
 interface Props {
   children: JSX.Element | string

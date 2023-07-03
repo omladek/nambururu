@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unstable-nested-components */
-import { JSX, createContext } from 'preact'
+import { JSX } from 'preact'
 import { Router, Route } from 'preact-router'
 import { createHashHistory } from 'history'
 import AsyncRoute from 'preact-async-route'
@@ -9,8 +9,7 @@ import Home from './routes/Home'
 import hashHistoryAdapter from './utilities/hashHistoryAdapter'
 import Header from './components/Header/Header'
 import Loader from './components/Loader'
-
-export const NavigationContext = createContext(window.location.href)
+import NavigationContext from './context/NavigationContext'
 
 function App(): JSX.Element {
   const [currentUrl, setCurrentUrl] = useState(window.location.href)
