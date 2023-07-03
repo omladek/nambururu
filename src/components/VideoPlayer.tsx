@@ -8,12 +8,14 @@ interface Props {
   width: number
   hasAudio: boolean
   poster: string
+  posterLoading: 'lazy' | 'eager'
 }
 
 function VideoPlayer({
   hasAudio,
   height,
   poster,
+  posterLoading,
   url,
   width,
 }: Props): JSX.Element {
@@ -57,7 +59,7 @@ function VideoPlayer({
               className="thumbnail thumbnail--video"
               decoding="async"
               height={height}
-              loading="lazy"
+              loading={posterLoading}
               src={poster}
               width={width}
             />

@@ -5,9 +5,16 @@ interface Props {
   height: number
   id: string
   thumbnail: string
+  posterLoading: 'lazy' | 'eager'
 }
 
-function YoutTube({ height, id, thumbnail, width }: Props): JSX.Element | null {
+function YoutTube({
+  height,
+  id,
+  posterLoading,
+  thumbnail,
+  width,
+}: Props): JSX.Element | null {
   return (
     <a
       className="youtube"
@@ -24,6 +31,7 @@ function YoutTube({ height, id, thumbnail, width }: Props): JSX.Element | null {
         className="youtube__logo"
         decoding="async"
         height="60"
+        loading={posterLoading}
         srcSet="https://satyr.dev/80x60/FF0000?brand=youtube 1x, https://satyr.dev/160x120/FF0000?brand=youtube 2x"
         width="80"
       />
@@ -32,7 +40,7 @@ function YoutTube({ height, id, thumbnail, width }: Props): JSX.Element | null {
         className="youtube__thumbnail"
         decoding="async"
         height={height}
-        loading="lazy"
+        loading={posterLoading}
         src={thumbnail}
         width={width}
       />

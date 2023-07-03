@@ -23,6 +23,7 @@ function Media({ media, mediaLoading }: Props): JSX.Element | null {
           hasAudio={media.hasAudio}
           height={media.height}
           poster={media.poster}
+          posterLoading={mediaLoading}
           url={media.url}
           width={media.width}
         />
@@ -51,6 +52,7 @@ function Media({ media, mediaLoading }: Props): JSX.Element | null {
         <YoutTube
           height={media.height}
           id={media.id}
+          posterLoading={mediaLoading}
           thumbnail={media.thumbnail}
           width={media.width}
         />
