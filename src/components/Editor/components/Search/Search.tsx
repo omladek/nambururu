@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query'
 
 import Loader from '../../../Loader'
 import './Search.css'
+import getSanitizedString from '../../../../utilities/getSanitizedString'
 
 interface Props {
   onSubmit: (subreddit: string) => void
@@ -39,9 +40,9 @@ function Search({ id, onSubmit }: Props): JSX.Element {
   ) => {
     event.preventDefault()
 
-    const subreddit = (
-      new FormData(event.currentTarget).get(inputId)?.toString() || ''
-    ).trim()
+    const subreddit = getSanitizedString(
+      (new FormData(event.currentTarget).get(inputId)?.toString() || '').trim(),
+    )
 
     if (!subreddit) {
       return
@@ -56,7 +57,7 @@ function Search({ id, onSubmit }: Props): JSX.Element {
 
   const handleInput: JSX.GenericEventHandler<HTMLInputElement> = debounce(
     (event) => {
-      const value = event.target.value.trim()
+      const value = getSanitizedString(event.target.value.trim())
 
       if (value.length < 3) {
         return

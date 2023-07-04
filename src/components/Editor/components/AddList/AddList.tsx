@@ -1,4 +1,5 @@
 import { JSX } from 'preact'
+import getSanitizedString from '../../../../utilities/getSanitizedString'
 
 interface Props {
   onSubmit: (listId: string) => void
@@ -11,9 +12,9 @@ function AddList({ lists, onSubmit }: Props): JSX.Element {
   const handleSubmit: JSX.GenericEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault()
 
-    const listName = (
-      new FormData(event.currentTarget).get(inputId)?.toString() || ''
-    ).trim()
+    const listName = getSanitizedString(
+      (new FormData(event.currentTarget).get(inputId)?.toString() || '').trim(),
+    )
 
     if (!listName) {
       return
@@ -47,7 +48,7 @@ function AddList({ lists, onSubmit }: Props): JSX.Element {
           type="text"
         />
         <p>
-          <small>Allowed: letters, numbers</small>
+          <small>Allowed: letters, numbers, underscore, hyphen</small>
         </p>
         <button className="btn" type="submit">
           Create

@@ -1,10 +1,11 @@
 import getSubredditJSONUrl from './getSubredditJSONUrl'
 import { ThreadResult, ChildData } from '../types/reddit-api/ThreadsResult.type'
 import getFilteredPosts from './getFilteredPosts'
+import { SortOption } from '../constants/sortOptions'
 
 interface Props {
   signal?: AbortSignal | undefined
-  queryKey: readonly ['subreddit', string, string]
+  queryKey: readonly ['subreddit', string, SortOption]
   pageParam?: string
 }
 

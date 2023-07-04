@@ -1,13 +1,14 @@
 import { JSX } from 'preact'
 
 import parseSortFromURL from '../../../utilities/parseSortFromURL'
+import sortOptions, { SortOption } from '../../../constants/sortOptions'
 
 interface Props {
-  onChange: JSX.GenericEventHandler<HTMLSelectElement>
+  onChange: (sort: SortOption) => void
 }
 
 function Sort({ onChange }: Props): JSX.Element {
-  const defaultSort = parseSortFromURL(window.location.href) || 'best'
+  const defaultSort = parseSortFromURL(window.location.href) || sortOptions[0]
 
   return (
     <form action="" method="GET">
@@ -17,9 +18,11 @@ function Sort({ onChange }: Props): JSX.Element {
           defaultValue={defaultSort}
           id="sort"
           name="sort"
-          onChange={onChange}
+          onChange={({ currentTarget }) =>
+            onChange(currentTarget.value as SortOption)
+          }
         >
-          {['best', 'hot', 'new', 'top'].map((option) => (
+          {sortOptions.map((option) => (
             <option key={option} value={option}>
               {option}
             </option>

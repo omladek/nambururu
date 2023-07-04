@@ -6,6 +6,8 @@ import List from '../components/List'
 import parseSubredditFromURL from '../utilities/parseSubredditFromURL'
 import parseSortFromURL from '../utilities/parseSortFromURL'
 import parseStorage from '../utilities/parseStorage'
+import sortOptions from '../constants/sortOptions'
+import basicSubreddits from '../constants/basicSubreddits'
 
 interface Props {
   /** injected by router */
@@ -14,8 +16,8 @@ interface Props {
 
 function Home({ url }: Props): JSX.Element {
   const subreddit =
-    parseSubredditFromURL(url) || parseStorage('lists')[0] || 'best'
-  const sort = parseSortFromURL(url) || 'best'
+    parseSubredditFromURL(url) || parseStorage('lists')[0] || basicSubreddits[0]
+  const sort = parseSortFromURL(url) || sortOptions[0]
 
   return (
     <>

@@ -1,9 +1,11 @@
 import getSortedList from './getSortedList'
-import basicSubreddits from '../constants/basicSubreddits'
+import basicSubreddits, { BasicSubreddit } from '../constants/basicSubreddits'
 import parseStorage from './parseStorage'
 
-const getSubredditsFromUserLists = (userLists: string[]): string[] => {
-  let options = [...basicSubreddits]
+const getSubredditsFromUserLists = (
+  userLists: string[],
+): Array<BasicSubreddit | string> => {
+  let options: Array<BasicSubreddit | string> = [...basicSubreddits]
 
   userLists.forEach((list) => {
     const value = parseStorage(list)

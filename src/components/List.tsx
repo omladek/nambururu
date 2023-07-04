@@ -9,12 +9,13 @@ import ErrorBoundary from './ErrorBoundary'
 import getSubreddit from '../utilities/getSubreddit'
 import Loader from './Loader'
 import transformListData from '../utilities/transformListData'
+import { SortOption } from '../constants/sortOptions'
 
 const lazyLoadingLimit = window.matchMedia('(min-width: 40em)').matches ? 4 : 1
 
 interface Props {
   subreddit: string
-  sort: string
+  sort: SortOption
 }
 
 function List({ sort, subreddit }: Props): JSX.Element {

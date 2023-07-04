@@ -1,20 +1,21 @@
-import basicSubreddits from '../constants/basicSubreddits'
+import basicSubreddits, { BasicSubreddit } from '../constants/basicSubreddits'
+import sortOptions, { SortOption } from '../constants/sortOptions'
 import getSubredditsURLValue from './getSubredditsURLValue'
 import parseStorage from './parseStorage'
 
 interface Props {
-  subreddit: string
+  subreddit: string | BasicSubreddit
   after?: string
-  sort?: string
+  sort?: SortOption
 }
 
 const getSubredditJSONUrl = ({
   after = '',
-  sort = 'best',
+  sort = sortOptions[0],
   subreddit,
 }: Props): URL => {
   let subredditBase = subreddit
-  let sortBase = sort
+  let sortBase: string = sort
 
   const lists = parseStorage('lists')
 
@@ -22,13 +23,13 @@ const getSubredditJSONUrl = ({
     subredditBase = getSubredditsURLValue(subreddit)
   }
 
-  subredditBase = basicSubreddits.includes(subredditBase)
+  subredditBase = basicSubreddits.includes(subredditBase as BasicSubreddit)
     ? subredditBase
     : `r/${subredditBase}`
 
   if (!subredditBase.startsWith('r/')) {
     sortBase = ''
-  } else if (sort === '') {
+  } else if (sortBase === '') {
     sortBase = ``
   } else {
     sortBase = `/${sort}`

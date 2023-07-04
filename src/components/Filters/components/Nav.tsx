@@ -3,13 +3,15 @@ import { JSX } from 'preact'
 import getSubredditsFromUserLists from '../../../utilities/getSubredditsFromUserLists'
 import parseSubredditFromURL from '../../../utilities/parseSubredditFromURL'
 import parseStorage from '../../../utilities/parseStorage'
+import basicSubreddits from '../../../constants/basicSubreddits'
 
 interface Props {
   onChange: JSX.GenericEventHandler<HTMLSelectElement>
 }
 
 function Nav({ onChange }: Props): JSX.Element {
-  const defaultSubreddit = parseSubredditFromURL(window.location.href) || 'best'
+  const defaultSubreddit =
+    parseSubredditFromURL(window.location.href) || basicSubreddits[0]
   const userLists = parseStorage('lists') || []
   const subreddits = getSubredditsFromUserLists(userLists)
 
