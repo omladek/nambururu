@@ -2,7 +2,7 @@
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { useInView } from 'react-intersection-observer'
 import { JSX } from 'preact'
-import { useEffect } from 'preact/hooks'
+import { useEffect, useMemo, useState } from 'preact/hooks'
 
 import Post from './Post/Post'
 import ErrorBoundary from './ErrorBoundary'
@@ -13,16 +13,15 @@ import { SortOption } from '../constants/sortOptions'
 
 const lazyLoadingLimit = window.matchMedia('(min-width: 40em)').matches ? 4 : 1
 
+const postsPerPage = lazyLoadingLimit * 2
+
 interface Props {
   subreddit: string
   sort: SortOption
 }
 
 function List({ sort, subreddit }: Props): JSX.Element {
-  const { inView, ref } = useInView({
-    rootMargin: '500px 0px 0px 0px',
-    initialInView: true,
-  })
+  const { inView, ref } = useInView()
 
   const {
     data,
@@ -38,11 +37,41 @@ function List({ sort, subreddit }: Props): JSX.Element {
     select: transformListData,
   })
 
+  const posts = useMemo(() => data?.pages || [], [data?.pages])
+
+  const postsTotal = posts.length
+
+  const [visiblePostsLimit, setVisiblePostsLimit] = useState(postsPerPage)
+
+  const visiblePosts = useMemo(
+    () => posts.slice(0, visiblePostsLimit),
+    [posts, visiblePostsLimit],
+  )
+
   useEffect(() => {
-    if (inView && !isFetchingNextPage) {
+    setVisiblePostsLimit(postsPerPage)
+  }, [subreddit, sort])
+
+  useEffect(() => {
+    if (inView && visiblePostsLimit < postsTotal) {
+      setVisiblePostsLimit((prev) => {
+        const next = prev + postsPerPage
+
+        if (next >= postsTotal) {
+          return postsTotal
+        }
+
+        return next
+      })
+    } else if (
+      inView &&
+      visiblePostsLimit === postsTotal &&
+      !isFetchingNextPage
+    ) {
       fetchNextPage()
     }
-  }, [inView, fetchNextPage, isFetchingNextPage])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inView, fetchNextPage, isFetchingNextPage, postsTotal])
 
   if (isLoading) return <Loader isFullScreen />
 
@@ -56,13 +85,13 @@ function List({ sort, subreddit }: Props): JSX.Element {
       </div>
     )
 
-  if (!data?.pages?.length && !hasNextPage) {
+  if (!postsTotal && !hasNextPage) {
     return <p className="message">No results</p>
   }
 
   return (
     <div className="list">
-      {data?.pages.map((post, postIndex) => {
+      {visiblePosts.map((post, postIndex) => {
         return (
           <ErrorBoundary key={post.id}>
             <Post
