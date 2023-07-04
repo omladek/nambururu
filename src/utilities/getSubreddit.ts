@@ -7,14 +7,18 @@ interface Props {
   signal?: AbortSignal | undefined
   queryKey: readonly ['subreddit', string, SortOption]
   pageParam?: string
+  postsCache?: ChildData[]
 }
 
 const getSubreddit = async ({
   pageParam = '',
+  postsCache = [],
   queryKey,
   signal,
 }: Props): Promise<{ posts: ChildData[]; after: string | null }> => {
   const [_, subreddit, sort] = queryKey
+  let posts = postsCache
+
   const result = await fetch(
     getSubredditJSONUrl({ subreddit, after: pageParam, sort }),
     {
@@ -47,11 +51,21 @@ const getSubreddit = async ({
       }
     })
 
-  if (result.posts.length < 4 && result.after) {
-    return getSubreddit({ pageParam: result.after, signal, queryKey })
+  posts = [...posts, ...result.posts]
+
+  if (posts.length < 100 && result.after) {
+    return getSubreddit({
+      pageParam: result.after,
+      signal,
+      queryKey,
+      postsCache: posts,
+    })
   }
 
-  return result
+  return {
+    ...result,
+    posts,
+  }
 }
 
 export default getSubreddit
