@@ -38,6 +38,7 @@ export type NormalizedPost = {
   upVotes: string | number
   downVotes: string | number
   media: NormalizedPostMedia
+  externalLink: string | null
 }
 
 export interface NormalizedVideo {

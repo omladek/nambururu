@@ -22,6 +22,7 @@ function Post({ mediaLoading, post }: Props): JSX.Element {
     description,
     domain,
     downVotes,
+    externalLink,
     hasComments,
     id,
     media,
@@ -104,7 +105,19 @@ function Post({ mediaLoading, post }: Props): JSX.Element {
                 <span aria-hidden>🌐</span>
               </dt>
 
-              <dd className="post__domain">{domain.replace('self.', '')}</dd>
+              <dd className="post__domain">
+                {externalLink ? (
+                  <a
+                    href={externalLink}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    {domain}
+                  </a>
+                ) : (
+                  domain.replace(/^self./, '')
+                )}
+              </dd>
 
               <dt>
                 <span aria-hidden>💬</span>

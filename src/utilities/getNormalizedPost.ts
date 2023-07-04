@@ -21,6 +21,7 @@ const getNormalizedPost = (post: ChildData): NormalizedPost => {
     title,
     ups,
     upvote_ratio,
+    url_overridden_by_dest,
   } = post
 
   const media = getPostMedia(post)
@@ -38,6 +39,11 @@ const getNormalizedPost = (post: ChildData): NormalizedPost => {
     upVotes: formatNumber(ups),
     downVotes: formatNumber(calculateDownvotes(ups, upvote_ratio)),
     media,
+    externalLink:
+      ['i.redd.it', 'reddit.com', 'v.redd.it'].includes(domain) ||
+      domain.startsWith('self.')
+        ? null
+        : url_overridden_by_dest,
   }
 }
 
