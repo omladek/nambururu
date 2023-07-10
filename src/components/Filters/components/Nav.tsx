@@ -25,6 +25,7 @@ function Nav({ onChange }: Props): JSX.Element {
           name="subreddit-select"
           onChange={onChange}
         >
+          <option disabled>choose</option>
           {!!userLists.length && (
             <optgroup label="my lists">
               {userLists.map((userList) => (

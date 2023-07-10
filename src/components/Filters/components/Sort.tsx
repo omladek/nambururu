@@ -22,6 +22,7 @@ function Sort({ onChange }: Props): JSX.Element {
             onChange(currentTarget.value as SortOption)
           }
         >
+          <option disabled>choose</option>
           {sortOptions.map((option) => (
             <option key={option} value={option}>
               {option}
