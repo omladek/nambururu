@@ -2,6 +2,7 @@ import { JSX } from 'preact'
 
 import './Header.css'
 import Link from '../Link'
+import LayoutMode from '../LayoutMode/LayoutMode'
 
 function Header(): JSX.Element {
   return (
@@ -12,6 +13,7 @@ function Header(): JSX.Element {
             <Link className="header__logo" href="/nambururu/#/">
               Nambururu
             </Link>
+            <LayoutMode />
           </li>
           <li className="header__nav-list-item">
             <Link

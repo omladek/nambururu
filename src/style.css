@@ -209,6 +209,13 @@ textarea {
   gap: var(--gutter);
 }
 
+@media (max-width: 40em) {
+  .list-layout--compact .list {
+    column-gap: 1px;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (min-width: 40em) {
   .list {
     grid-template-columns: repeat(auto-fill, minmax(25em, 1fr));
