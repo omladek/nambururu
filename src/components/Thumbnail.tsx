@@ -1,5 +1,6 @@
 import { JSX } from 'preact'
 import { useState } from 'preact/hooks'
+import isOnWiFi from '../utilities/isOnWiFi'
 
 interface Props {
   thumbnail: string
@@ -25,8 +26,10 @@ function Thumbnail({
 
   if (!retina) {
     srcSetHD = ''
-  } else {
+  } else if (isOnWiFi()) {
     srcSetHD = `, ${srcSetHD} 2x`
+  } else {
+    srcSetHD = ''
   }
 
   const handleClick: JSX.MouseEventHandler<HTMLAnchorElement> = (event) => {
