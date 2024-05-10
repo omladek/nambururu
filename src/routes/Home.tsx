@@ -33,12 +33,12 @@ function Home({ url }: Props): JSX.Element {
 
   const swipeHandlers = useSwipeable({
     onSwipedLeft: () => {
-      const nextSubredditIndex = currentSubredditIndex - 1
+      const nextSubredditIndex = currentSubredditIndex + 1
 
       goToSubredditByIndex(nextSubredditIndex)
     },
     onSwipedRight: () => {
-      const nextSubredditIndex = currentSubredditIndex + 1
+      const nextSubredditIndex = currentSubredditIndex - 1
 
       goToSubredditByIndex(nextSubredditIndex)
     },
